@@ -1,49 +1,44 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+// import logo from './logo.svg';
 import test from './lib'
 import './App.css';
-import { Node } from './lib/Node';
+import View from './lib/View';
+// import { Node } from './lib/Node';
 
 
-const App = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+class App extends React.Component<any> {
+  canvas = React.createRef<HTMLCanvasElement>()
+  componentDidMount() {
+    test.render(
+      React.createElement(Test),
+      this.canvas.current!
+    )
+  }
+  render() {
+    return <canvas ref={this.canvas} width={500} height={500} />
+  }
 }
 
 function Test() {
-  const [size, setSize] = React.useState(100)
-  useEffect(() => {
-    setTimeout(() => {
-      setSize(200 * Math.random())
-    }, 100);
-  }, [])
-  return React.createElement('View', { width: 400, height: 400 },
-    React.createElement('View', { width: 100, height: 100 }),
-    React.createElement('View', { width: size, height: size })
+  // const [size, setSize] = React.useState(100)
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setSize(200 * Math.random())
+  //   }, 100);
+  // }, [])
+  // return React.createElement('View', { width: 400, height: 400, backgroundColor: '#000', borderRadius: 50 },
+  //   React.createElement('View', { width: 100, height: 100, backgroundColor: 'yellow', borderRadius: 10 }),
+  //   React.createElement('View', { width: size, height: size, backgroundColor: 'red', borderRadius: 10 }),
+  //   React.createElement('View', { width: 100, height: 100, backgroundColor: 'blue', borderRadius: 10 })
+  // )
+  return (
+    <View width={400} height={400} backgroundColor="black">
+      <View width={200} height={200} backgroundColor="red" />
+    </View>
   )
 }
 
-const root = new Node('Root', { width: 500, height: 500 })
-
-test.render(
-  React.createElement(Test),
-  root
-)
 
 export default App;

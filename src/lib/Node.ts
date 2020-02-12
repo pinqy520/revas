@@ -8,7 +8,7 @@ export interface Layout {
 }
 
 export class Node {
-  public readonly children: ChildNode[] = []
+  public readonly children: Node[] = []
   public layout?: Layout
   public parent?: Node
   constructor(
@@ -17,4 +17,14 @@ export class Node {
   ) { }
 }
 
-export type ChildNode = Node | string
+export class Container extends Node {
+  public layout?: Layout
+  constructor(
+    public canvas: HTMLCanvasElement
+  ) {
+    super('root', {
+      width: canvas.width,
+      height: canvas.height,
+    })
+  }
+}

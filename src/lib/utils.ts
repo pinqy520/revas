@@ -1,11 +1,54 @@
 import Yoga from 'yoga-layout-prebuilt'
-import { Node, ChildNode } from './Node'
+import { Node } from './Node'
 
 export function noop() { }
 
-export function appendChild(parent: Node, child: ChildNode) {
-  parent.children.push(child)
+const AVAILABLE = {
+  STYLE: [
+    'width',
+    'height',
+    'minWidth',
+    'maxWidth',
+    'minHeight',
+    'maxHeight',
+    'justifyContent',
+    'alignItems',
+    'alignSelf',
+    'alignContent',
+    'flexGrow',
+    'flexShrink',
+    'positionType',
+    'aspectRatio',
+    'flexWrap',
+    'flexDirection',
+  ],
+  EDGE: ['padding', 'margin', 'position', 'border'],
+  DIRECTION: ['top', 'right', 'bottom', 'left']
+}
+
+function set(key: string) {
+  return `set${key[0].toUpperCase()}${key.substr(1)}`
+}
+
+function applyYogaStyle(yoga: any, style: any) {
+  AVAILABLE.STYLE.forEach(key => {
+    const value = style[key];
+    value && yoga[set(key)](value);
+  });
+  AVAILABLE.EDGE.forEach(key => {
+    AVAILABLE.DIRECTION.forEach(direction => {
+      style[key] && style[key][direction] && yoga[set(key)](
+        (Yoga as any)[`EDGE_${direction.toUpperCase()}`],
+        style[key][direction],
+      );
+    });
+  });
+  yoga.setDisplay(Yoga.DISPLAY_FLEX);
+}
+
+export function appendChild(parent: Node, child: Node | string) {
   if (child instanceof Node) {
+    parent.children.push(child)
     child.parent = parent
   }
 }
@@ -31,46 +74,4 @@ export function updateLayout(root: Node): [Function, Yoga.YogaNode] {
     children.forEach(c => c())
   }
   return [process, yoga]
-}
-
-const availableStyle = new Set([
-  'width',
-  'height',
-  'minWidth',
-  'maxWidth',
-  'minHeight',
-  'maxHeight',
-  'justifyContent',
-  'alignItems',
-  'alignSelf',
-  'alignContent',
-  'flexGrow',
-  'flexShrink',
-  'positionType',
-  'aspectRatio',
-  'flexWrap',
-  'flexDirection',
-])
-
-const availableEdge = new Set(['padding', 'margin', 'position', 'border'])
-
-function set(str: string) {
-  return `set${str[0].toUpperCase()}${str.substr(1)}`
-}
-
-function applyYogaStyle(yoga: any, style: any) {
-  Object.keys(style).forEach(key => {
-    if (availableStyle.has(key)) {
-      const value = style[key];
-      value && yoga[set(key)](value);
-    } else if (availableEdge.has(key)) {
-      ['top', 'right', 'bottom', 'left'].forEach(direction => {
-        style[key] && style[key][direction] && yoga[set(key)](
-          (Yoga as any)[`EDGE_${direction.toUpperCase()}`],
-          style[key][direction],
-        );
-      });
-    }
-  });
-  yoga.setDisplay(Yoga.DISPLAY_FLEX);
 }

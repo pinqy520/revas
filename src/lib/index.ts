@@ -1,8 +1,9 @@
 import ReactReconciler from 'react-reconciler';
-import { Node, ChildNode } from './Node'
+import { Node, Container } from './Node'
 import { appendChild, noop, updateLayout } from './utils'
+import { drawRenderLayer } from './Draw';
 
-const renderer = ReactReconciler<string, any, Node, Node, string, Node, ChildNode, any, any, any, any, any>({
+const renderer = ReactReconciler<string, any, Container, Node, string, Node, Node | string, any, any, any, any, any>({
   supportsHydration: false,
   supportsPersistence: false,
   supportsMutation: true,
@@ -43,6 +44,9 @@ const renderer = ReactReconciler<string, any, Node, Node, string, Node, ChildNod
   resetAfterCommit(container) {
     console.log(Date.now())
     updateLayout(container)[0]()
+    const ctx = container.canvas.getContext('2d')!
+    ctx.clearRect(0, 0, container.props.width, container.props.height);
+    drawRenderLayer(ctx, container)
     console.log(Date.now(), container)
   },
 
@@ -75,8 +79,8 @@ const renderer = ReactReconciler<string, any, Node, Node, string, Node, ChildNod
 
 
 export default {
-  render(app: React.ReactNode, container: any) {
-    const c = renderer.createContainer(container, false, false)
+  render(app: React.ReactNode, canvas: HTMLCanvasElement) {
+    const c = renderer.createContainer(new Container(canvas), false, false)
     return renderer.updateContainer(app, c, null, noop)
   }
 }
