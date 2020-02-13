@@ -1,18 +1,18 @@
 import ReactReconciler from 'react-reconciler';
 import { Node, Container } from './Node'
 import { appendChild, noop, updateLayout } from './utils'
-import { drawRenderLayer } from './Draw';
+import { drawRenderLayer } from './draw';
 
-const renderer = ReactReconciler<string, any, Container, Node, string, Node, Node | string, any, any, any, any, any>({
+const renderer = ReactReconciler({
   supportsHydration: false,
   supportsPersistence: false,
   supportsMutation: true,
 
-  createInstance(type, props) {
+  createInstance(type: string, props: any) {
     return new Node(type, props);
   },
 
-  createTextInstance(text) {
+  createTextInstance(text: string) {
     return text;
   },
 
@@ -30,8 +30,6 @@ const renderer = ReactReconciler<string, any, Container, Node, string, Node, Nod
     return instance;
   },
 
-  prepareForCommit: noop,
-
   prepareUpdate() {
     return true;
   },
@@ -40,14 +38,15 @@ const renderer = ReactReconciler<string, any, Container, Node, string, Node, Nod
     instance.props = newProps
   },
 
+  prepareForCommit: noop,
 
-  resetAfterCommit(container) {
-    console.log(Date.now())
-    updateLayout(container)[0]()
+  resetAfterCommit(container: Container) {
+    const start = performance.now()
+    updateLayout(container)()
     const ctx = container.canvas.getContext('2d')!
     ctx.clearRect(0, 0, container.props.width, container.props.height);
     drawRenderLayer(ctx, container)
-    console.log(Date.now(), container)
+    console.log(performance.now() - start, container)
   },
 
   resetTextContent: noop,
@@ -60,8 +59,8 @@ const renderer = ReactReconciler<string, any, Container, Node, string, Node, Nod
     return {};
   },
 
-  shouldSetTextContent: (type, props) => {
-    return typeof props.children === 'string' || typeof props.children === 'number';
+  shouldSetTextContent() {
+    return false
   },
 
   shouldDeprioritizeSubtree: () => true,

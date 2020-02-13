@@ -34,6 +34,9 @@ function applyYogaStyle(yoga: any, style: any) {
   AVAILABLE.STYLE.forEach(key => {
     const value = style[key];
     value && yoga[set(key)](value);
+    if (key === 'justifyContent') {
+      (yoga as Yoga.YogaNode).setJustifyContent(Yoga.JUSTIFY_CENTER)
+    }
   });
   AVAILABLE.EDGE.forEach(key => {
     AVAILABLE.DIRECTION.forEach(direction => {
@@ -53,25 +56,45 @@ export function appendChild(parent: Node, child: Node | string) {
   }
 }
 
-export function updateLayout(root: Node): [Function, Yoga.YogaNode] {
+function _updateLayout(node: Node): [Function, Yoga.YogaNode] {
   const yoga = Yoga.Node.create()
   const children: Function[] = []
-  applyYogaStyle(yoga, root.props)
+  applyYogaStyle(yoga, node.props)
   yoga.setDisplay(Yoga.DISPLAY_FLEX);
-  for (let i = 0; i < root.children.length; i++) {
-    const child = root.children[i]
-    if (child instanceof Node) {
-      const [f, y] = updateLayout(child)
-      const index = children.push(f)
-      yoga.insertChild(y, index - 1)
-    }
+  for (let i = 0; i < node.children.length; i++) {
+    const child = node.children[i]
+    const [f, y] = _updateLayout(child)
+    const index = children.push(f)
+    yoga.insertChild(y, index - 1)
   }
   function process() {
-    if (!root.parent) {
-      yoga.calculateLayout(root.props.width, root.props.height)
+    if (!node.parent) {
+      yoga.calculateLayout(node.props.width, node.props.height)
     }
-    root.layout = yoga.getComputedLayout()
+    node.layout = yoga.getComputedLayout()
     children.forEach(c => c())
   }
   return [process, yoga]
+}
+
+export function updateLayout(root: Node) {
+  return _updateLayout(root)[0]
+}
+
+export class Frame {
+  constructor(
+    public x = 0,
+    public y = 0,
+    public width = 0,
+    public height = 0
+  ) { }
+}
+
+
+export function getStyleAndFrameFromNode(node: Node) {
+  const { props: style, layout } = node
+  const frame = layout
+    ? new Frame(layout.left, layout.top, layout.width, layout.height)
+    : new Frame()
+  return [style, frame]
 }

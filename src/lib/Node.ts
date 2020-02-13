@@ -18,7 +18,6 @@ export class Node {
 }
 
 export class Container extends Node {
-  public layout?: Layout
   constructor(
     public canvas: HTMLCanvasElement
   ) {
