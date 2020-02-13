@@ -1,4 +1,4 @@
-import SafeString from "./SafeString"
+import SafeString from "./string"
 import { Node } from "./Node"
 import { getStyleAndFrameFromNode } from "./utils"
 
