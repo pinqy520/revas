@@ -1,6 +1,6 @@
 import * as React from 'react'
-import * as imageLoader from './imageLoader'
-import drawImage from './drawer/drawImage'
+import * as imageLoader from '../common/imageLoader'
+import drawImage from '../common/drawImage'
 
 export default class ImageView extends React.Component<any> {
   state = {

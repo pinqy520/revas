@@ -1,7 +1,5 @@
 import React from 'react';
-import Text from './lib/Text';
-import View from './lib/View';
-import Image from './lib/Image';
+import { Text, View, Image } from './lib';
 
 
 
@@ -18,7 +16,7 @@ function App() {
         {text}
       </Text>
       <View backgroundColor={'red'} width={100} height={100} />
-      <Image src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg" width={200} height={100} />
+      <Image src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg" borderRadius={20} width={200} height={100} />
     </View>
   )
 }

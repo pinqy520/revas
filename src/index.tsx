@@ -1,5 +1,5 @@
 import React from 'react';
-import ReCanvas from './lib/render'
+import { render } from './lib'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import createCanvas from './createCanvas'
@@ -7,7 +7,7 @@ import createCanvas from './createCanvas'
 import './index.css';
 
 
-ReCanvas.render(
+render(
   React.createElement(App),
   createCanvas()
 )
