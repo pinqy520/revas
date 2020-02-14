@@ -3,13 +3,13 @@
 </h1>
 
 <p align="center">
-Build  Apps on Canvas, with React and Flexible CSS, inspired by <code>react-canvas</code>
+Build Apps on Canvas, with React and Flexible CSS, inspired by <code>react-canvas</code>
 </p>
 
 <p align="center">
   <a href="https://badge.fury.io/js/revas">
     <img src="https://badge.fury.io/js/revas.svg" alt="npm version" height="18">
-  </a>
+  </a> ｜ <a href="https://github.com/pinqy520/revas/blob/master/doc/README-zh.md">中文文档</a>
 </p>
 
 The main difference from `react-canvas` is that it does not depend strongly on `react-dom`, so that it can run in different terminals through the `canvas` interface provided by different implementation. In addition, compared to `react-canvas`, `revas` is:
