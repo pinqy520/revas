@@ -6,12 +6,10 @@ import json from 'rollup-plugin-json'
 
 const pkg = require('./package.json')
 
-const libraryName = 'revas'
-
 export default {
   input: `src/revas/index.ts`,
   output: [
-    { file: pkg.main, name: libraryName, format: 'umd', sourcemap: true },
+    { file: pkg.main, format: 'cjs', sourcemap: true },
     { file: pkg.module, format: 'es', sourcemap: true },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')

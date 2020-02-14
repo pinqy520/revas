@@ -1,10 +1,10 @@
 {
   "name": "revas",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
-  "main": "dist/revas.umd.js",
-  "module": "dist/revas.es5.js",
-  "typings": "dist/types/revas.d.ts",
+  "main": "dist/revas.js",
+  "module": "dist/revas.es.js",
+  "typings": "dist/types/revas/index.d.ts",
   "dependencies": {
     "@types/react-reconciler": "^0.18.0",
     "@types/yoga-layout": "^1.9.1",
@@ -20,6 +20,7 @@
     "@types/react": "^16.9.0",
     "react": "^16.12.0",
     "react-scripts": "3.3.1",
+    "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
@@ -30,9 +31,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
