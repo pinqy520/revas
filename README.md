@@ -66,4 +66,4 @@ render(
 
 ## Styles
 
-> 基本 React Native支持的，都支持了，除：transform
+> Same as React Native, except：transform
