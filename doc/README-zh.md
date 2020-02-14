@@ -7,8 +7,8 @@ Revas可以让你用 React和 Flexible CSS 在 Canvas 上编写交互界面
 </p>
 
 <p align="center">
-  <a href="https://badge.fury.io/js/vrf.js">
-    <img src="https://badge.fury.io/js/vrf.js.svg" />
+  <a href="https://badge.fury.io/js/revas">
+    <img src="https://badge.fury.io/js/revas.svg" alt="npm version" height="18">
   </a>
 </p>
 
