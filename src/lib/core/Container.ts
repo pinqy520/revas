@@ -26,7 +26,7 @@ export class Container extends Node {
     const ctx = this.canvas.getContext('2d')!
     ctx.clearRect(0, 0, this.props.width, this.props.height);
     drawRenderLayer(ctx, this)
-    console.log('draw', performance.now() - start, this)
+    console.log('draw', (performance.now() - start).toFixed(2) + 'ms')
     requestAnimationFrame(this.ready);
   }
 

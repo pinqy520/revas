@@ -3,50 +3,16 @@ import { Text, View, Image } from './lib';
 
 
 
+
 function App() {
-  const [text, setText] = React.useState('huang')
-  React.useEffect(() => {
-    setTimeout(() => {
-      setText(`${Math.random()}`)
-    }, 1000);
-  }, [])
   return (
     <View style={styles.container}>
-      <Text style={styles.text} >
-        {text}
-      </Text>
-      <View style={styles.shadow} />
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <Image style={styles.image}
-        src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg">
-      </Image>
-      <View style={{ ...styles.nested, maxHeight: 200, width: 200 }}>
-        <View style={{ ...styles.nested, backgroundColor: 'blue' }}>
-          <View style={{ ...styles.nested, backgroundColor: 'green' }}></View>
-        </View>
+      <View style={styles.card} >
+        <Image style={styles.logo}
+          src={require('./logo.png')} />
+        <Text style={styles.text}>
+          Revas让你可以用React和Flexible CSS，在Canvas上绘制高性能交互式界面～🎉
+        </Text>
       </View>
     </View>
   )
@@ -56,46 +22,32 @@ const styles = {
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'yellow',
+    alignItems: 'center',
+    backgroundColor: '#abcdef',
   },
-  shadow: {
-    shadowBlur: 8,
+  card: {
+    padding: 20,
+    borderRadius: 10,
+    shadowBlur: 20,
     shadowColor: 'rgba(0, 0, 0, 0.2)',
     shadowOffsetX: 0,
-    shadowOffsetY: 2,
-    width: 100,
-    height: 100,
-    margin: 10,
+    shadowOffsetY: 5,
     backgroundColor: '#fff',
-    borderRadius: 10,
-    borderWidth: 5,
-    borderColor: '#000'
+    alignItems: 'center',
   },
   text: {
-    fontSize: 40,
-    backgroundColor: 'red',
-    height: 100,
-    shadowBlur: 8,
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    shadowOffsetX: 0,
-    shadowOffsetY: 2,
-    textAlign: 'center'
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: 'center',
+    height: 55,
+    width: 280,
+    marginTop: 20,
   },
-  image: {
-    borderRadius: 20,
+  logo: {
     width: 200,
-    height: 100,
-    translateX: 10
+    height: 94,
   },
-  nested: {
-    flex: 1,
-    padding: 5,
-    borderWidth: 5,
-    margin: 5,
-    borderRadius: 5,
-    borderColor: '#fff',
-    backgroundColor: '#000'
-  }
+
 }
 
 
