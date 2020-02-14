@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from './lib';
+import { Text, View, Image } from './revas';
 
 
 
@@ -11,7 +11,7 @@ function App() {
         <Image style={styles.logo}
           src={require('./logo.png')} />
         <Text style={styles.text}>
-          Revas让你可以用React和Flexible CSS，在Canvas上绘制高性能交互式界面～🎉
+          Revas让你可以用React和Flexible CSS，{'\n'}在Canvas上绘制高性能交互式界面～🎉
         </Text>
       </View>
     </View>

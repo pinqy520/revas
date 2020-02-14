@@ -9,10 +9,20 @@ const DEFAULT_TEXTSTYLE = {
   textBaseline: "alphabetic",
 }
 
+function getTextFromNode(node: Node) {
+  const { content } = node.props
+  if (typeof content === 'string') {
+    return content
+  } else if (Array.isArray(content)) {
+    return content.join('')
+  }
+  return ''
+}
+
 export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
   const _style = getStyleFromNode(node)
   const frame = getFrameFromNode(node)
-  const content: string = node.props.content
+  const content = getTextFromNode(node)
   const style = { ...DEFAULT_TEXTSTYLE, ..._style }
   style.lineHeight = style.lineHeight || (style.fontSize * 1.1)
   ctx.save()

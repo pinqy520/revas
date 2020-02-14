@@ -1,6 +1,15 @@
 # [Work In Progress] 
 
-## Development
+## Quick start
+
+```
+$ yarn
+$ yarn start
+$ yarn build
+```
+
+
+
 
 ## Test Case
 

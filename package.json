@@ -1,7 +1,10 @@
 {
-  "name": "re-canvas",
+  "name": "revas",
   "version": "0.1.0",
   "private": true,
+  "main": "dist/revas.umd.js",
+  "module": "dist/revas.es5.js",
+  "typings": "dist/types/revas.d.ts",
   "dependencies": {
     "@types/react-reconciler": "^0.18.0",
     "@types/yoga-layout": "^1.9.1",
@@ -17,11 +20,17 @@
     "@types/react": "^16.9.0",
     "react": "^16.12.0",
     "react-scripts": "3.3.1",
+    "rollup": "^1.31.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.5.0",
+    "rollup-plugin-typescript2": "^0.26.0",
     "typescript": "~3.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

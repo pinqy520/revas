@@ -7,6 +7,7 @@ export default ReactReconciler({
   supportsHydration: false,
   supportsPersistence: false,
   supportsMutation: true,
+  isPrimaryRenderer: true,
 
   createInstance(type: string, props: any) {
     return new Node(type, props);
@@ -17,9 +18,7 @@ export default ReactReconciler({
   },
 
   appendInitialChild: appendChild,
-
   appendChild: appendChild,
-
   appendChildToContainer: appendChild,
 
   finalizeInitialChildren() {
@@ -59,8 +58,6 @@ export default ReactReconciler({
   },
 
   shouldDeprioritizeSubtree: () => false,
-
-  isPrimaryRenderer: true,
 
   scheduleDeferredCallback: noop,
   cancelDeferredCallback: noop,

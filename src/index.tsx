@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from './lib'
+import { render } from './revas'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import createCanvas from './createCanvas'
