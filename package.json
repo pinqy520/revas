@@ -1,7 +1,7 @@
 {
   "name": "revas",
   "version": "0.0.1",
-  "private": true,
+  "description": "Build Apps on Canvas, with React and Flexible CSS, inspired by react-canvas",
   "main": "dist/revas.js",
   "module": "dist/revas.es.js",
   "typings": "dist/types/revas/index.d.ts",
@@ -12,6 +12,12 @@
     "tslib": "^1.10.0",
     "yoga-layout-prebuilt": "^1.9.3"
   },
+  "keywords": [
+    "react",
+    "canvas",
+    "react-canvas",
+    "react-native"
+  ],
   "peerDependencies": {
     "react": "^16.0.0"
   },
