@@ -68,6 +68,12 @@ render(
 
 > 基本 React Native支持的，都支持了，除：transform
 
+## 效果截图
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/5719833/74564277-aa182d80-4fa9-11ea-801e-a1953d6e8af5.png" width=600 />
+</p>
+
 ## TODO
 
 - 交互事件机制

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from './revas';
+import { Text, View, Image } from '../revas';
 
 
 

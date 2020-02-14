@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from './revas'
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import createCanvas from './createCanvas'
+import App from './develop/App';
+import * as serviceWorker from './develop/serviceWorker';
+import createCanvas from './develop/createCanvas'
 
-import './index.css';
+import './develop/index.css';
 
 
 render(

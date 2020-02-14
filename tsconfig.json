@@ -19,6 +19,7 @@
     "declarationDir": "dist/types",
     "noEmit": true,
     "jsx": "react",
+    "allowJs": true
   },
   "include": [
     "src"

@@ -67,3 +67,10 @@ render(
 ## Styles
 
 > Same as React Native, except：transform
+
+## Screenshot
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/5719833/74564277-aa182d80-4fa9-11ea-801e-a1953d6e8af5.png" width=600 />
+</p>
+
