@@ -1,10 +1,10 @@
 import ReactReconciler from 'react-reconciler';
-import { Node, Container } from './core/Node'
-import { appendChild, noop } from './core/utils'
-import { drawRenderLayer } from './drawer/draw';
-import { updateLayout } from './core/layout';
+import { Node, Container } from './Node'
+import { appendChild, noop } from './utils'
+import { drawRenderLayer } from '../drawer/draw';
+import { updateLayout } from './layout';
 
-const renderer = ReactReconciler({
+export default ReactReconciler({
   supportsHydration: false,
   supportsPersistence: false,
   supportsMutation: true,
@@ -74,13 +74,4 @@ const renderer = ReactReconciler({
   clearTimeout: clearTimeout,
   noTimeout: noop,
   now: Date.now,
-
 })
-
-
-export default {
-  render(app: React.ReactNode, canvas: HTMLCanvasElement) {
-    const c = renderer.createContainer(new Container(canvas), false, false)
-    return renderer.updateContainer(app, c, null, noop)
-  }
-}

@@ -1,18 +1,15 @@
 import React from 'react';
-import ReCanvas from './lib'
+import ReCanvas from './lib/render'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import createCanvas from './createCanvas'
 
 import './index.css';
 
-const canvas = document.createElement('canvas')
-canvas.width = 500
-canvas.height = 500
-document.body.appendChild(canvas)
 
 ReCanvas.render(
   React.createElement(App),
-  canvas
+  createCanvas()
 )
 
 // If you want your app to work offline and load faster, you can change
