@@ -34,9 +34,6 @@ function applyYogaStyle(yoga: any, style: any) {
   AVAILABLE.STYLE.forEach(key => {
     const value = style[key];
     value && yoga[set(key)](value);
-    if (key === 'justifyContent') {
-      (yoga as Yoga.YogaNode).setJustifyContent(Yoga.JUSTIFY_CENTER)
-    }
   });
   AVAILABLE.EDGE.forEach(key => {
     AVAILABLE.DIRECTION.forEach(direction => {
@@ -98,3 +95,7 @@ export function getStyleAndFrameFromNode(node: Node) {
     : new Frame()
   return [style, frame]
 }
+
+export function clamp(n: number, min: number, max: number) {
+  return Math.min(Math.max(n, min), max);
+};

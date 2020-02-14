@@ -1,28 +1,11 @@
 import React from 'react';
-// import logo from './logo.svg';
-import test from './lib'
-import './App.css';
 import Text from './lib/Text';
 import View from './lib/View';
-// import { Node } from './lib/Node';
+import Image from './lib/Image';
 
 
 
-
-class App extends React.Component<any> {
-  canvas = React.createRef<HTMLCanvasElement>()
-  componentDidMount() {
-    test.render(
-      React.createElement(Test),
-      this.canvas.current!
-    )
-  }
-  render() {
-    return <canvas ref={this.canvas} width={500} height={500} />
-  }
-}
-
-function Test() {
+function App() {
   const [text, setText] = React.useState('huang')
   React.useEffect(() => {
     setTimeout(() => {
@@ -35,6 +18,7 @@ function Test() {
         {text}
       </Text>
       <View backgroundColor={'red'} width={100} height={100} />
+      <Image src="http://b-ssl.duitang.com/uploads/item/201410/09/20141009224754_AswrQ.jpeg" width={200} height={100} />
     </View>
   )
 }
