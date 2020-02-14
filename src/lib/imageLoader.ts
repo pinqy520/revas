@@ -1,5 +1,3 @@
-
-
 class CachedImage {
   readonly image = new Image()
   private readonly targets = new Set<Function>()

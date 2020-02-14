@@ -1,8 +1,6 @@
 import Yoga from 'yoga-layout-prebuilt'
 import { Node } from './Node'
 
-export function noop() { }
-
 const AVAILABLE = {
   STYLE: [
     'width',
@@ -46,13 +44,6 @@ function applyYogaStyle(yoga: any, style: any) {
   yoga.setDisplay(Yoga.DISPLAY_FLEX);
 }
 
-export function appendChild(parent: Node, child: Node | string) {
-  if (child instanceof Node) {
-    parent.children.push(child)
-    child.parent = parent
-  }
-}
-
 function _updateLayout(node: Node): [Function, Yoga.YogaNode] {
   const yoga = Yoga.Node.create()
   const children: Function[] = []
@@ -78,24 +69,3 @@ export function updateLayout(root: Node) {
   return _updateLayout(root)[0]
 }
 
-export class Frame {
-  constructor(
-    public x = 0,
-    public y = 0,
-    public width = 0,
-    public height = 0
-  ) { }
-}
-
-
-export function getStyleAndFrameFromNode(node: Node) {
-  const { props: style, layout } = node
-  const frame = layout
-    ? new Frame(layout.left, layout.top, layout.width, layout.height)
-    : new Frame()
-  return [style, frame]
-}
-
-export function clamp(n: number, min: number, max: number) {
-  return Math.min(Math.max(n, min), max);
-};

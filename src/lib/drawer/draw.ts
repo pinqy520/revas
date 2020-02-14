@@ -1,5 +1,5 @@
-import { Node } from "./Node";
-import { getStyleAndFrameFromNode } from "./utils";
+import { Node } from "../core/Node";
+import { getStyleAndFrameFromNode } from "../core/utils";
 
 /**
  * Draw a RenderLayer instance to a <canvas> context.

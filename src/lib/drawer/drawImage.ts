@@ -1,6 +1,6 @@
-import { Node } from './Node'
-import * as imageLoader from './imageLoader'
-import { getStyleAndFrameFromNode, clamp } from './utils'
+import { Node } from '../core/Node'
+import * as imageLoader from '../imageLoader'
+import { getStyleAndFrameFromNode, clamp } from '../core/utils'
 
 export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
   const image = imageLoader.get(node.props.src)

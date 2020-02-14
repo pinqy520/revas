@@ -1,7 +1,8 @@
 import ReactReconciler from 'react-reconciler';
-import { Node, Container } from './Node'
-import { appendChild, noop, updateLayout } from './utils'
-import { drawRenderLayer } from './draw';
+import { Node, Container } from './core/Node'
+import { appendChild, noop } from './core/utils'
+import { drawRenderLayer } from './drawer/draw';
+import { updateLayout } from './core/layout';
 
 const renderer = ReactReconciler({
   supportsHydration: false,

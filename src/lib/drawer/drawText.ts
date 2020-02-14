@@ -1,6 +1,5 @@
-import SafeString from "./string"
-import { Node } from "./Node"
-import { getStyleAndFrameFromNode } from "./utils"
+import { Node } from "../core/Node"
+import { getStyleAndFrameFromNode, getChars } from "../core/utils"
 
 const DEFAULT_TEXTSTYLE = {
   fontWeight: "normal",
@@ -23,7 +22,7 @@ export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
   if (style.textShadow) {
     // TODO: Text Shadow
   }
-  const chars = new SafeString(content).getChars()
+  const chars = getChars(content)
   const lines: { width: number, text: string }[] = []
   let width = 0
   let temp = ''

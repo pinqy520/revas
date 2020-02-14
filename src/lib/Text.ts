@@ -1,5 +1,5 @@
 import * as React from 'react'
-import drawText from './drawText'
+import drawText from './drawer/drawText'
 
 
 export default class Text extends React.Component<any> {
