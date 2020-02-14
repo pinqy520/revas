@@ -1,5 +1,5 @@
 import renderer from './core/reconciler'
-import { noop } from './core/utils'
+import { noop } from './common/utils'
 import { Container } from './core/Node'
 
 

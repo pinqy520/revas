@@ -13,6 +13,7 @@ const ALIGN_ENUM = {
 
 const AVAILABLE = {
   VALUE: [
+    'flex',
     'width',
     'height',
     'minWidth',

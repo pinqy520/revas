@@ -1,9 +1,7 @@
 import * as React from 'react'
+import { BaseProps } from '../core/Node'
 
-interface ViewProperties {
 
-}
-
-export default function View(props: ViewProperties & any) {
+export default function View(props: BaseProps) {
   return React.createElement('View', props)
 }

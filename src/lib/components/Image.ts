@@ -1,8 +1,13 @@
 import * as React from 'react'
 import * as imageLoader from '../common/imageLoader'
 import drawImage from '../common/drawImage'
+import { BaseProps } from '../core/Node'
 
-export default class ImageView extends React.Component<any> {
+export type ImageViewProps = {
+  src: string
+} & BaseProps
+
+export default class ImageView extends React.Component<ImageViewProps> {
   state = {
     ready: false
   }

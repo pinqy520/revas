@@ -1,4 +1,4 @@
-import { Node } from './Node'
+import { Node } from '../core/Node'
 
 export function noop() { }
 
@@ -19,9 +19,8 @@ export class Frame {
   ) { }
 }
 
-
 export function getStyleAndFrameFromNode(node: Node) {
-  const { props: style, layout } = node
+  const { props: { style = {} }, layout } = node
   const frame = layout
     ? new Frame(layout.left, layout.top, layout.width, layout.height)
     : new Frame()

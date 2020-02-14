@@ -1,5 +1,5 @@
 import { Node } from "../core/Node"
-import { getStyleAndFrameFromNode, getChars } from "../core/utils"
+import { getStyleAndFrameFromNode, getChars } from "./utils"
 
 const DEFAULT_TEXTSTYLE = {
   fontWeight: "normal",

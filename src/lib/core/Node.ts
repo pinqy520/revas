@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 export interface Layout {
   readonly left: number;
   readonly right: number;
@@ -26,4 +28,9 @@ export class Container extends Node {
       height: canvas.height,
     })
   }
+}
+
+export interface BaseProps {
+  children?: ReactNode,
+  style?: any
 }

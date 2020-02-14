@@ -1,7 +1,7 @@
 export default function () {
   const canvas = document.createElement('canvas')
-  canvas.width = 500
-  canvas.height = 500
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
   document.body.appendChild(canvas)
   return canvas
 

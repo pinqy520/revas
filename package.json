@@ -6,6 +6,7 @@
     "@types/react-reconciler": "^0.18.0",
     "@types/yoga-layout": "^1.9.1",
     "react-reconciler": "^0.24.0",
+    "tslib": "^1.10.0",
     "yoga-layout-prebuilt": "^1.9.3"
   },
   "peerDependencies": {

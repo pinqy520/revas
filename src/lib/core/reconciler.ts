@@ -1,7 +1,7 @@
 import ReactReconciler from 'react-reconciler';
 import { Node, Container } from './Node'
-import { appendChild, noop } from './utils'
-import { drawRenderLayer } from '../common/draw';
+import { appendChild, noop } from '../common/utils'
+import { drawRenderLayer } from './draw';
 import { updateLayout } from './layout';
 
 export default ReactReconciler({
