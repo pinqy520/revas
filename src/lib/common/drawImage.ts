@@ -1,11 +1,12 @@
 import { Node } from '../core/Node'
 import * as imageLoader from './imageLoader'
-import { getStyleAndFrameFromNode, clamp } from './utils'
+import { clamp, getStyleFromNode, getFrameFromNode } from './utils'
 
 export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
   const image = imageLoader.get(node.props.src)
   if (image.naturalHeight === 0) return
-  const [style, frame] = getStyleAndFrameFromNode(node)
+  const style = getStyleFromNode(node)
+  const frame = getFrameFromNode(node)
 
   const { width, height, x, y } = frame
 

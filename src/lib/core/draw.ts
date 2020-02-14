@@ -1,5 +1,5 @@
 import { Node } from "./Node";
-import { getStyleAndFrameFromNode } from "../common/utils";
+import { getStyleFromNode, getFrameFromNode } from "../common/utils";
 
 /**
  * Draw a RenderLayer instance to a <canvas> context.
@@ -8,7 +8,7 @@ import { getStyleAndFrameFromNode } from "../common/utils";
  * @param {Node} node
  */
 export function drawRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
-  const [style] = getStyleAndFrameFromNode(node)
+  const style = getStyleFromNode(node)
 
   // Performance: avoid drawing hidden layers.
   if (typeof style.alpha === 'number' && style.alpha <= 0) {
@@ -59,7 +59,8 @@ export function drawRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
 }
 
 function drawBaseRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
-  const [style, frame] = getStyleAndFrameFromNode(node)
+  const style = getStyleFromNode(node)
+  const frame = getFrameFromNode(node)
 
   // Border radius:
   if (style.borderRadius) {
@@ -110,7 +111,7 @@ function drawBaseRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
 }
 
 function sortByZIndexAscending(a: Node, b: Node) {
-  const [styleA] = getStyleAndFrameFromNode(a)
-  const [styleB] = getStyleAndFrameFromNode(b)
+  const styleA = getStyleFromNode(a)
+  const styleB = getStyleFromNode(b)
   return (styleA.zIndex || 0) - (styleB.zIndex || 0);
 }

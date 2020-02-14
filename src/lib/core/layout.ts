@@ -1,31 +1,32 @@
 import Yoga from 'yoga-layout-prebuilt'
-import { Node } from './Node'
+import { Node, Frame } from './Node'
 import apply from './style'
-
-const EMPTY = {}
+import { getStyleFromNode } from '../common/utils'
 
 function _updateLayout(node: Node): [Function, Yoga.YogaNode] {
   const yoga = Yoga.Node.create()
   const children: Function[] = []
-  apply(yoga, node.props.style || EMPTY)
-  yoga.setDisplay(Yoga.DISPLAY_FLEX);
+  apply(yoga, getStyleFromNode(node))
   for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i]
     const [f, y] = _updateLayout(child)
     const index = children.push(f)
     yoga.insertChild(y, index - 1)
   }
-  function process() {
-    if (!node.parent) { // is root container
-      yoga.calculateLayout(node.props.width, node.props.height)
+  function process(x = 0, y = 0) {
+    const { left, top, width, height } = yoga.getComputedLayout()
+    node.frame = new Frame(x + left, y + top, width, height)
+    for (let i = 0; i < children.length; i++) {
+      children[i](node.frame.x, node.frame.y)
     }
-    node.layout = yoga.getComputedLayout()
-    children.forEach(c => c())
+    yoga.free()
   }
   return [process, yoga]
 }
 
 export function updateLayout(root: Node) {
-  return _updateLayout(root)[0]
+  const [process, yoga] = _updateLayout(root)
+  yoga.calculateLayout(root.props.width, root.props.height, Yoga.DIRECTION_LTR)
+  return process
 }
 

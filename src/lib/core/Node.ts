@@ -1,33 +1,23 @@
 import { ReactNode } from 'react'
 
-export interface Layout {
-  readonly left: number;
-  readonly right: number;
-  readonly top: number;
-  readonly bottom: number;
-  readonly width: number;
-  readonly height: number;
+
+export class Frame {
+  constructor(
+    public x = 0,
+    public y = 0,
+    public width = 0,
+    public height = 0
+  ) { }
 }
 
 export class Node {
   public readonly children: Node[] = []
-  public layout?: Layout
+  public frame = new Frame()
   public parent?: Node
   constructor(
     public readonly type: string,
-    public props: any,
+    public props: BaseProps & any,
   ) { }
-}
-
-export class Container extends Node {
-  constructor(
-    public canvas: HTMLCanvasElement
-  ) {
-    super('root', {
-      width: canvas.width,
-      height: canvas.height,
-    })
-  }
 }
 
 export interface BaseProps {

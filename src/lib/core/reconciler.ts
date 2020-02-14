@@ -1,8 +1,7 @@
 import ReactReconciler from 'react-reconciler';
-import { Node, Container } from './Node'
+import { Node } from './Node'
 import { appendChild, noop } from '../common/utils'
-import { drawRenderLayer } from './draw';
-import { updateLayout } from './layout';
+import { Container } from './Container';
 
 export default ReactReconciler({
   supportsHydration: false,
@@ -42,12 +41,7 @@ export default ReactReconciler({
   prepareForCommit: noop,
 
   resetAfterCommit(container: Container) {
-    const start = performance.now()
-    updateLayout(container)()
-    const ctx = container.canvas.getContext('2d')!
-    ctx.clearRect(0, 0, container.props.width, container.props.height);
-    drawRenderLayer(ctx, container)
-    console.log(performance.now() - start, container)
+    container.draw()
   },
 
   resetTextContent: noop,
@@ -64,14 +58,14 @@ export default ReactReconciler({
     return false
   },
 
-  shouldDeprioritizeSubtree: () => true,
+  shouldDeprioritizeSubtree: () => false,
 
-  isPrimaryRenderer: false,
+  isPrimaryRenderer: true,
 
   scheduleDeferredCallback: noop,
   cancelDeferredCallback: noop,
   setTimeout: setTimeout,
   clearTimeout: clearTimeout,
-  noTimeout: noop,
+  noTimeout: -1,
   now: Date.now,
 })

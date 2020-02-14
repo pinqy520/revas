@@ -93,8 +93,6 @@ const AVAILABLE = {
   ],
   FONT: [],
   OTHER: ['overflow', 'zIndex'],
-
-  DIRECTION: ['top', 'right', 'bottom', 'left']
 }
 
 function funcName(key: string) {
@@ -123,7 +121,7 @@ function setValue(yoga: Yoga.YogaNode, key: string, value: string | number) {
 
 
 function setEnum(yoga: Yoga.YogaNode, key: string, enums: any, value: string) {
-  if (enums[value]) {
+  if (typeof enums[value] !== 'undefined') {
     checkAndRun(yoga, funcName(key), enums[value])
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
