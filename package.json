@@ -42,7 +42,8 @@
     "start": "react-scripts start",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "prepublish": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
