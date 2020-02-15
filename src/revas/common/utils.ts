@@ -4,11 +4,34 @@ export function noop() { }
 export const EMPTY_OBJECT = Object.freeze({})
 export const EMPTY_ARRAY = Object.freeze([])
 
-export function appendChild(parent: Node, child: Node | string) {
-  if (child instanceof Node) {
-    parent.children.push(child)
-    child.parent = parent
+export function appendChild(parent: Node, child: Node) {
+  const index = parent.children.indexOf(child);
+  if (index >= 0) {
+    parent.children.splice(index, 1);
   }
+  parent.children.push(child);
+  child.parent = parent
+}
+
+export function removeChild(parent: Node, child: Node) {
+  const index = parent.children.indexOf(child);
+  if (index >= 0) {
+    parent.children.splice(index, 1);
+  }
+  child.parent = void 0
+}
+
+export function insertBefore(parent: Node, child: Node, before: Node) {
+  const index = parent.children.indexOf(child);
+  if (index >= 0) {
+    parent.children.splice(index, 1);
+    const beforeIndex = parent.children.indexOf(before);
+    parent.children.splice(beforeIndex, 0, child);
+  } else {
+    const beforeIndex = parent.children.indexOf(before);
+    parent.children.splice(beforeIndex, 0, child);
+  }
+  child.parent = parent
 }
 
 export function getStyleFromNode(node: Node) {

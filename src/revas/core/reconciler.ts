@@ -1,6 +1,6 @@
 import ReactReconciler from 'react-reconciler';
 import { Node } from './Node'
-import { appendChild, noop } from '../common/utils'
+import { appendChild, noop, removeChild, insertBefore } from '../common/utils'
 import { Container } from './Container';
 
 export default ReactReconciler({
@@ -13,13 +13,17 @@ export default ReactReconciler({
     return new Node(type, props);
   },
 
-  createTextInstance(text: string) {
-    return text;
+  createTextInstance() {
+    throw new Error('Revas: string cannot be child out of <Text/>')
   },
 
   appendInitialChild: appendChild,
   appendChild: appendChild,
   appendChildToContainer: appendChild,
+  removeChild: removeChild,
+  removeChildFromContainer: removeChild,
+  insertBefore: insertBefore,
+  insertInContainerBefore: insertBefore,
 
   finalizeInitialChildren() {
     return false;
