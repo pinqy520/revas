@@ -19,23 +19,14 @@ function getTextFromNode(node: Node) {
   return ''
 }
 
-export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
-  const frame = getFrameFromNode(node)
-  if (frame.width === 0) return
-  const content = getTextFromNode(node)
-  if (!content) return
-  const _style = getStyleFromNode(node)
-  const style = { ...DEFAULT_TEXTSTYLE, ..._style }
+function getTextStyleFromNode(node: Node) {
+  const style = { ...DEFAULT_TEXTSTYLE, ...getStyleFromNode(node) }
   style.lineHeight = style.lineHeight || (style.fontSize * 1.1)
-  ctx.save()
-  // Apply Styles
-  ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${style.fontFamily}`
-  ctx.fillStyle = style.color
-  if (style.backgroundColor) {
-    ctx.shadowBlur = 0
-    ctx.shadowOffsetX = 0
-    ctx.shadowOffsetY = 0
-  }
+  return style
+}
+
+// TODO: numberOfLines
+function measureLines(ctx: CanvasRenderingContext2D, content: string, width: number) {
   const chars = getChars(content)
   const lines: { width: number, text: string }[] = []
   let _width = 0
@@ -48,7 +39,7 @@ export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
       _text = ''
     } else {
       const charWidth = ctx.measureText(char).width
-      if (charWidth + _width > frame.width) {
+      if (charWidth + _width > width) {
         lines.push({ width: _width, text: _text })
         _width = charWidth
         _text = char
@@ -59,6 +50,28 @@ export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
     }
   }
   lines.push({ width: _width, text: _text })
+  return lines
+}
+
+export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
+  const frame = getFrameFromNode(node)
+  if (frame.width === 0) return
+  const content = getTextFromNode(node)
+  if (!content) return
+  const style = getTextStyleFromNode(node)
+  if (style.opacity === 0 || style.color === 'transparent') return
+
+  // Apply Styles
+  ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${style.fontFamily}`
+  ctx.fillStyle = style.color
+  // TODO: maybe remove when use shadowView structure
+  if (style.backgroundColor) {
+    ctx.shadowBlur = 0
+    ctx.shadowOffsetX = 0
+    ctx.shadowOffsetY = 0
+  }
+
+  const lines = measureLines(ctx, content, frame.width)
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
@@ -73,5 +86,4 @@ export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
     }
     ctx.fillText(line.text, x, style.lineHeight * (i + 1) + frame.y);
   }
-  ctx.restore()
 }
