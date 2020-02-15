@@ -72,18 +72,20 @@ function drawBaseRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
     ctx.arcTo(frame.x, frame.y, frame.x + frame.width, frame.y, style.borderRadius);
     ctx.closePath();
 
-    // Create a clipping path when drawing an image or using border radius.
-    if (node.type === 'Image') {
-      ctx.clip();
-    }
-
     // Border with border radius:
     if (style.borderColor) {
       ctx.lineWidth = style.borderWidth || 1;
       ctx.strokeStyle = style.borderColor;
       ctx.stroke();
     }
+  } else {
+    ctx.rect(frame.x, frame.y, frame.width, frame.height)
   }
+
+  if (style.overflow === 'hidden') {
+    ctx.clip()
+  }
+
 
   // Border color (no border radius):
   if (style.borderColor && !style.borderRadius) {
