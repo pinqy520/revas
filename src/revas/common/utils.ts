@@ -39,6 +39,13 @@ export function getFrameFromNode(node: Node) {
   return frame
 }
 
+export function sortByZIndexAscending(a: Node, b: Node) {
+  const styleA = getStyleFromNode(a)
+  const styleB = getStyleFromNode(b)
+  return (styleA.zIndex || 0) - (styleB.zIndex || 0);
+}
+
+
 export function clamp(n: number, min: number, max: number) {
   return Math.min(Math.max(n, min), max);
 };

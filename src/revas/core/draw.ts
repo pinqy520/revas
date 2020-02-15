@@ -1,5 +1,5 @@
 import { Node } from "./Node";
-import { getStyleFromNode, getFrameFromNode } from "../common/utils";
+import { getStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "../common/utils";
 
 /**
  * Draw a RenderLayer instance to a <canvas> context.
@@ -11,22 +11,22 @@ export function drawRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
   const style = getStyleFromNode(node)
 
   // Performance: avoid drawing hidden layers.
-  if (typeof style.alpha === 'number' && style.alpha <= 0) {
+  if (typeof style.opacity === 'number' && style.opacity <= 0) {
     return;
   }
 
   // Establish drawing context for certain properties:
-  // - alpha
+  // - opacity
   // - translate
-  const saveContext = (style.alpha !== null && style.alpha < 1) ||
+  const saveContext = (style.opacity !== null && style.opacity < 1) ||
     (style.translateX || style.translateY);
 
   if (saveContext) {
     ctx.save();
 
-    // Alpha:
-    if (style.alpha !== null && style.alpha < 1) {
-      ctx.globalAlpha = style.alpha;
+    // Opacity:
+    if (style.opacity !== null && style.opacity < 1) {
+      ctx.globalAlpha = style.opacity;
     }
 
     // Translation:
@@ -108,10 +108,4 @@ function drawBaseRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
       ctx.fillRect(frame.x, frame.y, frame.width, frame.height);
     }
   }
-}
-
-function sortByZIndexAscending(a: Node, b: Node) {
-  const styleA = getStyleFromNode(a)
-  const styleB = getStyleFromNode(b)
-  return (styleA.zIndex || 0) - (styleB.zIndex || 0);
 }

@@ -20,9 +20,11 @@ function getTextFromNode(node: Node) {
 }
 
 export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
-  const _style = getStyleFromNode(node)
   const frame = getFrameFromNode(node)
+  if (frame.width === 0) return
   const content = getTextFromNode(node)
+  if (!content) return
+  const _style = getStyleFromNode(node)
   const style = { ...DEFAULT_TEXTSTYLE, ..._style }
   style.lineHeight = style.lineHeight || (style.fontSize * 1.1)
   ctx.save()

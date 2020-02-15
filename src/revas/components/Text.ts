@@ -14,3 +14,6 @@ export default class Text extends React.Component<TextProps> {
     })
   }
 }
+
+// TODO: Auto height and padding support
+// TODO: nested text support
