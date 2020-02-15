@@ -1,10 +1,7 @@
 import React from 'react';
 import { Text, View, Image } from '../revas';
 
-
-
-
-function App() {
+export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.card} >
@@ -49,6 +46,3 @@ const styles = {
   },
 
 }
-
-
-export default App;
