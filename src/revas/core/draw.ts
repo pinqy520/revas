@@ -1,13 +1,13 @@
-import { Node } from "./Node";
+import { Node, Frame } from "./Node";
 import { getStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "../common/utils";
 
 /**
- * Draw a RenderLayer instance to a <canvas> context.
+ * Draw a Node instance to a canvas context.
  *
  * @param {CanvasRenderingContext2d} ctx
  * @param {Node} node
  */
-export function drawRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
+export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
   const style = getStyleFromNode(node)
 
   // Performance: avoid drawing hidden layers.
@@ -38,7 +38,7 @@ export function drawRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
 
   // Draw default properties, such as background color.
   ctx.save();
-  drawBaseRenderLayer(ctx, node);
+  drawBase(ctx, getFrameFromNode(node), style);
 
   // Draw custom properties if needed.
   node.props.customDrawer && node.props.customDrawer(ctx, node);
@@ -49,7 +49,7 @@ export function drawRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
     .slice()
     .sort(sortByZIndexAscending)
     .forEach(child => {
-      drawRenderLayer(ctx, child);
+      drawNode(ctx, child);
     });
 
   // Pop the context state if we established a new drawing context.
@@ -58,9 +58,7 @@ export function drawRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
   }
 }
 
-function drawBaseRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
-  const style = getStyleFromNode(node)
-  const frame = getFrameFromNode(node)
+function drawBase(ctx: CanvasRenderingContext2D, frame: Frame, style: any) {
 
   // Border radius:
   if (style.borderRadius) {
@@ -85,7 +83,6 @@ function drawBaseRenderLayer(ctx: CanvasRenderingContext2D, node: Node) {
   if (style.overflow === 'hidden') {
     ctx.clip()
   }
-
 
   // Border color (no border radius):
   if (style.borderColor && !style.borderRadius) {
