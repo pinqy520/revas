@@ -4,12 +4,11 @@ import { clamp, getStyleFromNode, getFrameFromNode } from './utils'
 
 export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
   const image = imageLoader.get(node.props.src)
-  if (image.naturalHeight === 0) return
+  if (image.naturalHeight <= 0) return
   const frame = getFrameFromNode(node)
   const { width, height, x, y } = frame
-  if (width === 0 || height === 0) return
+  if (width <= 0 || height <= 0) return
   const style = getStyleFromNode(node)
-  if (style.opacity === 0) return
 
   const actualSize = {
     width: image.naturalWidth,

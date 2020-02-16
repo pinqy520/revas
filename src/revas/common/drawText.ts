@@ -59,7 +59,7 @@ export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
   const content = getTextFromNode(node)
   if (!content) return
   const style = getTextStyleFromNode(node)
-  if (style.opacity === 0 || style.color === 'transparent') return
+  if (style.color === 'transparent') return
 
   // Apply Styles
   ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${style.fontFamily}`
