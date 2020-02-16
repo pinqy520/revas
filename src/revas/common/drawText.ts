@@ -2,6 +2,7 @@ import { Node } from "../core/Node"
 import { getChars, getStyleFromNode, getFrameFromNode } from "./utils"
 
 const DEFAULT_TEXTSTYLE = {
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
   fontWeight: 'normal',
   fontSize: 14,
   color: '#000',

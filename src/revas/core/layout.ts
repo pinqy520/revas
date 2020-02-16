@@ -16,6 +16,7 @@ function _updateLayout(node: Node): [Function, Yoga.YogaNode] {
   function process(x = 0, y = 0) {
     const { left, top, width, height } = yoga.getComputedLayout()
     node.frame = new Frame(x + left, y + top, width, height)
+    node.props.onLayout && node.props.onLayout(node.frame)
     for (let i = 0; i < children.length; i++) {
       children[i](node.frame.x, node.frame.y)
     }

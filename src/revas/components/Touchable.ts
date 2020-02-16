@@ -16,23 +16,22 @@ export default class Touchable extends React.Component<TouchableProps> {
   }
 
   private _start?: RevasTouch
+  private _tid = 0
 
   private _onTouchStart = (e: RevasTouchEvent) => {
-    if (e.touches[0]) {
-      this._start = e.touches[0]
-    }
+    this._tid = +Object.keys(e.touches)[0]
+    this._start = e.touches[this._tid]
     this.setState({ touching: true })
   }
 
   private _onTouchEnd = (e: RevasTouchEvent) => {
-    if (this._start && e.touches[0]) {
-      if (Math.abs(this._start.x - e.touches[0].x) < 3
-        && Math.abs(this._start.y - e.touches[0].y) < 3) {
+    if (this._start && e.touches[this._tid]) {
+      if (Math.abs(this._start.x - e.touches[this._tid].x) < 3
+        && Math.abs(this._start.y - e.touches[this._tid].y) < 3) {
         this.props.onPress && this.props.onPress()
 
       }
     }
-    console.log(e)
     this.setState({ touching: false })
   }
 

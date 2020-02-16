@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { RawViewProps } from '../core/Node'
+import { NodeProps } from '../core/Node'
 
-export default function View(props: RawViewProps) {
+export default function View(props: NodeProps) {
   return React.createElement('View', props)
 }

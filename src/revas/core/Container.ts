@@ -13,7 +13,7 @@ function createRevasTouchEvent(e: TouchEvent): RevasTouchEvent {
       // TODO: assume canvas fully the screen
     }
   })
-  return { type, touches }
+  return { type, touches, timestamp: e.timeStamp || Date.now() }
 }
 
 export class Container extends Node {
@@ -52,12 +52,12 @@ export class Container extends Node {
       return;
     }
     this._ready = false;
-    const start = performance.now()
+    // const start = performance.now()
     updateLayout(this)()
     const ctx = this.canvas.getContext('2d')!
     ctx.clearRect(0, 0, this.props.width, this.props.height);
     drawNode(ctx, this)
-    console.log('draw', (performance.now() - start).toFixed(2) + 'ms')
+    // console.log('draw', (performance.now() - start).toFixed(2) + 'ms', this)
     requestAnimationFrame(this.ready);
   }
 

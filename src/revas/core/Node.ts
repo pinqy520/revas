@@ -16,7 +16,7 @@ export class Node {
   public parent?: Node
   constructor(
     public readonly type: string,
-    public props: BaseProps & any,
+    public props: NodeProps & any,
   ) { }
 }
 
@@ -31,6 +31,7 @@ export type RevasTouchType = 'touchstart' | 'touchmove' | 'touchend'
 export interface RevasTouchEvent {
   type: RevasTouchType
   touches: { [key: number]: RevasTouch }
+  timestamp: number
 }
 
 export type RevasTouchEventListener = (event: RevasTouchEvent) => any
@@ -40,8 +41,9 @@ export interface BaseProps {
   style?: any,
 }
 
-export interface RawViewProps extends BaseProps {
+export interface NodeProps extends BaseProps {
   onTouchStart?: RevasTouchEventListener
   onTouchMove?: RevasTouchEventListener
   onTouchEnd?: RevasTouchEventListener
+  onLayout?: (frame: Frame) => any
 }

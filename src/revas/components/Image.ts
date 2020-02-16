@@ -1,11 +1,11 @@
 import * as React from 'react'
 import * as imageLoader from '../common/imageLoader'
 import drawImage from '../common/drawImage'
-import { RawViewProps } from '../core/Node'
+import { NodeProps } from '../core/Node'
 
 export type ImageViewProps = {
   src: string
-} & RawViewProps
+} & NodeProps
 
 export default class ImageView extends React.Component<ImageViewProps> {
   state = {

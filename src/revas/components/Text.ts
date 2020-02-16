@@ -1,8 +1,8 @@
 import * as React from 'react'
 import drawText from '../common/drawText'
-import { RawViewProps } from '../core/Node'
+import { NodeProps } from '../core/Node'
 
-export type TextProps = {} & RawViewProps
+export type TextProps = {} & NodeProps
 
 export default class Text extends React.Component<TextProps> {
   render() {
