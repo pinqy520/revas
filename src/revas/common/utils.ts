@@ -45,6 +45,10 @@ export function sortByZIndexAscending(a: Node, b: Node) {
   return (styleA.zIndex || 0) - (styleB.zIndex || 0);
 }
 
+export function sortByZIndexDescending(a: Node, b: Node) {
+  return -sortByZIndexAscending(a, b)
+}
+
 
 export function clamp(n: number, min: number, max: number) {
   return Math.min(Math.max(n, min), max);

@@ -2,11 +2,11 @@ import { Node } from "../core/Node"
 import { getChars, getStyleFromNode, getFrameFromNode } from "./utils"
 
 const DEFAULT_TEXTSTYLE = {
-  fontWeight: "normal",
-  fontSize: 24,
-  color: "#000",
-  fontStyle: "normal",
-  textBaseline: "alphabetic",
+  fontWeight: 'normal',
+  fontSize: 14,
+  color: '#000',
+  fontStyle: 'normal',
+  textBaseline: 'middle',
 }
 
 function getTextFromNode(node: Node) {
@@ -64,6 +64,7 @@ export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
   // Apply Styles
   ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${style.fontFamily}`
   ctx.fillStyle = style.color
+  ctx.textBaseline = style.textBaseline
   // TODO: maybe remove when use shadowView structure
   if (style.backgroundColor) {
     ctx.shadowBlur = 0
@@ -84,6 +85,6 @@ export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
         x = x + frame.width - line.width;
         break;
     }
-    ctx.fillText(line.text, x, style.lineHeight * (i + 1) + frame.y);
+    ctx.fillText(line.text, x, style.lineHeight * (i + 0.5) + frame.y);
   }
 }

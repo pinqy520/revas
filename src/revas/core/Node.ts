@@ -20,7 +20,28 @@ export class Node {
   ) { }
 }
 
+export interface RevasTouch {
+  identifier: number,
+  x: number,
+  y: number,
+}
+
+export type RevasTouchType = 'touchstart' | 'touchmove' | 'touchend'
+
+export interface RevasTouchEvent {
+  type: RevasTouchType
+  touches: { [key: number]: RevasTouch }
+}
+
+export type RevasTouchEventListener = (event: RevasTouchEvent) => any
+
 export interface BaseProps {
   children?: ReactNode,
-  style?: any
+  style?: any,
+}
+
+export interface RawViewProps extends BaseProps {
+  onTouchStart?: RevasTouchEventListener
+  onTouchMove?: RevasTouchEventListener
+  onTouchEnd?: RevasTouchEventListener
 }

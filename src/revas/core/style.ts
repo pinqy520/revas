@@ -113,7 +113,7 @@ function setValue(yoga: Yoga.YogaNode, key: string, value: string | number) {
   } else if (value === 'auto') {
     checkAndRun(yoga, funcName(key) + 'Auto')
   } else if (value.endsWith('%')) {
-    checkAndRun(yoga, funcName(key) + 'Percent', value)
+    checkAndRun(yoga, funcName(key) + 'Percent', +value.slice(0, -1))
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
   }
@@ -134,7 +134,7 @@ function setEdge(yoga: Yoga.YogaNode, key: string, edge: number, value: string |
   } else if (value === 'auto') {
     checkAndRun(yoga, funcName(key) + 'Auto', edge)
   } else if (value.endsWith('%')) {
-    checkAndRun(yoga, funcName(key) + 'Percent', edge, value)
+    checkAndRun(yoga, funcName(key) + 'Percent', edge, +value.slice(0, -1))
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
   }
