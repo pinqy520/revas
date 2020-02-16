@@ -1,6 +1,6 @@
 import { Node } from './Node'
 import { updateLayout } from './layout'
-import { drawRenderLayer } from './draw'
+import { drawNode } from './draw'
 
 export class Container extends Node {
   private _ready = true
@@ -25,7 +25,7 @@ export class Container extends Node {
     updateLayout(this)()
     const ctx = this.canvas.getContext('2d')!
     ctx.clearRect(0, 0, this.props.width, this.props.height);
-    drawRenderLayer(ctx, this)
+    drawNode(ctx, this)
     console.log('draw', (performance.now() - start).toFixed(2) + 'ms')
     requestAnimationFrame(this.ready);
   }
