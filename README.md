@@ -64,6 +64,22 @@ render(
 <Image style={styles.text} src="https://some.img/url.jpg" />
 ```
 
+## Touchable
+
+```jsx
+<Touchable style={styles.btn} onPress={() => alert('Enjoy!~🎉')}>
+  <Text style={styles.btnText}>Go</Text>
+</Touchable>
+```
+
+## ScrollView
+
+```jsx
+<ScrollView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+  {colors.map((c, i) => <View key={i} style={{ height: 80, backgroundColor: c }} />)}
+</ScrollView>
+```
+
 ## Styles
 
 > Same as React Native, except：transform
