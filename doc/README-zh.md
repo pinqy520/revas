@@ -71,19 +71,20 @@ render(
 ## 效果截图
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/5719833/74564277-aa182d80-4fa9-11ea-801e-a1953d6e8af5.png" width=600 />
+  <img src="https://user-images.githubusercontent.com/5719833/74612290-052f5900-513f-11ea-94ff-17ea50b31a50.png" width=600 />
 </p>
 
 ## TODO
 
-- 交互事件机制
-- ScrollView、ListView、FlatList等滑动组件
-- Animated动画高效控制
-- Native Canvas API
-- Canvas通用化离屏渲染方案
-- WebAssembly & GPU
-- 官网 & 文档
-- Example & 最佳实践
+- [x] 交互事件机制
+- [x] ScrollView基础滑动组件
+- [ ] ListView、FlatList等高性能滑动组件
+- [ ] Animated动画高效控制
+- [ ] Native Canvas API
+- [ ] Canvas通用化离屏渲染方案
+- [ ] WebAssembly & GPU
+- [ ] 官网 & 文档
+- [ ] Example & 最佳实践
 
 > 期待你的加入，一起搞事情
 

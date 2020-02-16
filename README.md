@@ -71,6 +71,6 @@ render(
 ## Screenshot
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/5719833/74564277-aa182d80-4fa9-11ea-801e-a1953d6e8af5.png" width=600 />
+  <img src="https://user-images.githubusercontent.com/5719833/74612290-052f5900-513f-11ea-94ff-17ea50b31a50.png" width=600 />
 </p>
 
