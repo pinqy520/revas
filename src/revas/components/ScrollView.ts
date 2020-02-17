@@ -98,7 +98,7 @@ class Scroller {
     if (this._lastY < 0 && Math.abs(this._v) > 0.1) {
       const timestamp = Date.now()
       const duration = timestamp - this._lastTimestamp
-      this._v = ease(this._v, duration)
+      this._v = friction(this._v, duration)
       const moveY = this._v * duration
       this._lastTimestamp = timestamp
       this.change(moveY)
@@ -118,6 +118,6 @@ class Scroller {
   }
 }
 
-function ease(v: number, duration: number) {
+function friction(v: number, duration: number) {
   return v - (duration * 0.005 * v)
 }

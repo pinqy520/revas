@@ -26,5 +26,25 @@
 </head>
 
 <body> </body>
+<script src="//mrdoob.github.io/stats.js/build/stats.min.js"></script>
+<script>
+  const stats = new Stats();
+  stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+  stats.dom.style.margin = '5px'
+  stats.dom.style.boxShadow = 'rgba(0, 0, 0, 0.2) 0px 2px 4px'
+  document.body.appendChild(stats.dom);
+
+  function animate() {
+    stats.begin();
+
+    // monitored code goes here
+
+    stats.end();
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+
+</script>
 
 </html>
