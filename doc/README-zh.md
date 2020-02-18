@@ -80,6 +80,14 @@ render(
 </ScrollView>
 ```
 
+### LinearGradient
+
+```jsx
+<LinearGradient style={styles.decorator}
+  start={{x: 0, y, 0}} end={{x: 1, y, 0}} 
+  colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
+```
+
 ## 样式
 
 > 基本 React Native支持的，都支持了，除：transform

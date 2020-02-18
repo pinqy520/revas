@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Touchable, ScrollView } from '../revas';
+import { Text, View, Image, Touchable, ScrollView, LinearGradient } from '../revas';
 
 export default function App() {
   return (
@@ -10,6 +10,7 @@ export default function App() {
         <Text style={styles.text}>
           Revas让你可以用React和Flexible CSS，在Canvas上绘制高性能交互式界面～{'🎉'}
         </Text>
+        <LinearGradient style={styles.decorator} colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
         <Touchable style={styles.btn} onPress={() => alert('Enjoy!~🎉')}>
           <Text style={styles.btnText}>Go</Text>
         </Touchable>
@@ -53,8 +54,10 @@ const styles = {
     backgroundColor: '#fff',
     alignItems: 'center',
     zIndex: 1,
-    borderWidth: 1,
-    borderColor: '#00'
+  },
+  decorator: {
+    height: 4, borderRadius: 2,
+    width: 100, margin: 10
   },
   text: {
     fontSize: 14,
@@ -62,6 +65,7 @@ const styles = {
     textAlign: 'center',
     width: 280,
     padding: 10,
+    paddingBottom: 0
   },
   logo: {
     width: 200,

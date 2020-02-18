@@ -12,12 +12,23 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
   if (style.opacity !== null && style.opacity < 1) {
     ctx.globalAlpha = style.opacity;
   }
-
   // Translation:
   if (style.translateX || style.translateY) {
     ctx.translate(style.translateX || 0, style.translateY || 0);
-    // TODO: tranform: rotate scale...
   }
+  // Rotate && Scale
+  if (style.rotate || style.scaleX || style.scaleY || style.scale) {
+    // Origin Center
+    const originX = frame.x + frame.width / 2
+    const originY = frame.y + frame.height / 2
+    ctx.translate(originX, originY);
+    if (style.rotate)
+      ctx.rotate(style.rotate);
+    if (style.scaleX || style.scaleY || style.scale)
+      ctx.scale(style.scale || style.scaleX || 0, style.scale || style.scaleY || 0);
+    ctx.translate(-originX, -originY);
+  }
+
 
   // Draw Path
   const radius = style.borderRadius || 0

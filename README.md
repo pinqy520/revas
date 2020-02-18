@@ -134,6 +134,14 @@ ReactDOM.render(<App />, rootElement)
 </ScrollView>
 ```
 
+### LinearGradient
+
+```jsx
+<LinearGradient style={styles.decorator}
+  start={{x: 0, y, 0}} end={{x: 1, y, 0}} 
+  colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
+```
+
 ## Styles
 
 > Same as React Native, except：transform
@@ -143,3 +151,12 @@ ReactDOM.render(<App />, rootElement)
 <p align="center">
   <img src="https://user-images.githubusercontent.com/5719833/74612290-052f5900-513f-11ea-94ff-17ea50b31a50.png" width=600 />
 </p>
+
+## Try
+
+```bash
+$ git clone ...
+$ yarn           # install
+$ yarn start     # start a web server for development
+```
+
