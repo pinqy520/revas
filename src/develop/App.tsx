@@ -54,7 +54,7 @@ const styles = {
     alignItems: 'center',
     zIndex: 1,
     borderWidth: 1,
-    borderColor: '#00'
+    borderColor: '#000'
   },
   text: {
     fontSize: 14,
