@@ -1,5 +1,5 @@
 import { Node } from "./Node";
-import { getStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "../common/utils";
+import { getStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "./utils";
 
 export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
   const style = getStyleFromNode(node)

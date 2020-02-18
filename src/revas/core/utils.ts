@@ -1,4 +1,4 @@
-import { Node } from '../core/Node'
+import { Node } from './Node'
 
 export function noop() { }
 export const EMPTY_OBJECT = Object.freeze({})

@@ -1,5 +1,5 @@
 import { Node } from "../core/Node"
-import { getChars, getFrameFromNode, getWords } from "./utils"
+import { getChars, getFrameFromNode, getWords } from "../core/utils"
 
 const DEFAULT_TEXTSTYLE = {
   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",

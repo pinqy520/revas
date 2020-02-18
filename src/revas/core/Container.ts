@@ -1,7 +1,7 @@
 import { Node, RevasTouch, RevasTouchEvent } from './Node'
 import { updateLayout } from './layout'
 import { drawNode } from './draw'
-import { getNodeByTouch, emitTouch } from '../common/touch'
+import { getNodeByTouch, emitTouch } from './touch'
 
 function createRevasTouchEvent(e: TouchEvent): RevasTouchEvent {
   const touches: { [key: number]: RevasTouch } = {}

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { NodeProps, RevasTouchEvent, Frame } from '../core/Node'
-import { clamp } from '../common/utils'
+import { clamp } from '../core/utils'
 
 export type ScrollViewProps = {
 

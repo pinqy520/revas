@@ -1,6 +1,6 @@
 import ReactReconciler from 'react-reconciler';
 import { Node } from './Node'
-import { appendChild, noop, removeChild, insertBefore } from '../common/utils'
+import { appendChild, noop, removeChild, insertBefore } from './utils'
 import { Container } from './Container';
 
 export default ReactReconciler({

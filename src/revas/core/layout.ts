@@ -1,7 +1,7 @@
 import Yoga from 'yoga-layout-prebuilt'
 import { Node, Frame } from './Node'
 import apply from './style'
-import { getStyleFromNode } from '../common/utils'
+import { getStyleFromNode } from './utils'
 
 function _updateLayout(node: Node): [Function, Yoga.YogaNode] {
   const yoga = Yoga.Node.create()

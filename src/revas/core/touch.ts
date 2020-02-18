@@ -1,5 +1,5 @@
 import { getFrameFromNode, sortByZIndexDescending } from "./utils"
-import { Node, RevasTouchEvent, RevasTouchType, RevasTouch } from "../core/Node"
+import { Node, RevasTouchEvent, RevasTouchType, RevasTouch } from "./Node"
 
 function findNodeByPoint(node: Node, x: number, y: number): Node | void {
   const children = node.children.slice().sort(sortByZIndexDescending)

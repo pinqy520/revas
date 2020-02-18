@@ -14,7 +14,7 @@ export default function App() {
           <Text style={styles.btnText}>Go</Text>
         </Touchable>
       </View>
-      <ScrollView style={{ position: 'absolute', top: 300, left: 0, right: 0, bottom: 100, overflow: 'hidden' }}>
+      <ScrollView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
         <View style={{ height: 80, backgroundColor: '#9254DE' }} />
         <View style={{ height: 80, backgroundColor: '#91D5FF' }} />
         <View style={{ height: 80, backgroundColor: '#B37FEB' }} />
