@@ -82,11 +82,7 @@ const App = () => {
     <div className="App">
       <canvas
         ref={canvasRef}
-        id="canvas-root"
-        width="500"
-        height="500"
         style={CANVAS_ELEMENT_STYLE}
-        border="1px solid black"
       />
     </div>
   )
