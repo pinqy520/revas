@@ -19,6 +19,7 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
     // TODO: tranform: rotate scale...
   }
 
+  // Draw Path
   const radius = style.borderRadius || 0
   ctx.beginPath();
   ctx.moveTo(frame.x + radius, frame.y);
@@ -31,10 +32,9 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
   if (style.overflow === 'hidden')
     ctx.clip()
 
-  const background = style.backgroundColor || 'transparent'
-
   ctx.save()   // Draw Self Start
   // Background color & Shadow
+  const background = style.backgroundColor || 'transparent'
   if (background !== 'transparent') {
     // Shadow:
     ctx.shadowBlur = style.shadowBlur;

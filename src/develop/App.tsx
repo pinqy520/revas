@@ -52,7 +52,9 @@ const styles = {
     shadowOffsetY: 5,
     backgroundColor: '#fff',
     alignItems: 'center',
-    zIndex: 1
+    zIndex: 1,
+    borderWidth: 1,
+    borderColor: '#00'
   },
   text: {
     fontSize: 14,

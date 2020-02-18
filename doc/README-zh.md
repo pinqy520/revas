@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="https://user-images.githubusercontent.com/5719833/74612079-052e5980-513d-11ea-9bf1-09bd1b2b4abe.png" width=220 />
+<img src="https://user-images.githubusercontent.com/5719833/74748305-3fb20680-52a3-11ea-81c3-98804dceb602.png" width=220 />
 </h1>
 
 <p align="center">
@@ -20,7 +20,7 @@ Revas可以让你用 React和 Flexible CSS 在 Canvas 上编写交互界面
 性能上，之前ReactCanvas就是主打流畅的60FPS交互，因为摆脱了DOM操作的束缚之后，在canvas上进行UI绘制，渲染更快。跨端能力上，依赖于canvas接口的统一定义，更容易在平台间互相迁移，当native的canvas接口下架或者动态化无法使用时，更容易迁移\降级到小程序或者Web。
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/5719833/74612089-15463900-513d-11ea-8383-50f40d642ec6.png" width=600 />
+  <img src="https://user-images.githubusercontent.com/5719833/74748350-52c4d680-52a3-11ea-9a00-f23c8f359b72.png" width=600 />
 </p>
 
 ## 安装
