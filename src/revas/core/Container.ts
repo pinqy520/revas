@@ -18,7 +18,7 @@ function createRevasTouchEvent(e: TouchEvent): RevasTouchEvent {
 
 export class Container extends Node {
   private _ready = true
-  private _pending = false
+  private _next = false
 
   constructor(
     private canvas: HTMLCanvasElement
@@ -48,10 +48,11 @@ export class Container extends Node {
 
   public draw = () => {
     if (this._ready === false) {
-      this._pending = true;
+      this._next = true;
       return;
     }
     this._ready = false;
+    // console.log('draw')
     updateLayout(this)()
     const ctx = this.canvas.getContext('2d')!
     ctx.clearRect(0, 0, this.props.width, this.props.height);
@@ -61,8 +62,8 @@ export class Container extends Node {
 
   private ready = () => {
     this._ready = true;
-    if (this._pending) {
-      this._pending = false;
+    if (this._next) {
+      this._next = false;
       this.draw();
     }
   }

@@ -58,9 +58,8 @@ const styles = {
     fontSize: 14,
     lineHeight: 20,
     textAlign: 'center',
-    height: 55,
     width: 280,
-    marginTop: 20,
+    padding: 15,
   },
   logo: {
     width: 200,

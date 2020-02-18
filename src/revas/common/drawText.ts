@@ -1,5 +1,5 @@
 import { Node } from "../core/Node"
-import { getChars, getStyleFromNode, getFrameFromNode } from "./utils"
+import { getChars, getFrameFromNode } from "./utils"
 
 const DEFAULT_TEXTSTYLE = {
   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
@@ -21,7 +21,7 @@ function getTextFromNode(node: Node) {
 }
 
 function getTextStyleFromNode(node: Node) {
-  const style = { ...DEFAULT_TEXTSTYLE, ...getStyleFromNode(node) }
+  const style = { ...DEFAULT_TEXTSTYLE, ...node.props.textStyle }
   style.lineHeight = style.lineHeight || (style.fontSize * 1.1)
   return style
 }
@@ -54,13 +54,13 @@ function measureLines(ctx: CanvasRenderingContext2D, content: string, width: num
   return lines
 }
 
-export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
+export function measureText(ctx: CanvasRenderingContext2D, node: Node): [any[], number] {
   const frame = getFrameFromNode(node)
-  if (frame.width === 0) return
+  if (frame.width === 0) return [[], 0]
   const content = getTextFromNode(node)
-  if (!content) return
+  if (!content) return [[], 0]
   const style = getTextStyleFromNode(node)
-  if (style.color === 'transparent') return
+  if (style.color === 'transparent') return [[], 0]
 
   // Apply Styles
   ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${style.fontFamily}`
@@ -74,6 +74,13 @@ export default function drawText(ctx: CanvasRenderingContext2D, node: Node) {
   }
 
   const lines = measureLines(ctx, content, frame.width)
+  return [lines, style.lineHeight * lines.length]
+}
+
+
+export function drawText(ctx: CanvasRenderingContext2D, node: Node, lines: any[]) {
+  const frame = getFrameFromNode(node)
+  const style = getTextStyleFromNode(node)
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
