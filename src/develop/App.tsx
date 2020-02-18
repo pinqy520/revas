@@ -63,9 +63,10 @@ const styles = {
   },
   logo: {
     width: 200,
-    height: 94,
+    height: 100,
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    resizeMode: 'contain'
   },
   btn: {
     justifyContent: 'center',
