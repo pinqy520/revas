@@ -10,12 +10,6 @@ export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
   if (width <= 0 || height <= 0) return
   const style = getStyleFromNode(node)
 
-  // TODO: maybe remove when use shadowView structure
-  if (style.backgroundColor) {
-    ctx.shadowBlur = 0
-    ctx.shadowOffsetX = 0
-    ctx.shadowOffsetY = 0
-  }
 
   const actualSize = {
     width: image.naturalWidth,

@@ -76,12 +76,6 @@ export function measureText(ctx: CanvasRenderingContext2D, node: Node): [any[], 
   ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${style.fontFamily}`
   ctx.fillStyle = style.color
   ctx.textBaseline = style.textBaseline
-  // TODO: maybe remove when use shadowView structure
-  if (style.backgroundColor) {
-    ctx.shadowBlur = 0
-    ctx.shadowOffsetX = 0
-    ctx.shadowOffsetY = 0
-  }
 
   const lines = measureLines(ctx, splitContent(content, style.wordBreak), frame.width)
   return [lines, style.lineHeight * lines.length]
@@ -91,6 +85,12 @@ export function measureText(ctx: CanvasRenderingContext2D, node: Node): [any[], 
 export function drawText(ctx: CanvasRenderingContext2D, node: Node, lines: any[]) {
   const frame = getFrameFromNode(node)
   const style = getTextStyleFromNode(node)
+
+  // Shadow:
+  ctx.shadowBlur = style.textShadowBlur;
+  ctx.shadowColor = style.textShadowColor;
+  ctx.shadowOffsetX = style.textShadowOffsetX;
+  ctx.shadowOffsetY = style.textShadowOffsetY;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
