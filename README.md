@@ -36,7 +36,6 @@ $ yarn add revas
 ```jsx
 import React from 'react'
 import { render, View, Text } from 'revas'
-import createCanvas from './some-where'
 
 render(
   <View style={{ flex: 1 }}>
@@ -46,23 +45,36 @@ render(
 )
 ```
 
-### With React Generated Canvas Element
+### Render to a canvas rendered by React
+
+If the `<canvas>` we want to `revas.render` to is rendered by React, we need to ensure that the `<canvas>` exists in the DOM before calling `revas.render`.
+
+In the following example, we make use of `React.useEffect()` to invoke `revas.render`. Since `useEffect` is asynchronous, `revas.render` will be invoked _after_ the `<canvas>` element has been rendered to the DOM and `canvasRef` has the correct reference to the element.   
 
 <a href="https://codesandbox.io/s/polished-browser-n2myg?fontsize=14&hidenavigation=1&theme=dark">
   <img alt="Open in CodeSandbox" src="https://codesandbox.io/static/img/play-codesandbox.svg">
 </a>
+   
 
 ```jsx
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { render, View, Text } from 'revas'
 
 const CANVAS_ELEMENT_STYLE = { border: '1px solid black' }
 
+const MyCanvasComponent = (props) => {
+  return (
+    <View style={{ flex: 1 }}>
+      <Text style={{ fontSize: 20 }}>Revas</Text>
+    </View>
+  )
+}
+
 const App = () => {
   const canvasRef = React.useRef()
 
-  React.useEffect(() => {
+  useEffect(() => {
     render(<MyCanvasComponent />, canvasRef.current)
   }, [])
 
@@ -77,14 +89,6 @@ const App = () => {
         border="1px solid black"
       />
     </div>
-  )
-}
-
-export const MyCanvasComponent = (props) => {
-  return (
-    <View style={{ flex: 1 }}>
-      <Text style={{ fontSize: 20 }}>Revas</Text>
-    </View>
   )
 }
 
