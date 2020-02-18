@@ -8,7 +8,7 @@ export default function App() {
         <Image style={styles.logo}
           src={require('./logo.png')} />
         <Text style={styles.text}>
-          Revas让你可以用React和Flexible CSS，{'\n'}在Canvas上绘制高性能交互式界面～🎉
+          Revas让你可以用React和Flexible CSS，在Canvas上绘制高性能交互式界面～{'🎉'}
         </Text>
         <Touchable style={styles.btn} onPress={() => alert('Enjoy!~🎉')}>
           <Text style={styles.btnText}>Go</Text>
@@ -59,7 +59,7 @@ const styles = {
     lineHeight: 20,
     textAlign: 'center',
     width: 280,
-    padding: 15,
+    padding: 10,
   },
   logo: {
     width: 200,

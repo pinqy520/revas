@@ -5,9 +5,9 @@ export default function () {
   canvas.height = window.innerHeight * scale
   canvas.style.width = window.innerWidth + 'px'
   canvas.style.height = window.innerHeight + 'px'
+  canvas.style.userSelect = 'none'
   canvas.getContext('2d')!.scale(scale, scale)
   document.documentElement.style.overflow = 'hidden'
   document.body.appendChild(canvas)
   return canvas
-
 }

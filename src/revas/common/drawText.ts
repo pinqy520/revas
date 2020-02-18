@@ -1,5 +1,5 @@
 import { Node } from "../core/Node"
-import { getChars, getFrameFromNode } from "./utils"
+import { getChars, getFrameFromNode, getWords } from "./utils"
 
 const DEFAULT_TEXTSTYLE = {
   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
@@ -27,8 +27,7 @@ function getTextStyleFromNode(node: Node) {
 }
 
 // TODO: numberOfLines
-function measureLines(ctx: CanvasRenderingContext2D, content: string, width: number) {
-  const chars = getChars(content)
+function measureLines(ctx: CanvasRenderingContext2D, chars: readonly string[], width: number) {
   const lines: { width: number, text: string }[] = []
   let _width = 0
   let _text = ''
@@ -41,7 +40,7 @@ function measureLines(ctx: CanvasRenderingContext2D, content: string, width: num
     } else {
       const charWidth = ctx.measureText(char).width
       if (charWidth + _width > width) {
-        lines.push({ width: _width, text: _text })
+        _text && lines.push({ width: _width, text: _text })
         _width = charWidth
         _text = char
       } else {
@@ -52,6 +51,17 @@ function measureLines(ctx: CanvasRenderingContext2D, content: string, width: num
   }
   lines.push({ width: _width, text: _text })
   return lines
+}
+
+function splitContent(content: string, wordBreak: string) {
+  switch (wordBreak) {
+    case 'break-all':
+      return getChars(content)
+    case 'keep-all':
+      return [content]
+    default:
+      return getWords(content)
+  }
 }
 
 export function measureText(ctx: CanvasRenderingContext2D, node: Node): [any[], number] {
@@ -73,7 +83,7 @@ export function measureText(ctx: CanvasRenderingContext2D, node: Node): [any[], 
     ctx.shadowOffsetY = 0
   }
 
-  const lines = measureLines(ctx, content, frame.width)
+  const lines = measureLines(ctx, splitContent(content, style.wordBreak), frame.width)
   return [lines, style.lineHeight * lines.length]
 }
 
