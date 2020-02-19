@@ -2,7 +2,9 @@ import * as React from 'react'
 import { drawText, measureText } from '../common/drawText'
 import { NodeProps, Node } from '../core/Node'
 
-export type TextProps = {} & NodeProps
+export type TextProps = {
+  numberOfLines?: number
+} & NodeProps
 
 export default class Text extends React.Component<TextProps> {
   state = { height: 0 }
@@ -16,13 +18,14 @@ export default class Text extends React.Component<TextProps> {
     }
   }
   render() {
-    const { children, ...others } = this.props as any
+    const { children, numberOfLines, ...others } = this.props as any
     return React.createElement('View', others,
       React.createElement('Text', {
         content: children,
         customDrawer: this.drawText,
         textStyle: others.style,
-        style: this.state
+        style: this.state,
+        numberOfLines
       })
     )
   }

@@ -27,11 +27,23 @@ function getTextStyleFromNode(node: Node) {
 }
 
 // TODO: numberOfLines
-function measureLines(ctx: CanvasRenderingContext2D, chars: readonly string[], width: number) {
+function measureLines(
+  ctx: CanvasRenderingContext2D,
+  chars: readonly string[],
+  width: number,
+  numberOfLines: number = 1
+) {
   const lines: { width: number, text: string }[] = []
   let _width = 0
   let _text = ''
   for (let i = 0; i < chars.length; i++) {
+    if (numberOfLines > 0 && lines.length > numberOfLines) {
+      lines.pop()
+      const lastLine = lines[lines.length - 1]
+      lastLine.text = lastLine.text + '...'
+      lastLine.width = ctx.measureText(lastLine.text).width
+      return lines
+    }
     const char = chars[i]
     if (char === '\n') {
       lines.push({ width: _width, text: _text })
@@ -49,7 +61,14 @@ function measureLines(ctx: CanvasRenderingContext2D, chars: readonly string[], w
       }
     }
   }
-  lines.push({ width: _width, text: _text })
+  _text && lines.push({ width: _width, text: _text })
+  if (numberOfLines > 0 && lines.length > numberOfLines) {
+    lines.pop()
+    const lastLine = lines[lines.length - 1]
+    lastLine.text = lastLine.text.slice(0, -3) + '...'
+    lastLine.width = ctx.measureText(lastLine.text).width
+    return lines
+  }
   return lines
 }
 
@@ -77,7 +96,12 @@ export function measureText(ctx: CanvasRenderingContext2D, node: Node): [any[], 
   ctx.fillStyle = style.color
   ctx.textBaseline = style.textBaseline
 
-  const lines = measureLines(ctx, splitContent(content, style.wordBreak), frame.width)
+  const lines = measureLines(
+    ctx,
+    splitContent(content, style.wordBreak),
+    frame.width,
+    node.props.numberOfLines
+  )
   return [lines, style.lineHeight * lines.length]
 }
 

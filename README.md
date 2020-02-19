@@ -103,7 +103,7 @@ ReactDOM.render(<App />, rootElement)
 ### Text
 
 ```jsx
-<Text style={styles.text}>Hello World</Text>
+<Text style={styles.text} numberOfLines={1}>Hello World</Text>
 ```
 
 ### Image
