@@ -14,8 +14,8 @@ Build Apps on Canvas, with React and Flexible CSS, inspired by <code>react-canva
 
 The main difference from `react-canvas` is that it does not depend strongly on `react-dom`, so that it can run in different terminals through the `canvas` interface provided by different implementation. In addition, compared to `react-canvas`, `revas` is:
 
-  1. Support for the latest version of React for a better interactive experience under Fiber, use the latest version of Yoga for more stability
-  2. Same `View` and `Text` API as `react-native`, lower understanding cost
+1. Support for the latest version of React for a better interactive experience under Fiber, use the latest version of Yoga for more stability
+2. Same `View` and `Text` API as `react-native`, lower understanding cost
 
 In terms of performance, `react-canvas` was previously focused on smooth 60FPS interaction, because after getting rid of the constraints of DOM operations, UI drawing on canvas can be rendered faster. In terms of cross-end capabilities, it depends on the unified definition of the canvas interface, which makes it easier to migrate between platforms. When the native canvas interface is delisted or dynamic cannot be used, it is easier to migrate / downgrade to the Web.
 
@@ -25,23 +25,71 @@ In terms of performance, `react-canvas` was previously focused on smooth 60FPS i
 
 ## Install
 
-``` bash
+```bash
 $ yarn add revas
 ```
 
 ## Usage
 
+### Minimal
+
 ```jsx
 import React from 'react'
-import {render, View, Text} from 'revas'
-import createCanvas from './some-where'
+import { render, View, Text } from 'revas'
 
 render(
   <View style={{ flex: 1 }}>
     <Text style={{ fontSize: 20 }}>Revas</Text>
   </View>,
-  createCanvas()
+  document.getElementById('my-canvas'),
 )
+```
+
+### Render to a canvas rendered by React
+
+If the `<canvas>` we want to `revas.render` to is rendered by React, we need to ensure that the `<canvas>` exists in the DOM before calling `revas.render`.
+
+In the following example, we make use of `React.useEffect()` to invoke `revas.render`. Since `useEffect` is asynchronous, `revas.render` will be invoked _after_ the `<canvas>` element has been rendered to the DOM and `canvasRef` has the correct reference to the element.   
+
+<a href="https://codesandbox.io/s/polished-browser-n2myg?fontsize=14&hidenavigation=1&theme=dark">
+  <img alt="Open in CodeSandbox" src="https://codesandbox.io/static/img/play-codesandbox.svg">
+</a>
+   
+
+```jsx
+import React, { useEffect } from 'react'
+import ReactDOM from 'react-dom'
+import { render, View, Text } from 'revas'
+
+const CANVAS_ELEMENT_STYLE = { border: '1px solid black' }
+
+const MyCanvasComponent = (props) => {
+  return (
+    <View style={{ flex: 1 }}>
+      <Text style={{ fontSize: 20 }}>Revas</Text>
+    </View>
+  )
+}
+
+const App = () => {
+  const canvasRef = React.useRef()
+
+  useEffect(() => {
+    render(<MyCanvasComponent />, canvasRef.current)
+  }, [])
+
+  return (
+    <div className="App">
+      <canvas
+        ref={canvasRef}
+        style={CANVAS_ELEMENT_STYLE}
+      />
+    </div>
+  )
+}
+
+const rootElement = document.getElementById('root')
+ReactDOM.render(<App />, rootElement)
 ```
 
 ## Components
@@ -76,7 +124,9 @@ render(
 
 ```jsx
 <ScrollView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-  {colors.map((c, i) => <View key={i} style={{ height: 80, backgroundColor: c }} />)}
+  {colors.map((c, i) => (
+    <View key={i} style={{ height: 80, backgroundColor: c }} />
+  ))}
 </ScrollView>
 ```
 
@@ -105,3 +155,4 @@ $ git clone ...
 $ yarn           # install
 $ yarn start     # start a web server for development
 ```
+
