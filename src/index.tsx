@@ -6,11 +6,16 @@ import createCanvas from './develop/createCanvas'
 
 import './develop/index.css';
 
-
-render(
+// eslint-disable-next-line
+const app = render(
   React.createElement(App),
   createCanvas()
 )
+
+// try unmount
+// setTimeout(() => {
+//   app.unmount()
+// }, 5000);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

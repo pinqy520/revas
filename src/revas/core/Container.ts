@@ -19,10 +19,9 @@ function createRevasTouchEvent(e: TouchEvent): RevasTouchEvent {
 export class Container extends Node {
   private _ready = true
   private _next = false
+  private _canvas: HTMLCanvasElement | null
 
-  constructor(
-    private canvas: HTMLCanvasElement
-  ) {
+  constructor(canvas: HTMLCanvasElement) {
     super('root', {
       width: canvas.clientWidth,
       height: canvas.clientHeight,
@@ -31,6 +30,7 @@ export class Container extends Node {
     canvas.ontouchmove = this._handleTouch
     canvas.ontouchend = this._handleTouch
     canvas.ontouchcancel = this._handleTouch
+    this._canvas = canvas
   }
 
   // TODO: tempor solution
@@ -39,7 +39,8 @@ export class Container extends Node {
     const emitted = new WeakSet<Node>()
     Object.values(evt.touches).forEach(touch => {
       const node = getNodeByTouch(this, evt.type, touch)
-      if (!emitted.has(node)) {
+      // check if node is unmounted
+      if (node.parent && !emitted.has(node)) {
         emitted.add(node)
         emitTouch(node, evt)
       }
@@ -52,12 +53,13 @@ export class Container extends Node {
       return;
     }
     this._ready = false;
-    // console.log('draw')
-    updateLayout(this)()
-    const ctx = this.canvas.getContext('2d')!
-    ctx.clearRect(0, 0, this.props.width, this.props.height);
-    drawNode(ctx, this)
-    requestAnimationFrame(this.ready);
+    if (this._canvas) { // if not unmounted
+      updateLayout(this)()
+      const ctx = this._canvas.getContext('2d')!
+      ctx.clearRect(0, 0, this.props.width, this.props.height);
+      drawNode(ctx, this)
+      requestAnimationFrame(this.ready);
+    }
   }
 
   private ready = () => {
@@ -65,6 +67,18 @@ export class Container extends Node {
     if (this._next) {
       this._next = false;
       this.draw();
+    }
+  }
+
+  public destory() {
+    if (this._canvas) {
+      this._canvas.getContext('2d')!
+        .clearRect(0, 0, this.props.width, this.props.height)
+      this._canvas.ontouchstart = null
+      this._canvas.ontouchmove = null
+      this._canvas.ontouchend = null
+      this._canvas.ontouchcancel = null
+      this._canvas = null
     }
   }
 }
