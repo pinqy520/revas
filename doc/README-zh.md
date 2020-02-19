@@ -90,7 +90,38 @@ render(
 
 ## 样式
 
-> 基本 React Native支持的，都支持了，除：transform
+- Flexible box (powered by Yoga)
+  - width, minWidth, maxWidth
+  - height, minHeight, maxHeight
+  - padding, paddingLeft, ...
+  - margin, marginLeft, ...
+  - position, left, top, ....
+  - flex, flexDirection, justifyContent, alignItems
+  - [...更多](https://github.com/pinqy520/revas/blob/master/src/revas/core/style.ts)
+- Common
+  - borderRadius, borderWidth, borderColor
+  - shadowColor, shadowOffsetX, shadowOffsetY, shadowBlur
+  - backgroundColor
+  - overflow
+  - opacity
+- Text
+  - fontFamily
+  - fontSize
+  - fontWeight
+  - color
+  - lineHeight
+  - textAlign
+  - wordBreak
+  - fontStyle
+  - textBaseline
+  - textShadowBlur, textShadowColor, textShadowOffsetX, textShadowOffsetY
+- Image
+  - resizeMode
+- Animation
+  - translateX, translateY
+  - rotate
+  - scale, scaleX, scaleY
+
 
 ## 效果截图
 
