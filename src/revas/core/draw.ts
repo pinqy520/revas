@@ -1,6 +1,15 @@
 import { Node } from "./Node";
 import { getStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "./utils";
 
+function getRadius(style: any) {
+  return {
+    tl: style.borderTopLeftRadius || style.borderRadius || 0,
+    tr: style.borderTopRightRadius || style.borderRadius || 0,
+    bl: style.borderBottomLeftRadius || style.borderRadius || 0,
+    br: style.borderBottomRightRadius || style.borderRadius || 0,
+  }
+}
+
 export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
   const style = getStyleFromNode(node)
   const frame = getFrameFromNode(node)
@@ -31,13 +40,13 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
 
 
   // Draw Path
-  const radius = style.borderRadius || 0
+  const radius = getRadius(style)
   ctx.beginPath();
-  ctx.moveTo(frame.x + radius, frame.y);
-  ctx.arcTo(frame.x + frame.width, frame.y, frame.x + frame.width, frame.y + frame.height, radius);
-  ctx.arcTo(frame.x + frame.width, frame.y + frame.height, frame.x, frame.y + frame.height, radius);
-  ctx.arcTo(frame.x, frame.y + frame.height, frame.x, frame.y, radius);
-  ctx.arcTo(frame.x, frame.y, frame.x + frame.width, frame.y, radius);
+  ctx.moveTo(frame.x + radius.tl, frame.y);
+  ctx.arcTo(frame.x + frame.width, frame.y, frame.x + frame.width, frame.y + frame.height, radius.tr);
+  ctx.arcTo(frame.x + frame.width, frame.y + frame.height, frame.x, frame.y + frame.height, radius.br);
+  ctx.arcTo(frame.x, frame.y + frame.height, frame.x, frame.y, radius.bl);
+  ctx.arcTo(frame.x, frame.y, frame.x + frame.width, frame.y, radius.tl);
   ctx.closePath();
 
   if (style.overflow === 'hidden')

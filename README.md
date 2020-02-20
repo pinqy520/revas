@@ -123,7 +123,8 @@ ReactDOM.render(<App />, rootElement)
 ### ScrollView
 
 ```jsx
-<ScrollView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+<ScrollView onScroll={e => {}}
+  style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
   {colors.map((c, i) => (
     <View key={i} style={{ height: 80, backgroundColor: c }} />
   ))}
@@ -138,6 +139,15 @@ ReactDOM.render(<App />, rootElement)
   colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
 ```
 
+## Common Properties
+
+- Touch
+  - onTouchStart
+  - onTouchMove
+  - onTouchEnd
+- Layout
+  - onLayout
+
 ## Styles
 
 - Flexible box (powered by Yoga)
@@ -149,7 +159,7 @@ ReactDOM.render(<App />, rootElement)
   - flex, flexDirection, justifyContent, alignItems
   - [...more](https://github.com/pinqy520/revas/blob/master/src/revas/core/style.ts)
 - Common
-  - borderRadius, borderWidth, borderColor
+  - borderRadius, borderWidth, borderColor, borderTopLeftRadius, ...
   - shadowColor, shadowOffsetX, shadowOffsetY, shadowBlur
   - backgroundColor
   - overflow

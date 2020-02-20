@@ -1,11 +1,19 @@
 import { RevasTouchEvent } from '../core/Node'
 import { clamp } from '../core/utils'
 
+export interface RevasScrollEvent {
+  x: number,
+  y: number,
+  vx: number,
+  vy: number,
+  timestamp: number
+}
+
 export default class Scroller {
   top = 0
 
   constructor(
-    private handler: (top: number) => any,
+    private handler: (e: RevasScrollEvent) => any,
     public max = -1
   ) { }
 
@@ -53,7 +61,11 @@ export default class Scroller {
     // check validate
     if (_top !== this.top) {
       this.top = _top
-      this.handler(this.top)
+      this.handler({
+        y: this.top, vy: this._v,
+        x: 0, vx: 0,
+        timestamp: this._lastTimestamp
+      })
     } else if (this._lastY < 0) {
       this._v = 0
     }

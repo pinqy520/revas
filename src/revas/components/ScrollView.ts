@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { NodeProps, Frame } from '../core/Node'
-import Scroller from '../common/Scroller'
+import Scroller, { RevasScrollEvent } from '../common/Scroller'
 
 export type ScrollViewProps = {
-
+  onScroll?: (e: RevasScrollEvent) => any
 } & NodeProps
 
 export default class ScrollView extends React.Component<ScrollViewProps> {
@@ -11,10 +11,13 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
     top: 0
   }
 
-  _height = -1
-  _contentHeight = -1
+  private _height = -1
+  private _contentHeight = -1
 
-  private _scroller = new Scroller(top => this.setState({ top }))
+  private _scroller = new Scroller(e => {
+    this.setState({ top: e.y })
+    this.props.onScroll && this.props.onScroll(e)
+  })
 
   private _onLayout = (frame: Frame) => {
     if (this._height !== frame.height) {
