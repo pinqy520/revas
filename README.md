@@ -151,7 +151,7 @@ ReactDOM.render(<App />, rootElement)
 
 ## Styles
 
-- Flexible box (powered by Yoga)
+- Flexible Layout (powered by Yoga)
   - width, minWidth, maxWidth
   - height, minHeight, maxHeight
   - padding, paddingLeft, ...
