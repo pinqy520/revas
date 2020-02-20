@@ -75,8 +75,11 @@ render(
 ### ScrollView
 
 ```jsx
-<ScrollView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-  {colors.map((c, i) => <View key={i} style={{ height: 80, backgroundColor: c }} />)}
+<ScrollView onScroll={e => {}}
+  style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+  {colors.map((c, i) => (
+    <View key={i} style={{ height: 80, backgroundColor: c }} />
+  ))}
 </ScrollView>
 ```
 
@@ -88,7 +91,17 @@ render(
   colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
 ```
 
-## 样式
+## 共有属性
+
+- Touch
+  - onTouchStart
+  - onTouchMove
+  - onTouchEnd
+- Layout
+  - onLayout
+- pointerEvents
+
+## 样式支持
 
 - Flexible box (powered by Yoga)
   - width, minWidth, maxWidth
@@ -99,7 +112,7 @@ render(
   - flex, flexDirection, justifyContent, alignItems
   - [...更多](https://github.com/pinqy520/revas/blob/master/src/revas/core/style.ts)
 - Common
-  - borderRadius, borderWidth, borderColor
+  - borderRadius, borderWidth, borderColor, borderTopLeftRadius, ...
   - shadowColor, shadowOffsetX, shadowOffsetY, shadowBlur
   - backgroundColor
   - overflow

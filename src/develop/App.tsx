@@ -4,7 +4,7 @@ import { Text, View, Image, Touchable, ScrollView, LinearGradient } from '../rev
 export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
+      <View style={styles.card} pointerEvents="box-none">
         <Image style={styles.logo}
           src={require('./logo.png')} />
         <Text style={styles.text} numberOfLines={1}>

@@ -2,11 +2,13 @@ import { getFrameFromNode, sortByZIndexDescending } from "./utils"
 import { Node, RevasTouchEvent, RevasTouchType, RevasTouch } from "./Node"
 
 function findNodeByPoint(node: Node, x: number, y: number): Node | void {
+  if (node.props.pointerEvents === 'none') return
   const children = node.children.slice().sort(sortByZIndexDescending)
   for (let i = 0; i < children.length; i++) {
     const target = findNodeByPoint(children[i], x, y)
     if (target) return target
   }
+  if (node.props.pointerEvents === 'box-none') return
   const frame = getFrameFromNode(node)
   if (frame.x < x && frame.y < y
     && x <= frame.x + frame.width
@@ -38,14 +40,14 @@ const LISTENER_MAP = {
   touchend: 'onTouchEnd'
 }
 
+
 export function emitTouch(node: Node | void, e: RevasTouchEvent) {
   const funcName = LISTENER_MAP[e.type]
   if (funcName) {
     while (node) {
-      if (node.props[funcName]) {
-        if (node.props[funcName](e) === false)
-          return
-      }
+      if (node.props[funcName]
+        && node.props.pointerEvents !== 'box-none'
+        && node.props[funcName](e) === false) return
       node = node.parent
     }
   }

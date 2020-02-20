@@ -46,4 +46,5 @@ export interface NodeProps extends BaseProps {
   onTouchMove?: RevasTouchEventListener
   onTouchEnd?: RevasTouchEventListener
   onLayout?: (frame: Frame) => any
+  pointerEvents?: 'auto' | 'none' | 'box-none'
 }

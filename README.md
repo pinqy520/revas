@@ -147,6 +147,7 @@ ReactDOM.render(<App />, rootElement)
   - onTouchEnd
 - Layout
   - onLayout
+- pointerEvents
 
 ## Styles
 
