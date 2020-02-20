@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-Build Apps on Canvas, with React and Flexible CSS, inspired by <code>react-canvas</code>
+Build Apps on Canvas, with React and CSS, inspired by <code>react-canvas</code>
 </p>
 
 <p align="center">
