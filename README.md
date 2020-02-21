@@ -75,7 +75,10 @@ const App = () => {
   const canvasRef = React.useRef()
 
   useEffect(() => {
-    render(<MyCanvasComponent />, canvasRef.current)
+    const revasApp = render(<MyCanvasComponent />, canvasRef.current)
+    return () => {
+      revasApp.unmount()
+    }
   }, [])
 
   return (
