@@ -6,8 +6,8 @@ import json from 'rollup-plugin-json'
 
 const pkg = require('./package.json')
 
-export default {
-  input: `src/revas/index.ts`,
+const BASE_CONFIG = {
+  input: 'src/revas/index.ts',
   output: [
     { file: pkg.main, format: 'cjs', sourcemap: true },
     { file: pkg.module, format: 'es', sourcemap: true },
@@ -33,3 +33,15 @@ export default {
     sourceMaps(),
   ],
 }
+
+export default [
+  BASE_CONFIG,
+  {
+    ...BASE_CONFIG,
+    input: 'src/revas/custom.ts',
+    output: [
+      { file: 'dist/revas.custom.js', format: 'cjs', sourcemap: true },
+      { file: 'dist/revas.custom.es.js', format: 'es', sourcemap: true },
+    ],
+  }
+]

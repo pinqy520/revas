@@ -64,3 +64,13 @@ export function getChars(str: string): readonly string[] {
 export function getWords(str: string): readonly string[] {
   return str.match(WORD_RANGE) || EMPTY_ARRAY
 }
+
+export type RevasConfig = {
+  createImage: () => any
+  createOffscreenCanvas: () => any
+}
+
+export const config: RevasConfig = {
+  createImage: noop,
+  createOffscreenCanvas: noop
+}

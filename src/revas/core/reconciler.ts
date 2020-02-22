@@ -9,7 +9,7 @@ export default ReactReconciler({
   supportsMutation: true,
   isPrimaryRenderer: true,
 
-  createInstance(type: string, props: any) {
+  createInstance(type: string, props: any, container: Container) {
     return new Node(type, props);
   },
 
@@ -53,8 +53,8 @@ export default ReactReconciler({
     return {}
   },
 
-  getChildHostContext() {
-    return {};
+  getChildHostContext(parentHostContext: object) {
+    return parentHostContext;
   },
 
   shouldSetTextContent() {

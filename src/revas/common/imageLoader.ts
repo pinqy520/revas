@@ -1,5 +1,7 @@
+import { config } from '../core/utils'
+
 class CachedImage {
-  readonly image = new Image()
+  readonly image = config.createImage()
   private readonly targets = new Set<Function>()
   private _ready = false
   get empty() {
@@ -8,6 +10,9 @@ class CachedImage {
   constructor(
     public readonly src: string
   ) {
+    if (!this.image) {
+      throw new Error('Revas: createImage must be initialized')
+    }
     this.image.onload = this.onload
     this.image.onerror = this.onerror
     this.image.src = src

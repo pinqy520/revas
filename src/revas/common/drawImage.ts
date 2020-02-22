@@ -4,7 +4,7 @@ import { clamp, getStyleFromNode, getFrameFromNode } from '../core/utils'
 
 export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
   const image = imageLoader.get(node.props.src)
-  if (image.naturalHeight <= 0) return
+  if (image.height <= 0) return
   const frame = getFrameFromNode(node)
   const { width, height, x, y } = frame
   if (width <= 0 || height <= 0) return
@@ -12,8 +12,8 @@ export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
 
 
   const actualSize = {
-    width: image.naturalWidth,
-    height: image.naturalHeight
+    width: image.width,
+    height: image.height
   };
 
   const focusPoint = style.focusPoint || {
