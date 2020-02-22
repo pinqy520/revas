@@ -26,9 +26,12 @@ export class Container extends Node {
   }
 
   public handleResize = (width: number, height: number) => {
-    this.props.width = width
-    this.props.height = height
-    this.draw()
+    if (width !== this.props.width
+      && height !== this.props.height) {
+      this.props.width = width
+      this.props.height = height
+      this.draw()
+    }
   }
 
   public draw = () => {

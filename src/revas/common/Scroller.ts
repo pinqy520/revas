@@ -20,10 +20,10 @@ export default class Scroller {
   private _lastY = -1
   private _lastTimestamp = 0
   private _v = 0
-  private _tid = -1
+  private _tid = 0
 
   touchStart = (e: RevasTouchEvent) => {
-    if (this._tid < 0) {
+    if (this._lastY < 0) {
       this._tid = +Object.keys(e.touches)[0]
       this._lastTimestamp = e.timestamp
       this._lastY = e.touches[this._tid].y
@@ -31,7 +31,7 @@ export default class Scroller {
   }
 
   touchMove = (e: RevasTouchEvent) => {
-    if (this._tid >= 0 && e.touches[this._tid]) {
+    if (this._lastY >= 0 && e.touches[this._tid]) {
       const { y } = e.touches[this._tid]
       const moveY = this._lastY - y
       const duration = e.timestamp - this._lastTimestamp
@@ -43,10 +43,9 @@ export default class Scroller {
   }
 
   touchEnd = (e: RevasTouchEvent) => {
-    if (this._tid >= 0) {
+    if (this._lastY >= 0) {
       this._lastTimestamp = Date.now()
       this._lastY = -1
-      this._tid = -1
       requestAnimationFrame(this.afterEnd)
     }
   }
