@@ -4,6 +4,7 @@ import Image from './components/Image'
 import Touchable from './components/Touchable'
 import ScrollView from './components/ScrollView'
 import LinearGradient from './components/LinearGradient'
+import renderer from './core/reconciler'
 
 export * from './components/View'
 export * from './components/Text'
@@ -16,4 +17,5 @@ export * from './core/utils'
 export * from './core/Node'
 export * from './core/Container'
 
+export { renderer }
 export { View, Text, Image, Touchable, ScrollView, LinearGradient }
