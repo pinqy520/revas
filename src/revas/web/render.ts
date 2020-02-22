@@ -1,10 +1,7 @@
 import renderer from '../core/reconciler'
-import { noop, config } from '../core/utils'
+import { noop } from '../core/utils'
 import { Container } from '../core/Container'
 import { RevasTouch, RevasTouchEvent } from '../core/Node'
-
-
-config.createImage = () => new Image()
 
 function createRevasTouchEvent(e: TouchEvent): RevasTouchEvent {
   const touches: { [key: number]: RevasTouch } = {}

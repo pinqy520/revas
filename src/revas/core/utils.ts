@@ -1,6 +1,6 @@
 import { Node } from './Node'
 
-export function noop() { }
+export function noop(): any { }
 export const EMPTY_OBJECT = Object.freeze({})
 export const EMPTY_ARRAY = Object.freeze([])
 
@@ -66,11 +66,11 @@ export function getWords(str: string): readonly string[] {
 }
 
 export type RevasConfig = {
-  createImage: () => any
-  createOffscreenCanvas: () => any
+  createImage: () => HTMLImageElement
+  createOffscreenCanvas: () => HTMLCanvasElement
 }
 
 export const config: RevasConfig = {
-  createImage: noop,
+  createImage: () => new Image(),
   createOffscreenCanvas: noop
 }
