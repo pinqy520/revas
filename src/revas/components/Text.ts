@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { drawText, measureText } from '../common/drawText'
+import { drawText, measureText } from './common/drawText'
 import { NodeProps, Node } from '../core/Node'
 
 export type TextProps = {

@@ -1,6 +1,6 @@
 import * as React from 'react'
-import * as imageLoader from '../common/imageLoader'
-import drawImage from '../common/drawImage'
+import * as imageLoader from './common/imageLoader'
+import drawImage from './common/drawImage'
 import { NodeProps } from '../core/Node'
 
 export type ImageViewProps = {

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { NodeProps, Frame } from '../core/Node'
-import Scroller, { RevasScrollEvent } from '../common/Scroller'
+import Scroller, { RevasScrollEvent } from './common/Scroller'
 
 export type ScrollViewProps = {
   onScroll?: (e: RevasScrollEvent) => any

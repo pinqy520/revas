@@ -38,10 +38,9 @@ export default [
   BASE_CONFIG,
   {
     ...BASE_CONFIG,
-    input: 'src/revas/custom.ts',
+    input: 'src/revas/common.ts',
     output: [
-      { file: 'dist/revas.custom.js', format: 'cjs', sourcemap: true },
-      { file: 'dist/revas.custom.es.js', format: 'es', sourcemap: true },
+      { file: 'dist/revas.common.js', format: 'cjs', sourcemap: true }
     ],
   }
 ]

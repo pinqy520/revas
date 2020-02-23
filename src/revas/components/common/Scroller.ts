@@ -1,5 +1,5 @@
-import { RevasTouchEvent } from '../core/Node'
-import { clamp, adapter } from '../core/utils'
+import { RevasTouchEvent } from '../../core/Node'
+import { clamp, adapter } from '../../core/utils'
 
 export interface RevasScrollEvent {
   x: number,

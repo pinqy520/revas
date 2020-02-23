@@ -1,4 +1,4 @@
-import { adapter } from '../core/utils'
+import { adapter } from '../../core/utils'
 
 class CachedImage {
   readonly image = adapter.createImage()
