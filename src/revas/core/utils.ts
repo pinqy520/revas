@@ -65,12 +65,12 @@ export function getWords(str: string): readonly string[] {
   return str.match(WORD_RANGE) || EMPTY_ARRAY
 }
 
-export type RevasConfig = {
+export type RevasAdapter = {
   createImage: () => HTMLImageElement
   createOffscreenCanvas: () => HTMLCanvasElement
 }
 
-export const config: RevasConfig = {
+export const adapter: RevasAdapter = {
   createImage: () => new Image(),
   createOffscreenCanvas: noop
 }

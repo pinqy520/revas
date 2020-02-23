@@ -1,7 +1,7 @@
-import { config } from '../core/utils'
+import { adapter } from '../core/utils'
 
 class CachedImage {
-  readonly image = config.createImage()
+  readonly image = adapter.createImage()
   private readonly targets = new Set<Function>()
   private _ready = false
   get empty() {
