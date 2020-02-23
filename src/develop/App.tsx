@@ -7,7 +7,7 @@ export default function App() {
       <View style={styles.card} pointerEvents="box-none">
         <Image style={styles.logo}
           src={require('./logo.png')} />
-        <Text style={styles.text} numberOfLines={1}>
+        <Text style={styles.text} numberOfLines={2}>
           Revas让你可以用React和Flexible CSS，在Canvas上绘制高性能交互式界面asdf1235 a sdfa sdfasdf～{'🎉'}
         </Text>
         <LinearGradient style={styles.decorator} colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
@@ -52,23 +52,23 @@ const styles = {
     shadowOffsetX: 0,
     shadowOffsetY: 5,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    // alignItems: 'center',
     zIndex: 1,
   },
   decorator: {
     height: 4, borderRadius: 2,
-    width: 100, margin: 10
+    margin: 10, marginLeft: 40, marginRight: 40
   },
   text: {
     fontSize: 14,
     lineHeight: 20,
     textAlign: 'center',
-    width: 280,
+    // width: 280,
     padding: 10,
     paddingBottom: 0
   },
   logo: {
-    width: 200,
+    // width: 200,
     height: 100,
     borderRadius: 10,
     overflow: 'hidden',
@@ -77,7 +77,7 @@ const styles = {
   btn: {
     justifyContent: 'center',
     height: 40, backgroundColor: 'blue',
-    width: '100%'
+    // width: 150
   },
   btnText: {
     fontSize: 20,

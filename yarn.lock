@@ -3019,6 +3019,11 @@ css-has-pseudo@^0.10.0:
     postcss "^7.0.6"
     postcss-selector-parser "^5.0.0-rc.4"
 
+css-layout@^1.1.1:
+  version "1.1.1"
+  resolved "http://bnpm.byted.org/css-layout/download/css-layout-1.1.1.tgz#ada5bb8c901e475d41043a88e034ade54d939392"
+  integrity sha1-raW7jJAeR11BBDqI4DSt5U2Tk5I=
+
 css-loader@3.4.2:
   version "3.4.2"
   resolved "http://bnpm.byted.org/css-loader/download/css-loader-3.4.2.tgz#d3fdb3358b43f233b78501c5ed7b1c6da6133202"

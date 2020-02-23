@@ -37,6 +37,7 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
     const max = this._contentHeight - this._height
     if (max > 0 && max !== this._scroller.max) {
       this._scroller.max = max
+      this._scroller.change(0)
     }
   }
 
