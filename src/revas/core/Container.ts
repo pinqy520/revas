@@ -1,5 +1,6 @@
 import { Node, RevasTouchEvent } from './Node'
-import { updateLayout } from './layout'
+import { updateLayout } from './css-layout'
+// import { updateLayout } from './yoga-layout'
 import { drawNode } from './draw'
 import { getNodeByTouch, emitTouch } from './touch'
 import { adapter } from './utils'
