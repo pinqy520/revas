@@ -111,10 +111,12 @@ export function drawText(ctx: CanvasRenderingContext2D, node: Node, lines: any[]
   const style = getTextStyleFromNode(node)
 
   // Shadow:
-  ctx.shadowBlur = style.textShadowBlur;
-  ctx.shadowColor = style.textShadowColor;
-  ctx.shadowOffsetX = style.textShadowOffsetX;
-  ctx.shadowOffsetY = style.textShadowOffsetY;
+  if (style.textShadowColor) {
+    ctx.shadowBlur = style.textShadowBlur;
+    ctx.shadowColor = style.textShadowColor;
+    ctx.shadowOffsetX = style.textShadowOffsetX;
+    ctx.shadowOffsetY = style.textShadowOffsetY;
+  }
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]

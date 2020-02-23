@@ -57,10 +57,12 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
   const background = style.backgroundColor || 'transparent'
   if (background !== 'transparent') {
     // Shadow:
-    ctx.shadowBlur = style.shadowBlur;
-    ctx.shadowColor = style.shadowColor;
-    ctx.shadowOffsetX = style.shadowOffsetX;
-    ctx.shadowOffsetY = style.shadowOffsetY;
+    if (style.shadowColor) {
+      ctx.shadowBlur = style.shadowBlur;
+      ctx.shadowColor = style.shadowColor;
+      ctx.shadowOffsetX = style.shadowOffsetX;
+      ctx.shadowOffsetY = style.shadowOffsetY;
+    }
     ctx.fillStyle = background;
     ctx.fill();
   }
