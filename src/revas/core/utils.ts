@@ -74,5 +74,5 @@ export type RevasAdapter = {
 export const adapter: RevasAdapter = {
   createImage: () => new Image(),
   createOffscreenCanvas: noop,
-  requestAnimationFrame: requestAnimationFrame
+  requestAnimationFrame: (cb: any) => requestAnimationFrame(cb)
 }
