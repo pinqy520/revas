@@ -3,6 +3,7 @@
   "version": "0.0.16",
   "description": "Build Apps on Canvas, with React and Flexible CSS, inspired by react-canvas",
   "repository": "https://github.com/pinqy520/revas",
+  "homepage": "https://pinqy520.github.io/demo/revas-pwa",
   "author": "Huang Qi",
   "license": "MIT",
   "main": "dist/revas.js",
