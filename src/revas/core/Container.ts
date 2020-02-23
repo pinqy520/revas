@@ -2,6 +2,7 @@ import { Node, RevasTouchEvent } from './Node'
 import { updateLayout } from './layout'
 import { drawNode } from './draw'
 import { getNodeByTouch, emitTouch } from './touch'
+import { adapter } from './utils'
 
 export class Container extends Node {
   private _ready = true
@@ -44,7 +45,7 @@ export class Container extends Node {
       updateLayout(this)()
       this._ctx.clearRect(0, 0, this.props.width, this.props.height);
       drawNode(this._ctx, this)
-      requestAnimationFrame(this.ready);
+      adapter.requestAnimationFrame(this.ready);
     }
   }
 

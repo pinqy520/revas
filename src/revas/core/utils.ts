@@ -68,9 +68,11 @@ export function getWords(str: string): readonly string[] {
 export type RevasAdapter = {
   createImage: () => HTMLImageElement
   createOffscreenCanvas: () => HTMLCanvasElement
+  requestAnimationFrame: (cb: any) => any
 }
 
 export const adapter: RevasAdapter = {
   createImage: () => new Image(),
-  createOffscreenCanvas: noop
+  createOffscreenCanvas: noop,
+  requestAnimationFrame: requestAnimationFrame
 }
