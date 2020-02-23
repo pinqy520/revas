@@ -135,6 +135,10 @@ render(
   - rotate
   - scale, scaleX, scaleY
 
+## Examples
+
+- 微信小程序 - [revas-wxapp-example](https://github.com/pinqy520/revas-wxapp-example)
+- H5 - [./src/develop/App.tsx](https://github.com/pinqy520/revas/blob/master/src/develop/App.tsx)
 
 ## 效果截图
 

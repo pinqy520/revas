@@ -186,6 +186,11 @@ ReactDOM.render(<App />, rootElement)
   - rotate
   - scale, scaleX, scaleY
 
+## Examples
+
+- 微信小程序 - [revas-wxapp-example](https://github.com/pinqy520/revas-wxapp-example)
+- Web - [./src/develop/App.tsx](https://github.com/pinqy520/revas/blob/master/src/develop/App.tsx)
+
 ## Screenshot
 
 <p align="center">
