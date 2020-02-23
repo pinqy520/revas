@@ -12,10 +12,7 @@ Revas可以让你用 React和 Flexible CSS 在 Canvas 上编写交互界面
   </a>
 </p>
 
-与ReactCanvas主要不同点在于，它不强依赖于ReactDOM，使得它可以通过不同宿主提供的canvas接口在不同终端中展示，此外Revas相较ReactCanvas，还有：
-
-  1. 升级至最新版的React，在Fiber下获得更好的交互体验；使用最新版的Yoga，更稳定
-  2. 类ReactNative的View和Text组件，理解成本更低
+与ReactCanvas主要不同点在于，它不强依赖于ReactDOM，使得它可以通过不同宿主提供的canvas接口在不同终端中展示。
 
 性能上，之前ReactCanvas就是主打流畅的60FPS交互，因为摆脱了DOM操作的束缚之后，在canvas上进行UI绘制，渲染更快。跨端能力上，依赖于canvas接口的统一定义，更容易在平台间互相迁移，当native的canvas接口下架或者动态化无法使用时，更容易迁移\降级到小程序或者Web。
 
