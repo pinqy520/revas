@@ -1,41 +1,28 @@
-import { Node } from "../../core/Node"
-import { getChars, getFrameFromNode, getWords } from "../../core/utils"
+import { Frame } from "../../core/Node"
+import { getChars, getWords } from "../../core/utils"
 
-const DEFAULT_TEXTSTYLE = {
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
-  fontWeight: 'normal',
-  fontSize: 14,
-  color: '#000',
-  fontStyle: 'normal',
-  textBaseline: 'middle',
+export interface DrawTextOptions {
+  textStyle: any,
+  numberOfLines: number,
+  frame: Frame,
+  content: string
 }
 
-function getTextFromNode(node: Node) {
-  const { content } = node.props
-  if (typeof content === 'string') {
-    return content
-  } else if (Array.isArray(content)) {
-    return content.join('')
-  }
-  return ''
-}
-
-function getTextStyleFromNode(node: Node) {
-  const style = { ...DEFAULT_TEXTSTYLE, ...node.props.textStyle }
-  style.lineHeight = style.lineHeight || (style.fontSize * 1.1)
-  return style
-}
-
-// TODO: numberOfLines
 function measureLines(
   ctx: CanvasRenderingContext2D,
   chars: readonly string[],
   width: number,
-  numberOfLines: number = 1
+  numberOfLines: number = 0
 ) {
   const lines: { width: number, text: string }[] = []
   let _width = 0
   let _text = ''
+
+  function pushLine(charWidth = 0, char = '', force = false) {
+    (force || _text) && lines.push({ width: _width, text: _text })
+    _width = charWidth
+    _text = char
+  }
   for (let i = 0; i < chars.length; i++) {
     if (numberOfLines > 0 && lines.length > numberOfLines) {
       lines.pop()
@@ -46,22 +33,18 @@ function measureLines(
     }
     const char = chars[i]
     if (char === '\n') {
-      lines.push({ width: _width, text: _text })
-      _width = 0
-      _text = ''
+      pushLine(0, '', true)
     } else {
       const charWidth = ctx.measureText(char).width
       if (charWidth + _width > width) {
-        _text && lines.push({ width: _width, text: _text })
-        _width = charWidth
-        _text = char
+        pushLine(charWidth, char)
       } else {
         _width += charWidth
         _text += char
       }
     }
   }
-  _text && lines.push({ width: _width, text: _text })
+  pushLine()
   if (numberOfLines > 0 && lines.length > numberOfLines) {
     lines.pop()
     const lastLine = lines[lines.length - 1]
@@ -83,32 +66,28 @@ function splitContent(content: string, wordBreak: string) {
   }
 }
 
-export function measureText(ctx: CanvasRenderingContext2D, node: Node): [any[], number] {
-  const frame = getFrameFromNode(node)
-  if (frame.width === 0) return [[], 0]
-  const content = getTextFromNode(node)
-  if (!content) return [[], 0]
-  const style = getTextStyleFromNode(node)
-  if (style.color === 'transparent') return [[], 0]
-
+export function applyTextStyle(ctx: CanvasRenderingContext2D, options: DrawTextOptions) {
+  const { fontStyle, fontWeight, fontSize, fontFamily, textBaseline, color } = options.textStyle
   // Apply Styles
-  ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${style.fontFamily}`
-  ctx.fillStyle = style.color
-  ctx.textBaseline = style.textBaseline
+  ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`
+  ctx.fillStyle = color
+  ctx.textBaseline = textBaseline
+}
+
+export function measureText(ctx: CanvasRenderingContext2D, options: DrawTextOptions): [any[], number] {
 
   const lines = measureLines(
     ctx,
-    splitContent(content, style.wordBreak),
-    frame.width,
-    node.props.numberOfLines
+    splitContent(options.content, options.textStyle.wordBreak),
+    options.frame.width,
+    options.numberOfLines
   )
-  return [lines, style.lineHeight * lines.length]
+  return [lines, options.textStyle.lineHeight * lines.length]
 }
 
 
-export function drawText(ctx: CanvasRenderingContext2D, node: Node, lines: any[]) {
-  const frame = getFrameFromNode(node)
-  const style = getTextStyleFromNode(node)
+export function drawText(ctx: CanvasRenderingContext2D, options: DrawTextOptions, lines: any[]) {
+  const { textStyle: style, frame } = options
 
   // Shadow:
   if (style.textShadowColor) {
