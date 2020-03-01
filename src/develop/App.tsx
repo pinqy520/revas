@@ -8,7 +8,7 @@ export default function App() {
         <Image style={styles.logo}
           src={require('./logo.png')} />
         <Text style={styles.text} numberOfLines={2}>
-          Revas让你可以用React和Flexible CSS，在Canvas上绘制高性能交互式界面~{'🎉'}
+          Revas让你可以用React和CSS，在Canvas上绘制高性能交互界面，基于React v16和Yoga Layout～{'🎉'}
         </Text>
         <LinearGradient style={styles.decorator} colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
         <Touchable style={styles.btn} onPress={() => alert('Enjoy!~🎉')}>

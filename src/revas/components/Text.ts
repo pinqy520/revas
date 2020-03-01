@@ -1,5 +1,8 @@
 import * as React from 'react'
-import { drawText, measureText, applyTextStyle, DrawTextOptions } from './common/drawText'
+import {
+  drawText, measureText, applyTextStyle,
+  DrawTextOptions, DEFAULT_MEASURE
+} from './common/drawText'
 import { NodeProps, Node } from '../core/Node'
 import { getFrameFromNode } from '../core/utils'
 
@@ -10,7 +13,7 @@ export type TextProps = {
 export default class Text extends React.Component<TextProps> {
   state = { height: 0 }
 
-  _measured: [any[], number] = [[], 0]
+  _measured = DEFAULT_MEASURE
 
   _drawed?: DrawTextOptions
 

@@ -8,49 +8,51 @@ export interface DrawTextOptions {
   content: string
 }
 
+export type MeasureLine = { width: number, text: string }
+
+export type MeasureResult = [MeasureLine[], number]
+
+export const DEFAULT_MEASURE: MeasureResult = [[], 0]
+
 function measureLines(
   ctx: CanvasRenderingContext2D,
   chars: readonly string[],
-  width: number,
-  numberOfLines: number = 0
+  boxWidth: number,
+  numberOfLines: number
 ) {
-  const lines: { width: number, text: string }[] = []
-  let _width = 0
-  let _text = ''
-
+  const lines: MeasureLine[] = []
+  let width = 0
+  let text = ''
+  let cursor = -1
   function pushLine(charWidth = 0, char = '', force = false) {
-    (force || _text) && lines.push({ width: _width, text: _text })
-    _width = charWidth
-    _text = char
-  }
-  for (let i = 0; i < chars.length; i++) {
-    if (numberOfLines > 0 && lines.length > numberOfLines) {
-      lines.pop()
+    if (force || text) lines.push({ width, text })
+    if (cursor < chars.length && numberOfLines > 0 && lines.length >= numberOfLines) {
       const lastLine = lines[lines.length - 1]
       lastLine.text = lastLine.text + '...'
       lastLine.width = ctx.measureText(lastLine.text).width
-      return lines
-    }
-    const char = chars[i]
-    if (char === '\n') {
-      pushLine(0, '', true)
+      cursor = chars.length + 1
     } else {
-      const charWidth = ctx.measureText(char).width
-      if (charWidth + _width > width) {
-        pushLine(charWidth, char)
-      } else {
-        _width += charWidth
-        _text += char
-      }
+      width = charWidth
+      text = char
     }
   }
-  pushLine()
-  if (numberOfLines > 0 && lines.length > numberOfLines) {
-    lines.pop()
-    const lastLine = lines[lines.length - 1]
-    lastLine.text = lastLine.text.slice(0, -3) + '...'
-    lastLine.width = ctx.measureText(lastLine.text).width
-    return lines
+  while (cursor++ <= chars.length) {
+    if (chars.length > cursor) {
+      const char = chars[cursor]
+      if (char === '\n') {
+        pushLine(0, '', true)
+      } else {
+        const charWidth = ctx.measureText(char).width
+        if (charWidth + width > boxWidth) {
+          pushLine(charWidth, char)
+        } else {
+          width += charWidth
+          text += char
+        }
+      }
+    } else {
+      pushLine()
+    }
   }
   return lines
 }
@@ -74,7 +76,7 @@ export function applyTextStyle(ctx: CanvasRenderingContext2D, options: DrawTextO
   ctx.textBaseline = textBaseline
 }
 
-export function measureText(ctx: CanvasRenderingContext2D, options: DrawTextOptions): [any[], number] {
+export function measureText(ctx: CanvasRenderingContext2D, options: DrawTextOptions): MeasureResult {
 
   const lines = measureLines(
     ctx,
@@ -86,7 +88,7 @@ export function measureText(ctx: CanvasRenderingContext2D, options: DrawTextOpti
 }
 
 
-export function drawText(ctx: CanvasRenderingContext2D, options: DrawTextOptions, lines: any[]) {
+export function drawText(ctx: CanvasRenderingContext2D, options: DrawTextOptions, lines: MeasureLine[]) {
   const { textStyle: style, frame } = options
 
   // Shadow:
