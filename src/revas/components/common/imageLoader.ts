@@ -1,11 +1,12 @@
 import { adapter } from '../../core/utils'
+import renderer from '../../core/reconciler'
 
 class CachedImage {
   readonly image = adapter.createImage()
-  private readonly targets = new Set<Function>()
+  private readonly targets: Function[] = []
   private _ready = false
   get empty() {
-    return this.targets.size === 0
+    return this.targets.length === 0
   }
   constructor(
     public readonly src: string
@@ -19,17 +20,22 @@ class CachedImage {
   }
   onload = () => {
     this._ready = true
-    Array.from(this.targets.values()).forEach(target => target(this.image))
+    renderer.batchedUpdates(() => {
+      this.targets.forEach(target => target(this.image))
+    })
   }
   onerror = () => { }
   add(target: Function) {
-    this.targets.add(target)
-    if (this._ready) {
-      target(this.image)
+    if (this.targets.indexOf(target) < 0) {
+      this.targets.push(target)
+      if (this._ready) {
+        target(this.image)
+      }
     }
   }
   remove(target: Function) {
-    this.targets.delete(target)
+    const index = this.targets.indexOf(target)
+    this.targets.splice(index, 1)
   }
 }
 
