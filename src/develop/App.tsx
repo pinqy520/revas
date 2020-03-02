@@ -1,10 +1,12 @@
 import React from 'react';
 import { Text, View, Image, Touchable, ScrollView, LinearGradient } from '../revas';
+import Interactable from './Interactable';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.card} pointerEvents="box-none">
+      <Interactable style={styles.card}>
+        <Text style={styles.title}>Drag and Move! </Text>
         <Image style={styles.logo}
           src={require('./logo.png')} />
         <Text style={styles.text} numberOfLines={2}>
@@ -14,7 +16,7 @@ export default function App() {
         <Touchable style={styles.btn} onPress={() => alert('Enjoy!~🎉')}>
           <Text style={styles.btnText}>Go</Text>
         </Touchable>
-      </View>
+      </Interactable>
       <ScrollView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
         <View style={{ height: 80, backgroundColor: '#9254DE' }} />
         <View style={{ height: 80, backgroundColor: '#91D5FF' }} />
@@ -54,10 +56,17 @@ const styles = {
     backgroundColor: '#fff',
     // alignItems: 'center',
     zIndex: 1,
+    translateX: 50
   },
   decorator: {
     height: 4, borderRadius: 2,
     margin: 10, marginLeft: 40, marginRight: 40
+  },
+  title: {
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   text: {
     fontSize: 14,
@@ -65,7 +74,8 @@ const styles = {
     textAlign: 'center',
     // width: 280,
     padding: 10,
-    paddingBottom: 0
+    paddingBottom: 0,
+    color: '#333'
   },
   logo: {
     // width: 200,
