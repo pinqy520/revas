@@ -136,7 +136,7 @@ render(
 
 | PWA - Web | 微信小游戏 | 字节跳动小程序 | Native |
 | :-:| :-: | :-: | :-: |
-| <img src="https://user-images.githubusercontent.com/5719833/75115614-25a96700-569b-11ea-944a-5fd87f264812.png" width=100 /> | [revas-wxgame-example](https://github.com/pinqy520/revas-wxgame-example) | WIP | WIP |
+| <img src="https://user-images.githubusercontent.com/5719833/75115614-25a96700-569b-11ea-944a-5fd87f264812.png" width=100 /> | [revas-wxgame-example](https://github.com/pinqy520/revas-wxgame-example) | [revas-bytegame-example](https://github.com/pinqy520/revas-bytegame-example) | WIP |
 
 ## 效果截图
 
