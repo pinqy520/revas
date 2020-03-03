@@ -1,21 +1,20 @@
 import * as React from 'react'
 import { NodeProps, Frame } from '../core/Node'
 import Scroller, { RevasScrollEvent } from './common/Scroller'
+import { AnimatedValue } from '../core/Animated'
 
 export type ScrollViewProps = {
   onScroll?: (e: RevasScrollEvent) => any
 } & NodeProps
 
 export default class ScrollView extends React.Component<ScrollViewProps> {
-  state = {
-    top: 0
-  }
+  translateY = new AnimatedValue(0)
 
   private _height = -1
   private _contentHeight = -1
 
   private _scroller = new Scroller(e => {
-    this.setState({ top: e.y })
+    this.translateY.setValue(-e.y)
     this.props.onScroll && this.props.onScroll(e)
   })
 
@@ -55,7 +54,7 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
       React.createElement('ScrollContent', {
         onLayout: this._onContentLayout,
         style: {
-          translateY: -this.state.top
+          translateY: this.translateY
         },
         children
       })

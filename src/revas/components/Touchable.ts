@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { BaseProps, RevasTouchEvent, RevasTouch } from '../core/Node'
+import { AnimatedValue } from '../core/Animated'
 
 export type TouchableProps = {
   onPress: Function
@@ -11,9 +12,7 @@ export default class Touchable extends React.Component<TouchableProps> {
     activeOpacity: 0.7
   }
 
-  state = {
-    touching: false
-  }
+  opacity = new AnimatedValue(1)
 
   private _start?: RevasTouch
   private _tid = 0
@@ -21,7 +20,7 @@ export default class Touchable extends React.Component<TouchableProps> {
   private _onTouchStart = (e: RevasTouchEvent) => {
     this._tid = +Object.keys(e.touches)[0]
     this._start = e.touches[this._tid]
-    this.setState({ touching: true })
+    this.opacity.setValue(this.props.activeOpacity!)
   }
 
   private _onTouchEnd = (e: RevasTouchEvent) => {
@@ -32,7 +31,7 @@ export default class Touchable extends React.Component<TouchableProps> {
 
       }
     }
-    this.setState({ touching: false })
+    this.opacity.setValue(1)
   }
 
   render() {
@@ -42,7 +41,7 @@ export default class Touchable extends React.Component<TouchableProps> {
       ...this.props,
       style: {
         ...this.props.style,
-        opacity: this.state.touching ? this.props.activeOpacity : 1
+        opacity: this.opacity
       }
     })
   }

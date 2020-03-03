@@ -16,6 +16,7 @@ export * from './components/LinearGradient'
 export * from './core/utils'
 export * from './core/Node'
 export * from './core/Container'
+export * from './core/Animated'
 
 export { renderer }
 export { View, Text, Image, Touchable, ScrollView, LinearGradient }

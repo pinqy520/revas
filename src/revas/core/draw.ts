@@ -1,5 +1,7 @@
 import { Node } from "./Node";
 import { getStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "./utils";
+import { observeAnimatedValue } from "./Animated";
+import { Container } from "./Container";
 
 function getRadius(style: any) {
   return {
@@ -10,20 +12,26 @@ function getRadius(style: any) {
   }
 }
 
-export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
+export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Container) {
   const style = getStyleFromNode(node)
   const frame = getFrameFromNode(node)
 
   if (style.opacity <= 0) return
 
   ctx.save()   // Area Range
+
+  // Animated Styles
+  const opacity = observeAnimatedValue(root.draw, style.opacity)
+  const translateX = observeAnimatedValue(root.draw, style.translateX, 0)
+  const translateY = observeAnimatedValue(root.draw, style.translateY, 0)
+
   // Opacity:
-  if (style.opacity !== null && style.opacity < 1) {
-    ctx.globalAlpha = style.opacity;
+  if (opacity !== null && opacity < 1) {
+    ctx.globalAlpha = opacity;
   }
   // Translation:
-  if (style.translateX || style.translateY) {
-    ctx.translate(style.translateX || 0, style.translateY || 0);
+  if (translateX || translateY) {
+    ctx.translate(translateX, translateY);
   }
   // Rotate && Scale
   if (style.rotate || style.scaleX || style.scaleY || style.scale) {
@@ -86,7 +94,7 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
     .slice()
     .sort(sortByZIndexAscending)
     .forEach(child => {
-      drawNode(ctx, child);
+      drawNode(ctx, child, root);
     });
 
   ctx.restore()

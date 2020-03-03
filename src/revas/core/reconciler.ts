@@ -44,7 +44,7 @@ export default ReactReconciler({
   prepareForCommit: noop,
 
   resetAfterCommit(container: Container) {
-    container.draw()
+    container.draw(true)
   },
 
   resetTextContent: noop,

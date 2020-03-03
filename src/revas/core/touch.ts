@@ -1,5 +1,6 @@
 import { getFrameFromNode, sortByZIndexDescending, getStyleFromNode } from "./utils"
 import { Node, RevasTouchEvent, RevasTouchType, RevasTouch } from "./Node"
+import { getAnimatedValue } from "./Animated"
 
 function findNodeByPoint(node: Node, x: number, y: number): Node | void {
   if (node.props.pointerEvents === 'none') return
@@ -7,8 +8,8 @@ function findNodeByPoint(node: Node, x: number, y: number): Node | void {
   const style = getStyleFromNode(node)
 
   // tranlate, TODO: rotate & scale
-  x -= style.translateX || 0
-  y -= style.translateY || 0
+  x -= getAnimatedValue(style.translateX, 0)
+  y -= getAnimatedValue(style.translateY, 0)
 
   for (let i = 0; i < children.length; i++) {
     const target = findNodeByPoint(children[i], x, y)

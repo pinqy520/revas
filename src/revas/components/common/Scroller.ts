@@ -1,5 +1,5 @@
 import { RevasTouchEvent } from '../../core/Node'
-import { clamp, adapter } from '../../core/utils'
+import { clamp } from '../../core/utils'
 
 export interface RevasScrollEvent {
   x: number,
@@ -46,7 +46,7 @@ export default class Scroller {
     if (this._lastY >= 0) {
       this._lastTimestamp = Date.now()
       this._lastY = -1
-      adapter.requestAnimationFrame(this.afterEnd)
+      requestAnimationFrame(this.afterEnd)
     }
   }
 
@@ -58,7 +58,7 @@ export default class Scroller {
       const moveY = this._v * duration
       this._lastTimestamp = timestamp
       this.change(moveY)
-      adapter.requestAnimationFrame(this.afterEnd)
+      requestAnimationFrame(this.afterEnd)
     }
   }
 

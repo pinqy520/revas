@@ -3,11 +3,11 @@ import { updateLayout } from './css-layout'
 // import { updateLayout } from './yoga-layout'
 import { drawNode } from './draw'
 import { getNodeByTouch, emitTouch } from './touch'
-import { adapter } from './utils'
 
 export class Container extends Node {
   private _ready = true
   private _next = false
+  private _reflow = false
   private _ctx?: CanvasRenderingContext2D | null
 
   constructor(ctx: CanvasRenderingContext2D | null, width: number, height: number) {
@@ -32,21 +32,25 @@ export class Container extends Node {
       && height !== this.props.height) {
       this.props.width = width
       this.props.height = height
-      this.draw()
+      this.draw(true)
     }
   }
 
-  public draw = () => {
+  public draw = (reflow: boolean) => {
+    this._reflow = this._reflow || reflow
     if (this._ready === false) {
       this._next = true;
       return;
     }
     this._ready = false;
     if (this._ctx) { // if not unmounted
-      updateLayout(this)()
+      if (this._reflow) {
+        updateLayout(this)()
+        this._reflow = false
+      }
       this._ctx.clearRect(0, 0, this.props.width, this.props.height);
-      drawNode(this._ctx, this)
-      adapter.requestAnimationFrame(this.ready);
+      drawNode(this._ctx, this, this)
+      requestAnimationFrame(this.ready);
     }
   }
 
@@ -54,7 +58,7 @@ export class Container extends Node {
     this._ready = true;
     if (this._next) {
       this._next = false;
-      this.draw();
+      this.draw(false);
     }
   }
 
