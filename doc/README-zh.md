@@ -88,6 +88,31 @@ render(
   colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
 ```
 
+## API
+
+## AnimatedValue
+
+> translateX, translateY, opacity
+
+**Example:** [/src/develop/Interactable.tsx](https://github.com/pinqy520/revas/blob/master/src/develop/Interactable.tsx)
+
+```jsx
+import { AnimatedValue } from 'revas'
+
+const translateX = new AnimatedValue(0)
+
+function Comp() {
+  return <View 
+    style={{
+      translateX: translateX
+    }}
+    onTouchMove={e => {
+      translateX.setValue(e.touches[0].x)
+    }}
+  />
+}
+
+
 ## 共有属性
 
 - Touch

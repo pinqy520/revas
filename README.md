@@ -52,46 +52,6 @@ In the following example, we make use of `React.useEffect()` to invoke `revas.re
   <img alt="Open in CodeSandbox" src="https://codesandbox.io/static/img/play-codesandbox.svg">
 </a>
    
-
-```jsx
-import React, { useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import { render, View, Text } from 'revas'
-
-const CANVAS_ELEMENT_STYLE = { border: '1px solid black' }
-
-const MyCanvasComponent = (props) => {
-  return (
-    <View style={{ flex: 1 }}>
-      <Text style={{ fontSize: 20 }}>Revas</Text>
-    </View>
-  )
-}
-
-const App = () => {
-  const canvasRef = React.useRef()
-
-  useEffect(() => {
-    const revasApp = render(<MyCanvasComponent />, canvasRef.current)
-    return () => {
-      revasApp.unmount()
-    }
-  }, [])
-
-  return (
-    <div className="App">
-      <canvas
-        ref={canvasRef}
-        style={CANVAS_ELEMENT_STYLE}
-      />
-    </div>
-  )
-}
-
-const rootElement = document.getElementById('root')
-ReactDOM.render(<App />, rootElement)
-```
-
 ## Components
 
 ### View
@@ -138,6 +98,34 @@ ReactDOM.render(<App />, rootElement)
   start={{x: 0, y, 0}} end={{x: 1, y, 0}} 
   colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
 ```
+
+
+## API
+
+## AnimatedValue
+
+> translateX, translateY, opacity
+
+**Example:** [/src/develop/Interactable.tsx](https://github.com/pinqy520/revas/blob/master/src/develop/Interactable.tsx)
+
+```jsx
+import { AnimatedValue } from 'revas'
+
+const translateX = new AnimatedValue(0)
+
+function Comp() {
+  return <View 
+    style={{
+      translateX: translateX
+    }}
+    onTouchMove={e => {
+      translateX.setValue(e.touches[0].x)
+    }}
+  />
+}
+
+```
+
 
 ## Common Properties
 
