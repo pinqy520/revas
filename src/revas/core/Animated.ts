@@ -11,7 +11,7 @@ export class AnimatedValue<T> {
   setValue(value: T) {
     this._value = value
     if (this._observer) {
-      this._observer(false)
+      this._observer()
     }
   }
 
@@ -30,8 +30,9 @@ export function observeAnimatedValue<T>(observer: Function, value: T | AnimatedV
 }
 
 export function getAnimatedValue<T>(value: T | AnimatedValue<T>, defaultValue?: T): T {
-  if (value instanceof AnimatedValue) {
+  if (value instanceof AnimatedValue)
     return value.getValue()
-  }
-  return value || defaultValue!
+  if (typeof value === 'undefined')
+    return defaultValue!
+  return value
 }

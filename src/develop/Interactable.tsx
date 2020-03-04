@@ -3,13 +3,13 @@ import { View, RevasTouchEvent, AnimatedValue } from '../revas'
 
 export default class Interactable extends React.Component<any, any> {
 
-  translateX = new AnimatedValue(0)
-  translateY = new AnimatedValue(0)
-
   private _start = {
     x: 0, y: 0
   }
   private _tid = 0
+
+  translateX = new AnimatedValue(this._start.x)
+  translateY = new AnimatedValue(this._start.y)
 
   touchStart = (e: RevasTouchEvent) => {
     this._tid = +Object.keys(e.touches)[0]
@@ -32,7 +32,7 @@ export default class Interactable extends React.Component<any, any> {
       style={{
         ...this.props.style,
         translateX: this.translateX,
-        translateY: this.translateY
+        translateY: this.translateY,
       }}
       onTouchStart={this.touchStart}
       onTouchMove={this.touchMove}

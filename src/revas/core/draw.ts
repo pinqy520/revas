@@ -21,9 +21,13 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
   ctx.save()   // Area Range
 
   // Animated Styles
-  const opacity = observeAnimatedValue(root.draw, style.opacity)
+  const opacity = observeAnimatedValue(root.draw, style.opacity, 1)
   const translateX = observeAnimatedValue(root.draw, style.translateX, 0)
   const translateY = observeAnimatedValue(root.draw, style.translateY, 0)
+  const scale = observeAnimatedValue(root.draw, style.scale, 1)
+  const scaleX = observeAnimatedValue(root.draw, style.scaleX, scale)
+  const scaleY = observeAnimatedValue(root.draw, style.scaleY, scale)
+  const rotate = observeAnimatedValue(root.draw, style.rotate, 0)
 
   // Opacity:
   if (opacity !== null && opacity < 1) {
@@ -34,15 +38,15 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
     ctx.translate(translateX, translateY);
   }
   // Rotate && Scale
-  if (style.rotate || style.scaleX || style.scaleY || style.scale) {
+  if (rotate || scaleX || scaleY) {
     // Origin Center
     const originX = frame.x + frame.width / 2
     const originY = frame.y + frame.height / 2
     ctx.translate(originX, originY);
-    if (style.rotate)
-      ctx.rotate(style.rotate);
-    if (style.scaleX || style.scaleY || style.scale)
-      ctx.scale(style.scale || style.scaleX || 0, style.scale || style.scaleY || 0);
+    if (rotate)
+      ctx.rotate(rotate);
+    if (scaleX || scaleY)
+      ctx.scale(scaleX, scaleY);
     ctx.translate(-originX, -originY);
   }
 

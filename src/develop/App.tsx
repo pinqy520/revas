@@ -56,7 +56,7 @@ const styles = {
     backgroundColor: '#fff',
     // alignItems: 'center',
     zIndex: 1,
-    translateX: 50
+
   },
   decorator: {
     height: 4, borderRadius: 2,

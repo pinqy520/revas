@@ -51,7 +51,7 @@ export default class Scroller {
   }
 
   afterEnd = () => {
-    if (this._lastY < 0 && Math.abs(this._v) > 0.1) {
+    if (this._lastY < 0 && Math.abs(this._v) > 0.05) {
       const timestamp = Date.now()
       const duration = timestamp - this._lastTimestamp
       this._v = friction(this._v, duration)
@@ -79,5 +79,5 @@ export default class Scroller {
 }
 
 function friction(v: number, duration: number) {
-  return v - (duration * 0.005 * v)
+  return v - (duration * 0.004 * v)
 }
