@@ -105,6 +105,7 @@ In the following example, we make use of `React.useEffect()` to invoke `revas.re
 ## AnimatedValue
 
 > translateX, translateY, opacity
+> rorate, scale, scaleX, scaleY
 
 **Example:** [/src/develop/Interactable.tsx](https://github.com/pinqy520/revas/blob/master/src/develop/Interactable.tsx)
 
