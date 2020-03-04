@@ -92,8 +92,7 @@ render(
 
 ## AnimatedValue
 
-> translateX, translateY, opacity
-> rorate, scale, scaleX, scaleY
+> translateX, translateY, opacity, rorate, scale, scaleX, scaleY
 
 **Example:** [/src/develop/Interactable.tsx](https://github.com/pinqy520/revas/blob/master/src/develop/Interactable.tsx)
 
