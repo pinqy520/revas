@@ -23,16 +23,17 @@ export class AnimatedValue<T> {
 }
 
 export function observeAnimatedValue<T>(observer: Function, value: T | AnimatedValue<T>, defaultValue?: T): T {
-  if (value instanceof AnimatedValue) {
+  if (value instanceof AnimatedValue)
     return value.getValue(observer)
-  }
-  return value || defaultValue!
+  if (value === undefined)
+    return defaultValue!
+  return value
 }
 
 export function getAnimatedValue<T>(value: T | AnimatedValue<T>, defaultValue?: T): T {
   if (value instanceof AnimatedValue)
     return value.getValue()
-  if (typeof value === 'undefined')
+  if (value === undefined)
     return defaultValue!
   return value
 }

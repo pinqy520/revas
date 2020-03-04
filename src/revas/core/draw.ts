@@ -21,13 +21,13 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
   ctx.save()   // Area Range
 
   // Animated Styles
-  const opacity = observeAnimatedValue(root.draw, style.opacity, 1)
+  const opacity = observeAnimatedValue(root.draw, style.opacity)
   const translateX = observeAnimatedValue(root.draw, style.translateX, 0)
   const translateY = observeAnimatedValue(root.draw, style.translateY, 0)
-  const scale = observeAnimatedValue(root.draw, style.scale, 1)
+  const scale = observeAnimatedValue(root.draw, style.scale)
   const scaleX = observeAnimatedValue(root.draw, style.scaleX, scale)
   const scaleY = observeAnimatedValue(root.draw, style.scaleY, scale)
-  const rotate = observeAnimatedValue(root.draw, style.rotate, 0)
+  const rotate = observeAnimatedValue(root.draw, style.rotate)
 
   // Opacity:
   if (opacity !== null && opacity < 1) {

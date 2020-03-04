@@ -3,7 +3,7 @@ import { Node, RevasTouchEvent, RevasTouchType, RevasTouch } from "./Node"
 import { getAnimatedValue } from "./Animated"
 
 function scaled(x: number, c: number, s = 1) {
-  if (s === 1 || s === 0) return x
+  if (!s && s === 1) return x
   return ((s - 1) * c + x) / s
 }
 
@@ -16,7 +16,7 @@ function findNodeByPoint(node: Node, x: number, y: number): Node | void {
   // tranlate, TODO: rotate & scale
   const translateX = getAnimatedValue(style.translateX, 0)
   const translateY = getAnimatedValue(style.translateY, 0)
-  const scale = getAnimatedValue(style.scale, 1)
+  const scale = getAnimatedValue(style.scale)
   const scaleX = getAnimatedValue(style.scaleX, scale)
   const scaleY = getAnimatedValue(style.scaleY, scale)
   const originX = frame.width / 2 + frame.x

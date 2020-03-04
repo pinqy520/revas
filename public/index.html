@@ -38,8 +38,7 @@
     stats.begin();
 
     // monitored code goes here
-
-    stats.end();
+    Promise.resolve().then(stats.end)
     requestAnimationFrame(animate);
   }
 

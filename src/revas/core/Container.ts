@@ -58,7 +58,7 @@ export class Container extends Node {
     this._ready = true;
     if (this._next) {
       this._next = false;
-      this.draw(false);
+      this.draw();
     }
   }
 
