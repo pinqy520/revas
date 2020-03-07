@@ -38,24 +38,21 @@ export default class Scroller {
   }
 
   private _sign(e: RevasTouchEvent) {
-    e.extra = {
-      ...e.extra,
-      scroll: { x: this.horizontal, y: !this.horizontal }
-    }
+    e.scroll = { x: this.horizontal, y: !this.horizontal }
     if (this.horizontal) {
       if (this._x.offset > 0 && this._x.offset < this._x.max)
-        e.extra.scroll.x = false
+        e.scroll.x = false
     } else {
       if (this._y.offset > 0 && this._y.offset < this._y.max)
-        e.extra.scroll.y = false
+        e.scroll.y = false
     }
   }
 
   private _check(e: RevasTouchEvent) {
-    if (this.horizontal && e.extra && e.extra.scroll && e.extra.scroll.x === false) {
+    if (this.horizontal && e.scroll && e.scroll.x === false) {
       return this.touchEnd()
     }
-    if (!this.horizontal && e.extra && e.extra.scroll && e.extra.scroll.y === false) {
+    if (!this.horizontal && e.scroll && e.scroll.y === false) {
       return this.touchEnd()
     }
     return true
@@ -126,6 +123,7 @@ class Handler {
       this._last = value
     }
   }
+
   onMove(value: number, duration: number) {
     if (this._last >= 0) {
       const move = this._last - value
