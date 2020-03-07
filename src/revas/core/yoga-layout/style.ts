@@ -90,9 +90,7 @@ const AVAILABLE = {
     { key: 'borderRightWidth', remap: 'border', edge: Yoga.EDGE_RIGHT },
     { key: 'borderTopWidth', remap: 'border', edge: Yoga.EDGE_TOP },
     { key: 'borderBottomWidth', remap: 'border', edge: Yoga.EDGE_BOTTOM },
-  ],
-  FONT: [],
-  OTHER: ['overflow', 'zIndex'],
+  ]
 }
 
 function funcName(key: string) {
@@ -107,53 +105,61 @@ function checkAndRun(yoga: any, key: string, ...values: any[]) {
   }
 }
 
-function setValue(yoga: Yoga.YogaNode, key: string, value: string | number) {
+function setValue(yoga: Yoga.YogaNode, func: string, value: string | number) {
   if (typeof value === 'number') {
-    checkAndRun(yoga, funcName(key), value)
+    checkAndRun(yoga, func, value)
   } else if (value === 'auto') {
-    checkAndRun(yoga, funcName(key) + 'Auto')
+    checkAndRun(yoga, func + 'Auto')
   } else if (value.endsWith('%')) {
-    checkAndRun(yoga, funcName(key) + 'Percent', +value.slice(0, -1))
+    checkAndRun(yoga, func + 'Percent', +value.slice(0, -1))
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
   }
 }
 
 
-function setEnum(yoga: Yoga.YogaNode, key: string, enums: any, value: string) {
-  if (typeof enums[value] !== 'undefined') {
-    checkAndRun(yoga, funcName(key), enums[value])
+function setEnum(yoga: Yoga.YogaNode, func: string, enums: any, value: string) {
+  if (enums[value] !== undefined) {
+    checkAndRun(yoga, func, enums[value])
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
   }
 }
 
-function setEdge(yoga: Yoga.YogaNode, key: string, edge: number, value: string | number) {
+function setEdge(yoga: Yoga.YogaNode, func: string, edge: number, value: string | number) {
   if (typeof value === 'number') {
-    checkAndRun(yoga, funcName(key), edge, value)
+    checkAndRun(yoga, func, edge, value)
   } else if (value === 'auto') {
-    checkAndRun(yoga, funcName(key) + 'Auto', edge)
+    checkAndRun(yoga, func + 'Auto', edge)
   } else if (value.endsWith('%')) {
-    checkAndRun(yoga, funcName(key) + 'Percent', edge, +value.slice(0, -1))
+    checkAndRun(yoga, func + 'Percent', edge, +value.slice(0, -1))
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
   }
 }
+
+const STYLE_MAP: { [key: string]: (yoga: Yoga.YogaNode, value: any) => any } = {}
+
+AVAILABLE.VALUE.forEach(key => {
+  const func = funcName(key)
+  STYLE_MAP[key] = (yoga, value) => setValue(yoga, func, value)
+})
+
+AVAILABLE.ENUM.forEach(item => {
+  const func = funcName(item.remap || item.key)
+  const enums = item.enum
+  STYLE_MAP[item.key] = (yoga, value) => setEnum(yoga, func, enums, value)
+})
+
+AVAILABLE.EDGE.forEach(item => {
+  const func = funcName(item.remap)
+  const edge = item.edge
+  STYLE_MAP[item.key] = (yoga, value) => setEdge(yoga, func, edge, value)
+})
 
 export default function apply(yoga: Yoga.YogaNode, style: any) {
-  AVAILABLE.VALUE.forEach(key => {
-    const value = style[key]
-    typeof value !== 'undefined'
-      && setValue(yoga, key, value)
-  })
-  AVAILABLE.ENUM.forEach(item => {
-    const value = style[item.key]
-    typeof value !== 'undefined'
-      && setEnum(yoga, item.remap || item.key, item.enum, value)
-  })
-  AVAILABLE.EDGE.forEach(item => {
-    const value = style[item.key]
-    typeof value !== 'undefined'
-      && setEdge(yoga, item.remap, item.edge, value)
-  })
+  for (const key in style) {
+    const func = STYLE_MAP[key]
+    func && func(yoga, style[key])
+  }
 }

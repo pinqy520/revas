@@ -18,16 +18,27 @@ export default function App() {
         </Touchable>
       </Interactable>
       <ScrollView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-        <View style={{ height: 80, backgroundColor: '#9254DE' }} />
-        <View style={{ height: 80, backgroundColor: '#91D5FF' }} />
+        <ScrollView horizontal style={{ height: 80, backgroundColor: 'red' }}>
+          <View style={{ height: 80, backgroundColor: '#9254DE', width: 100 }} />
+          <View style={{ height: 80, backgroundColor: '#91D5FF', width: 100 }} />
+          <View style={{ height: 80, backgroundColor: '#B37FEB', width: 100 }} />
+          <View style={{ height: 80, backgroundColor: '#40A9FF', width: 100 }} />
+          <View style={{ height: 80, backgroundColor: '#9254DE', width: 100 }} />
+        </ScrollView>
         <View style={{ height: 80, backgroundColor: '#B37FEB' }} />
         <View style={{ height: 80, backgroundColor: '#40A9FF' }} />
         <View style={{ height: 80, backgroundColor: '#9254DE' }} />
         <View style={{ height: 80, backgroundColor: '#91D5FF' }} />
         <View style={{ height: 80, backgroundColor: '#B37FEB' }} />
         <View style={{ height: 80, backgroundColor: '#40A9FF' }} />
-        <View style={{ height: 80, backgroundColor: '#9254DE' }} />
-        <View style={{ height: 80, backgroundColor: '#91D5FF' }} />
+        <ScrollView style={{ height: 150, overflow: 'hidden' }}>
+          <View style={{ height: 80, backgroundColor: 'black' }} />
+          <View style={{ height: 80, backgroundColor: 'white' }} />
+          <View style={{ height: 80, backgroundColor: 'black' }} />
+          <View style={{ height: 80, backgroundColor: 'white' }} />
+          <View style={{ height: 80, backgroundColor: 'black' }} />
+          <View style={{ height: 80, backgroundColor: 'white' }} />
+        </ScrollView>
         <View style={{ height: 80, backgroundColor: '#B37FEB' }} />
         <View style={{ height: 80, backgroundColor: '#40A9FF' }} />
         <View style={{ height: 80, backgroundColor: '#9254DE' }} />
@@ -43,7 +54,7 @@ const styles = {
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#abcdef',
+    // backgroundColor: '#abcdef',
   },
   card: {
     padding: 20,

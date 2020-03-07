@@ -10,70 +10,157 @@ export interface RevasScrollEvent {
 }
 
 export default class Scroller {
-  top = 0
+  private _timestamp = 0
+  private _x = new Handler()
+  private _y = new Handler()
+  private _tid = ''
+
+  horizontal?: boolean = false
 
   constructor(
-    private handler: (e: RevasScrollEvent) => any,
-    public max = -1
+    private listener: (e: RevasScrollEvent) => any,
   ) { }
 
-  private _lastY = -1
-  private _lastTimestamp = 0
-  private _v = 0
-  private _tid = 0
+  set maxX(value: number) {
+    this._x.max = value
+  }
+
+  get maxX() {
+    return this._x.max
+  }
+
+  set maxY(value: number) {
+    this._y.max = value
+  }
+
+  get maxY() {
+    return this._y.max
+  }
+
+  private _sign(e: RevasTouchEvent) {
+    e.extra = {
+      ...e.extra,
+      scroll: { x: this.horizontal, y: !this.horizontal }
+    }
+    if (this.horizontal) {
+      if (this._x.offset > 0 && this._x.offset < this._x.max)
+        e.extra.scroll.x = false
+    } else {
+      if (this._y.offset > 0 && this._y.offset < this._y.max)
+        e.extra.scroll.y = false
+    }
+  }
+
+  private _check(e: RevasTouchEvent) {
+    if (this.horizontal && e.extra && e.extra.scroll && e.extra.scroll.x === false) {
+      return this.touchEnd()
+    }
+    if (!this.horizontal && e.extra && e.extra.scroll && e.extra.scroll.y === false) {
+      return this.touchEnd()
+    }
+    return true
+  }
 
   touchStart = (e: RevasTouchEvent) => {
-    if (this._lastY < 0) {
-      this._tid = +Object.keys(e.touches)[0]
-      this._lastTimestamp = e.timestamp
-      this._lastY = e.touches[this._tid].y
+    if (!this._tid) {
+      this._tid = Object.keys(e.touches)[0]
+      this._timestamp = e.timestamp
+      const { x, y } = e.touches[this._tid]
+      this.horizontal
+        ? this._x.capture(x)
+        : this._y.capture(y)
     }
   }
 
   touchMove = (e: RevasTouchEvent) => {
-    if (this._lastY >= 0 && e.touches[this._tid]) {
-      const { y } = e.touches[this._tid]
-      const moveY = this._lastY - y
-      const duration = e.timestamp - this._lastTimestamp
-      this._v = moveY / duration
-      this._lastTimestamp = e.timestamp
-      this._lastY = y
-      this.change(moveY)
+    if (this._tid && e.touches[this._tid] && this._check(e)) {
+      const { x, y } = e.touches[this._tid]
+      const duration = e.timestamp - this._timestamp
+      this._timestamp = e.timestamp
+      this.horizontal
+        ? this._x.onMove(x, duration)
+        : this._y.onMove(y, duration)
+      this.emit()
+      this._sign(e)
     }
   }
 
-  touchEnd = (e: RevasTouchEvent) => {
-    if (this._lastY >= 0) {
-      this._lastTimestamp = Date.now()
-      this._lastY = -1
+  touchEnd = () => {
+    if (this._tid) {
+      this._tid = ''
+      this._timestamp = Date.now()
+      this._x.onEnd()
+      this._y.onEnd()
       requestAnimationFrame(this.afterEnd)
     }
   }
 
   afterEnd = () => {
-    if (this._lastY < 0 && Math.abs(this._v) > 0.05) {
-      const timestamp = Date.now()
-      const duration = timestamp - this._lastTimestamp
-      this._v = friction(this._v, duration)
-      const moveY = this._v * duration
-      this._lastTimestamp = timestamp
-      this.change(moveY)
+    const timestamp = Date.now()
+    const duration = timestamp - this._timestamp
+    this._timestamp = timestamp
+    if (this._x.afterEnd(duration) || this._y.afterEnd(duration)) {
+      this.emit()
       requestAnimationFrame(this.afterEnd)
     }
   }
 
-  change(top: number) {
-    const _top = clamp(this.top + top, 0, this.max > 0 ? this.max : 0)
+  emit() {
+    this.listener({
+      x: this._x.offset, vx: this._x.velocity,
+      y: this._y.offset, vy: this._y.velocity,
+      timestamp: this._timestamp
+    })
+  }
+}
+
+class Handler {
+  offset = 0
+  velocity = 0
+  max = -1
+
+  private _last = -1
+
+  capture(value: number) {
+    if (this._last < 0) {
+      this._last = value
+    }
+  }
+  onMove(value: number, duration: number) {
+    if (this._last >= 0) {
+      const move = this._last - value
+      this.velocity = move / duration
+      this._last = value
+      this.change(move)
+    }
+  }
+  onEnd() {
+    if (this._last >= 0) {
+      this._last = -1
+    }
+  }
+
+  afterEnd(duration: number) {
+    if (this._last < 0) {
+      if (Math.abs(this.velocity) > 0.05) {
+        this.velocity = friction(this.velocity, duration)
+        const move = this.velocity * duration
+        this.change(move)
+        return true
+      } else {
+        this.velocity = 0
+      }
+    }
+    return false
+  }
+
+  change(move: number) {
+    const _offset = clamp(this.offset + move, 0, this.max > 0 ? this.max : 0)
     // check validate
-    if (_top !== this.top) {
-      this.top = _top
-      this.handler({
-        y: this.top, vy: this._v,
-        x: 0, vx: 0,
-        timestamp: this._lastTimestamp
-      })
-    } else if (this._lastY < 0) {
-      this._v = 0
+    if (_offset !== this.offset) {
+      this.offset = _offset
+    } else if (this._last < 0) {
+      this.velocity = 0
     }
   }
 }

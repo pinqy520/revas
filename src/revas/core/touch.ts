@@ -9,11 +9,12 @@ function scaled(x: number, c: number, s = 1) {
 
 function findNodeByPoint(node: Node, x: number, y: number): Node | void {
   if (node.props.pointerEvents === 'none') return
+
   const children = node.children.slice().sort(sortByZIndexDescending)
   const style = getStyleFromNode(node)
   const frame = getFrameFromNode(node)
 
-  // tranlate, TODO: rotate & scale
+  // tranlate
   const translateX = getAnimatedValue(style.translateX, 0)
   const translateY = getAnimatedValue(style.translateY, 0)
   const scale = getAnimatedValue(style.scale)
@@ -27,14 +28,17 @@ function findNodeByPoint(node: Node, x: number, y: number): Node | void {
   x = scaled(x, originX, scaleX)
   y = scaled(y, originY, scaleY)
 
-  for (let i = 0; i < children.length; i++) {
-    const target = findNodeByPoint(children[i], x, y)
-    if (target) return target
-  }
-  if (node.props.pointerEvents === 'box-none') return
   if (frame.x < x && frame.y < y
     && x <= frame.x + frame.width
     && y <= frame.y + frame.height) {
+
+    for (let i = 0; i < children.length; i++) {
+      const target = findNodeByPoint(children[i], x, y)
+      if (target) return target
+    }
+
+    if (node.props.pointerEvents === 'box-none') return
+
     return node
   }
 }

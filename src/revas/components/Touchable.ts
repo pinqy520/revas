@@ -15,10 +15,10 @@ export default class Touchable extends React.Component<TouchableProps> {
   opacity = new AnimatedValue(1)
 
   private _start?: RevasTouch
-  private _tid = 0
+  private _tid = ''
 
   private _onTouchStart = (e: RevasTouchEvent) => {
-    this._tid = +Object.keys(e.touches)[0]
+    this._tid = Object.keys(e.touches)[0]
     this._start = e.touches[this._tid]
     this.opacity.setValue(this.props.activeOpacity!)
   }

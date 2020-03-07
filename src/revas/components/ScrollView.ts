@@ -4,57 +4,80 @@ import Scroller, { RevasScrollEvent } from './common/Scroller'
 import { AnimatedValue } from '../core/Animated'
 
 export type ScrollViewProps = {
+  horizontal?: boolean
   onScroll?: (e: RevasScrollEvent) => any
 } & NodeProps
 
 export default class ScrollView extends React.Component<ScrollViewProps> {
-  translateY = new AnimatedValue(0)
 
   private _height = -1
   private _contentHeight = -1
+  private _width = -1
+  private _contentWidth = -1
+  private _innerStyle = {
+    translateX: new AnimatedValue(0),
+    translateY: new AnimatedValue(0),
+    position: 'absolute',
+  }
 
   private _scroller = new Scroller(e => {
-    this.translateY.setValue(-e.y)
+    this._innerStyle.translateX.setValue(-e.x)
+    this._innerStyle.translateY.setValue(-e.y)
     this.props.onScroll && this.props.onScroll(e)
   })
 
   private _onLayout = (frame: Frame) => {
-    if (this._height !== frame.height) {
+    if (
+      this._width !== frame.width ||
+      this._height !== frame.height
+    ) {
       this._height = frame.height
+      this._width = frame.width
       this._checkLayout()
     }
   }
 
   private _onContentLayout = (frame: Frame) => {
-    if (this._contentHeight !== frame.height) {
+    if (
+      this._contentWidth !== frame.width ||
+      this._contentHeight !== frame.height
+    ) {
       this._contentHeight = frame.height
+      this._contentWidth = frame.width
       this._checkLayout()
     }
   }
 
   private _checkLayout = () => {
-    const max = this._contentHeight - this._height
-    if (max > 0 && max !== this._scroller.max) {
-      this._scroller.max = max
-      this._scroller.change(0)
+    const maxX = this._contentWidth - this._width
+    const maxY = this._contentHeight - this._height
+    if (
+      (maxX > 0 && maxX !== this._scroller.maxX) ||
+      (maxY > 0 && maxY !== this._scroller.maxY)
+    ) {
+      this._scroller.maxX = maxX
+      this._scroller.maxY = maxY
+      this._scroller.emit()
     }
   }
 
   render() {
-    const { children, ...others } = this.props
+    const { children, horizontal, ...others } = this.props
+
+    this._scroller.horizontal = horizontal
+
     return React.createElement(
       'Scrollable',
-      {
-        ...others,
+      { ...others, onLayout: this._onLayout },
+      React.createElement('ScrollContent', {
         onTouchStart: this._scroller.touchStart,
         onTouchMove: this._scroller.touchMove,
         onTouchEnd: this._scroller.touchEnd,
-        onLayout: this._onLayout,
-      },
-      React.createElement('ScrollContent', {
         onLayout: this._onContentLayout,
         style: {
-          translateY: this.translateY
+          ...this._innerStyle,
+          flexDirection: horizontal ? 'row' : 'column',
+          [horizontal ? 'height' : 'width']: '100%'
         },
         children
       })

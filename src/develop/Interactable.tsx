@@ -6,13 +6,13 @@ export default class Interactable extends React.Component<any, any> {
   private _start = {
     x: 0, y: 0
   }
-  private _tid = 0
+  private _tid = ''
 
   translateX = new AnimatedValue(this._start.x)
   translateY = new AnimatedValue(this._start.y)
 
   touchStart = (e: RevasTouchEvent) => {
-    this._tid = +Object.keys(e.touches)[0]
+    this._tid = Object.keys(e.touches)[0]
     const start = e.touches[this._tid]
     this._start.x = start.x - this.translateX.getValue()
     this._start.y = start.y - this.translateY.getValue()

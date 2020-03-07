@@ -30,8 +30,9 @@ export type RevasTouchType = 'touchstart' | 'touchmove' | 'touchend'
 
 export interface RevasTouchEvent {
   type: RevasTouchType
-  touches: { [key: number]: RevasTouch }
+  touches: { [key: string]: RevasTouch }
   timestamp: number
+  extra?: any
 }
 
 export type RevasTouchEventListener = (event: RevasTouchEvent) => any
