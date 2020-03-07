@@ -1,5 +1,5 @@
 import { RevasTouchEvent } from '../../core/Node'
-import { clamp } from '../../core/utils'
+import { clamp, noop } from '../../core/utils'
 
 export interface RevasScrollEvent {
   x: number,
@@ -38,13 +38,26 @@ export default class Scroller {
   }
 
   private _sign(e: RevasTouchEvent) {
-    e.scroll = { x: this.horizontal, y: !this.horizontal }
+    e.scroll = { ...e.scroll, x: true, y: true, }
+    const stopPropagation = e.scroll.stopPropagation || noop
     if (this.horizontal) {
+      if (this._x.velocity > 0) {
+        e.scroll.y = false
+        stopPropagation()
+      }
       if (this._x.offset > 0 && this._x.offset < this._x.max)
         e.scroll.x = false
     } else {
+      if (this._y.velocity > 0) {
+        e.scroll.x = false
+        stopPropagation()
+      }
       if (this._y.offset > 0 && this._y.offset < this._y.max)
         e.scroll.y = false
+    }
+    e.stopPropagation = () => {
+      this.touchEnd()
+      stopPropagation()
     }
   }
 
