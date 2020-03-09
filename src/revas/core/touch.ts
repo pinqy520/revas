@@ -1,4 +1,4 @@
-import { getFrameFromNode, sortByZIndexDescending, getStyleFromNode } from "./utils"
+import { getFrameFromNode, sortByZIndexDescending, getMergedStyleFromNode } from "./utils"
 import { Node, RevasTouchEvent, RevasTouchType, RevasTouch } from "./Node"
 import { getAnimatedValue } from "./Animated"
 
@@ -11,7 +11,7 @@ function findNodeByPoint(node: Node, x: number, y: number): Node | void {
   if (node.props.pointerEvents === 'none') return
 
   const children = node.children.slice().sort(sortByZIndexDescending)
-  const style = getStyleFromNode(node)
+  const style = getMergedStyleFromNode(node)
   const frame = getFrameFromNode(node)
 
   // tranlate

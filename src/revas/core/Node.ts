@@ -39,7 +39,7 @@ export type RevasTouchEventListener = (event: RevasTouchEvent) => any
 
 export interface BaseProps {
   children?: ReactNode,
-  style?: any,
+  style?: any | any[],
 }
 
 export interface NodeProps extends BaseProps {

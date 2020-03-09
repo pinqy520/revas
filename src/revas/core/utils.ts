@@ -29,9 +29,13 @@ export function insertBefore(parent: Node, child: Node, before: Node) {
   child.parent = parent
 }
 
-export function getStyleFromNode(node: Node) {
-  const { props: { style = EMPTY_OBJECT } } = node
-  return style
+export function getMergedStyleFromNode(node: Node) {
+  const { props: { style = EMPTY_ARRAY } } = node
+  if (Array.isArray(style)) {
+    return Object.assign({}, ...style)
+  } else {
+    return style
+  }
 }
 
 export function getFrameFromNode(node: Node) {
@@ -40,8 +44,8 @@ export function getFrameFromNode(node: Node) {
 }
 
 export function sortByZIndexAscending(a: Node, b: Node) {
-  const styleA = getStyleFromNode(a)
-  const styleB = getStyleFromNode(b)
+  const styleA = getMergedStyleFromNode(a)
+  const styleB = getMergedStyleFromNode(b)
   return (styleA.zIndex || 0) - (styleB.zIndex || 0);
 }
 

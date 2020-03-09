@@ -17,21 +17,19 @@ export default function App() {
           <Text style={styles.btnText}>Go</Text>
         </Touchable>
       </Interactable>
-      <ScrollView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-        <ScrollView horizontal style={{ height: 80, backgroundColor: 'red' }}>
-          <View style={{ height: 80, backgroundColor: '#9254DE', width: 100 }} />
-          <View style={{ height: 80, backgroundColor: '#91D5FF', width: 100 }} />
-          <View style={{ height: 80, backgroundColor: '#B37FEB', width: 100 }} />
-          <View style={{ height: 80, backgroundColor: '#40A9FF', width: 100 }} />
-          <View style={{ height: 80, backgroundColor: '#9254DE', width: 100 }} />
+      <ScrollView style={styles.scroll1}>
+        <ScrollView horizontal style={styles.scrollH}>
+          <View style={[styles.item1, styles.width100]} />
+          <View style={[styles.item2, styles.width100]} />
+          <View style={[styles.item3, styles.width100]} />
+          <View style={[styles.item4, styles.width100]} />
+          <View style={[styles.item1, styles.width100]} />
         </ScrollView>
-        <View style={{ height: 80, backgroundColor: '#B37FEB' }} />
-        <View style={{ height: 80, backgroundColor: '#40A9FF' }} />
-        <View style={{ height: 80, backgroundColor: '#9254DE' }} />
-        <View style={{ height: 80, backgroundColor: '#91D5FF' }} />
-        <View style={{ height: 80, backgroundColor: '#B37FEB' }} />
-        <View style={{ height: 80, backgroundColor: '#40A9FF' }} />
-        <ScrollView style={{ height: 150, overflow: 'hidden' }}>
+        <View style={styles.item1} />
+        <View style={styles.item2} />
+        <View style={styles.item3} />
+        <View style={styles.item4} />
+        <ScrollView style={styles.scrollNested}>
           <View style={{ height: 80, backgroundColor: 'black' }} />
           <View style={{ height: 80, backgroundColor: 'white' }} />
           <View style={{ height: 80, backgroundColor: 'black' }} />
@@ -39,12 +37,10 @@ export default function App() {
           <View style={{ height: 80, backgroundColor: 'black' }} />
           <View style={{ height: 80, backgroundColor: 'white' }} />
         </ScrollView>
-        <View style={{ height: 80, backgroundColor: '#B37FEB' }} />
-        <View style={{ height: 80, backgroundColor: '#40A9FF' }} />
-        <View style={{ height: 80, backgroundColor: '#9254DE' }} />
-        <View style={{ height: 80, backgroundColor: '#91D5FF' }} />
-        <View style={{ height: 80, backgroundColor: '#B37FEB' }} />
-        <View style={{ height: 80, backgroundColor: '#40A9FF' }} />
+        <View style={styles.item1} />
+        <View style={styles.item2} />
+        <View style={styles.item3} />
+        <View style={styles.item4} />
       </ScrollView>
     </View>
   )
@@ -108,5 +104,14 @@ const styles = {
     color: '#fff',
     fontWeight: 'bold',
   },
-
+  scroll1: {
+    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0
+  },
+  scrollH: { height: 80, backgroundColor: 'red' },
+  width100: { width: 100 },
+  item1: { height: 80, backgroundColor: '#B37FEB' },
+  item2: { height: 80, backgroundColor: '#40A9FF' },
+  item3: { height: 80, backgroundColor: '#9254DE' },
+  item4: { height: 80, backgroundColor: '#91D5FF' },
+  scrollNested: { height: 150, overflow: 'hidden' }
 }

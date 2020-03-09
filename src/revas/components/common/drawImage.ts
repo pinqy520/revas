@@ -1,6 +1,6 @@
 import { Node } from '../../core/Node'
 import * as imageLoader from './imageLoader'
-import { clamp, getStyleFromNode, getFrameFromNode } from '../../core/utils'
+import { clamp, getMergedStyleFromNode, getFrameFromNode } from '../../core/utils'
 
 export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
   const image = imageLoader.get(node.props.src)
@@ -8,7 +8,7 @@ export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
   const frame = getFrameFromNode(node)
   const { width, height, x, y } = frame
   if (width <= 0 || height <= 0) return
-  const style = getStyleFromNode(node)
+  const style = getMergedStyleFromNode(node)
 
 
   const actualSize = {

@@ -1,12 +1,11 @@
 import Yoga from 'yoga-layout-prebuilt'
 import { Node, Frame } from '../Node'
 import apply from './style'
-import { getStyleFromNode } from '../utils'
 
 function _updateLayout(node: Node): [Function, Yoga.YogaNode] {
   const yoga = Yoga.Node.create()
   const children: Function[] = []
-  apply(yoga, getStyleFromNode(node))
+  apply(yoga, node.props.style)
   for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i]
     const [f, y] = _updateLayout(child)

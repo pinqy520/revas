@@ -1,5 +1,5 @@
 import { Node, Frame } from '../Node'
-import { getStyleFromNode } from '../utils'
+import { getMergedStyleFromNode } from '../utils'
 
 const computeLayout = require('css-layout')
 
@@ -11,7 +11,7 @@ export interface YogaNode {
 
 function createYoga(node: Node): any {
   return {
-    style: getStyleFromNode(node),
+    style: getMergedStyleFromNode(node),
     children: node.children.map(createYoga),
     node,
   }

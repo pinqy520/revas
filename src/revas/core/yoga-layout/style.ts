@@ -97,6 +97,8 @@ function funcName(key: string) {
   return `set${key[0].toUpperCase()}${key.substr(1)}`
 }
 
+type StyleParams = [string, any?, any?]
+
 function checkAndRun(yoga: any, key: string, ...values: any[]) {
   if (yoga[key]) {
     yoga[key](...values)
@@ -105,61 +107,87 @@ function checkAndRun(yoga: any, key: string, ...values: any[]) {
   }
 }
 
-function setValue(yoga: Yoga.YogaNode, func: string, value: string | number) {
+function parseValue(func: string, value: string | number): StyleParams {
   if (typeof value === 'number') {
-    checkAndRun(yoga, func, value)
+    return [func, value]
   } else if (value === 'auto') {
-    checkAndRun(yoga, func + 'Auto')
+    return [func + 'Auto']
   } else if (value.endsWith('%')) {
-    checkAndRun(yoga, func + 'Percent', +value.slice(0, -1))
+    return [func + 'Percent', +value.slice(0, -1)]
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
   }
 }
 
-
-function setEnum(yoga: Yoga.YogaNode, func: string, enums: any, value: string) {
+function parseEnum(func: string, enums: any, value: string): StyleParams {
   if (enums[value] !== undefined) {
-    checkAndRun(yoga, func, enums[value])
+    return [func, enums[value]]
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
   }
 }
 
-function setEdge(yoga: Yoga.YogaNode, func: string, edge: number, value: string | number) {
+function parseEdge(func: string, edge: number, value: string | number): StyleParams {
   if (typeof value === 'number') {
-    checkAndRun(yoga, func, edge, value)
+    return [func, edge, value]
   } else if (value === 'auto') {
-    checkAndRun(yoga, func + 'Auto', edge)
+    return [func + 'Auto', edge]
   } else if (value.endsWith('%')) {
-    checkAndRun(yoga, func + 'Percent', edge, +value.slice(0, -1))
+    return [func + 'Percent', edge, +value.slice(0, -1)]
   } else {
     throw new Error(`ReCanvas: No Such Style Value - ${value}`)
   }
 }
 
-const STYLE_MAP: { [key: string]: (yoga: Yoga.YogaNode, value: any) => any } = {}
+const STYLE_MAP: { [key: string]: (value: any) => StyleParams } = {}
 
 AVAILABLE.VALUE.forEach(key => {
   const func = funcName(key)
-  STYLE_MAP[key] = (yoga, value) => setValue(yoga, func, value)
+  STYLE_MAP[key] = value => parseValue(func, value)
 })
 
 AVAILABLE.ENUM.forEach(item => {
   const func = funcName(item.remap || item.key)
   const enums = item.enum
-  STYLE_MAP[item.key] = (yoga, value) => setEnum(yoga, func, enums, value)
+  STYLE_MAP[item.key] = value => parseEnum(func, enums, value)
 })
 
 AVAILABLE.EDGE.forEach(item => {
   const func = funcName(item.remap)
   const edge = item.edge
-  STYLE_MAP[item.key] = (yoga, value) => setEdge(yoga, func, edge, value)
+  STYLE_MAP[item.key] = value => parseEdge(func, edge, value)
 })
 
-export default function apply(yoga: Yoga.YogaNode, style: any) {
-  for (const key in style) {
-    const func = STYLE_MAP[key]
-    func && func(yoga, style[key])
+// function _apply(yoga: Yoga.YogaNode, style: any) {
+//   for (const key in style) {
+//     const func = STYLE_MAP[key]
+//     func && checkAndRun(yoga, ...func(style[key]))
+//   }
+// }
+
+const cache = new WeakMap<any, StyleParams[]>()
+
+function _apply(yoga: Yoga.YogaNode, style: any) {
+  if (!cache.has(style)) {
+    const _styles: StyleParams[] = []
+    for (const key in style) {
+      const func = STYLE_MAP[key]
+      func && _styles.push(func(style[key]))
+    }
+    cache.set(style, _styles)
+  }
+  const styles = cache.get(style)!
+  for (let i = 0; i < styles.length; i++) {
+    checkAndRun(yoga, ...styles[i])
   }
 }
+
+export default function apply(yoga: Yoga.YogaNode, style: any) {
+  if (style) {
+    if (Array.isArray(style)) {
+      style.forEach(s => _apply(yoga, s))
+    } else {
+      _apply(yoga, style)
+    }
+  }
+} 

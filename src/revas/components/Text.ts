@@ -107,7 +107,8 @@ function getTextFromNode(node: Node) {
 }
 
 function getTextStyleFromNode(node: Node) {
-  const style = { ...DEFAULT_TEXTSTYLE, ...node.props.textStyle }
+  const raw = Array.isArray(node.props.textStyle) ? node.props.textStyle : [node.props.textStyle]
+  const style = Object.assign({}, DEFAULT_TEXTSTYLE, ...raw)
   style.lineHeight = style.lineHeight || (style.fontSize * 1.1)
   return style
 }

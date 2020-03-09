@@ -1,5 +1,5 @@
 import { Node } from "./Node";
-import { getStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "./utils";
+import { getMergedStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "./utils";
 import { observeAnimatedValue } from "./Animated";
 import { Container } from "./Container";
 
@@ -13,7 +13,7 @@ function getRadius(style: any) {
 }
 
 export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Container) {
-  const style = getStyleFromNode(node)
+  const style = getMergedStyleFromNode(node)
   const frame = getFrameFromNode(node)
 
   if (style.opacity <= 0) return
