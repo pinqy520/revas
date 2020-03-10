@@ -1,4 +1,5 @@
 import Yoga from 'yoga-layout-prebuilt'
+import { flatten } from '../utils'
 
 const ALIGN_ENUM = {
   'auto': Yoga.ALIGN_AUTO,
@@ -184,10 +185,6 @@ function _apply(yoga: Yoga.YogaNode, style: any) {
 
 export default function apply(yoga: Yoga.YogaNode, style: any) {
   if (style) {
-    if (Array.isArray(style)) {
-      style.forEach(s => _apply(yoga, s))
-    } else {
-      _apply(yoga, style)
-    }
+    flatten([style]).forEach(s => _apply(yoga, s))
   }
 } 

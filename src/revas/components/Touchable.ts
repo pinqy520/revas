@@ -12,7 +12,7 @@ export default class Touchable extends React.Component<TouchableProps> {
     activeOpacity: 0.7
   }
 
-  opacity = new AnimatedValue(1)
+  _style = { opacity: new AnimatedValue(1) }
 
   private _start?: RevasTouch
   private _tid = ''
@@ -20,7 +20,7 @@ export default class Touchable extends React.Component<TouchableProps> {
   private _onTouchStart = (e: RevasTouchEvent) => {
     this._tid = Object.keys(e.touches)[0]
     this._start = e.touches[this._tid]
-    this.opacity.setValue(this.props.activeOpacity!)
+    this._style.opacity.setValue(this.props.activeOpacity!)
   }
 
   private _onTouchEnd = (e: RevasTouchEvent) => {
@@ -31,7 +31,7 @@ export default class Touchable extends React.Component<TouchableProps> {
 
       }
     }
-    this.opacity.setValue(1)
+    this._style.opacity.setValue(1)
   }
 
   render() {
@@ -39,10 +39,10 @@ export default class Touchable extends React.Component<TouchableProps> {
       onTouchStart: this._onTouchStart,
       onTouchEnd: this._onTouchEnd,
       ...this.props,
-      style: {
-        ...this.props.style,
-        opacity: this.opacity
-      }
+      style: [
+        this.props.style,
+        this._style
+      ]
     })
   }
 }

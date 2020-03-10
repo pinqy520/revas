@@ -17,6 +17,17 @@ export function appendChild(parent: Node, child: Node) {
   child.parent = parent
 }
 
+export function flatten(array: any[]) {
+  var flattend: any[] = [];
+  (function flat(array) {
+    array.forEach(function (el) {
+      if (Array.isArray(el)) flat(el);
+      else flattend.push(el);
+    });
+  })(array);
+  return flattend;
+}
+
 export function removeChild(parent: Node, child: Node) {
   checkAndRemove(parent, child)
   child.parent = void 0
@@ -31,11 +42,7 @@ export function insertBefore(parent: Node, child: Node, before: Node) {
 
 export function getMergedStyleFromNode(node: Node) {
   const { props: { style = EMPTY_ARRAY } } = node
-  if (Array.isArray(style)) {
-    return Object.assign({}, ...style)
-  } else {
-    return style
-  }
+  return Object.assign({}, ...flatten([style]))
 }
 
 export function getFrameFromNode(node: Node) {
@@ -48,11 +55,6 @@ export function sortByZIndexAscending(a: Node, b: Node) {
   const styleB = getMergedStyleFromNode(b)
   return (styleA.zIndex || 0) - (styleB.zIndex || 0);
 }
-
-export function sortByZIndexDescending(a: Node, b: Node) {
-  return -sortByZIndexAscending(a, b)
-}
-
 
 export function clamp(n: number, min: number, max: number) {
   return Math.min(Math.max(n, min), max);

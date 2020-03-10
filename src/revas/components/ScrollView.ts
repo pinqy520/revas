@@ -74,11 +74,12 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
         onTouchMove: this._scroller.touchMove,
         onTouchEnd: this._scroller.touchEnd,
         onLayout: this._onContentLayout,
-        style: {
-          ...this._innerStyle,
-          flexDirection: horizontal ? 'row' : 'column',
-          [horizontal ? 'height' : 'width']: '100%'
-        },
+        style: [
+          this._innerStyle, {
+            flexDirection: horizontal ? 'row' : 'column',
+            [horizontal ? 'height' : 'width']: '100%'
+          }
+        ],
         children
       })
     )

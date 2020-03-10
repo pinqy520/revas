@@ -4,7 +4,7 @@ import {
   DrawTextOptions, DEFAULT_MEASURE
 } from './common/drawText'
 import { NodeProps, Node } from '../core/Node'
-import { getFrameFromNode } from '../core/utils'
+import { getFrameFromNode, flatten } from '../core/utils'
 
 export type TextProps = {
   numberOfLines?: number
@@ -107,8 +107,7 @@ function getTextFromNode(node: Node) {
 }
 
 function getTextStyleFromNode(node: Node) {
-  const raw = Array.isArray(node.props.textStyle) ? node.props.textStyle : [node.props.textStyle]
-  const style = Object.assign({}, DEFAULT_TEXTSTYLE, ...raw)
+  const style = Object.assign({}, DEFAULT_TEXTSTYLE, ...flatten([node.props.textStyle]))
   style.lineHeight = style.lineHeight || (style.fontSize * 1.1)
   return style
 }
