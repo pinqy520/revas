@@ -30,7 +30,7 @@ export default class PlayerApp extends React.Component {
             MUSICS.map(this.renderMusic)
           }
         </ScrollView>
-        {/* <Player /> */}
+        <Player />
       </View>
     )
   }

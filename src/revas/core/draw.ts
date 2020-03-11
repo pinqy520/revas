@@ -16,10 +16,6 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
   const style = getMergedStyleFromNode(node)
   const frame = getFrameFromNode(node)
 
-  if (style.opacity <= 0) return
-
-  ctx.save()   // Area Range
-
   // Animated Styles
   const opacity = observeAnimatedValue(root.draw, style.opacity)
   const translateX = observeAnimatedValue(root.draw, style.translateX, 0)
@@ -28,6 +24,10 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
   const scaleX = observeAnimatedValue(root.draw, style.scaleX, scale)
   const scaleY = observeAnimatedValue(root.draw, style.scaleY, scale)
   const rotate = observeAnimatedValue(root.draw, style.rotate)
+
+  if (opacity <= 0) return
+
+  ctx.save()   // Area Range
 
   // Opacity:
   if (opacity !== null && opacity < 1) {

@@ -1,30 +1,80 @@
 import * as React from 'react'
-import { View, Image, LinearGradient, Text, Touchable, noop } from '../../revas'
+import { View, Image, LinearGradient, Text, Touchable, noop, AnimatedValue, timing, Easing } from '../../revas'
 import { MUSICS } from './data'
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER, CENTER_AREA } from './styles'
 
-const music = MUSICS[2]
+const music = MUSICS[1]
 
 
 
 export default class Player extends React.Component {
+
+  rotate = new AnimatedValue(0)
+  scale = new AnimatedValue(1)
+  bgScale = new AnimatedValue(1.2)
+  translateX = new AnimatedValue(0)
+  opacity = new AnimatedValue(1)
+
+  rotateHandler: any
+
+  onPlay = () => {
+    if (this.rotateHandler) {
+      this.rotateHandler.stop()
+    }
+    this.rotate.setValue(0)
+    this.rotateHandler = timing(this.rotate, {
+      to: 2 * Math.PI,
+      duration: 10000
+    }).start(this.onPlay)
+  }
+
+  onSmall = () => {
+    timing(this.bgScale, {
+      to: 1,
+      duration: 1000,
+    }).start()
+    timing(this.scale, {
+      to: .4,
+      duration: 1000,
+      ease: Easing.elastic()
+    }).start()
+    timing(this.translateX, {
+      to: WINDOW_WIDTH / 2,
+      duration: 1000,
+      ease: Easing.elastic()
+    }).start()
+    timing(this.opacity, {
+      to: 0,
+      duration: 1000,
+      ease: Easing.elastic()
+    }).start()
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Image style={[ABS_FULL, { rotate: Math.PI / 4, scale: 1.12 }]} src={music.cover} />
-        <LinearGradient style={styles.mask} colors={['#00000080', '#00000000']}
-          start={{ x: 0, y: 1 }} end={{ x: 0, y: 0 }} />
-        <View style={styles.main}>
+      <View style={[styles.container, { scale: this.scale, translateX: this.translateX }]}>
+        <View style={[ABS_FULL, {
+          scale: this.bgScale,
+          borderRadius: WINDOW_HEIGHT / 2,
+          overflow: 'hidden'
+        }]}>
+          <Image pointerEvents="none" style={[ABS_FULL, {
+            rotate: this.rotate,
+          }]} src={music.cover} />
+          <LinearGradient style={[styles.mask, { opacity: this.opacity }]} colors={['#00000080', '#00000000']}
+            start={{ x: 0, y: 1 }} end={{ x: 0, y: 0 }} />
+        </View>
+        <View style={[styles.main, { opacity: this.opacity }]}>
           <Text style={styles.name}>Youth (Gryffin Remix)</Text>
           <Text style={styles.singer}>Troye Sivan</Text>
           <View style={styles.progress}>
             <View style={styles.progressIn} />
           </View>
           <View style={styles.controls}>
-            <Touchable onPress={noop} style={styles.btn}>
+            <Touchable onPress={this.onSmall} style={styles.btn}>
               <Image style={styles.btnS} src={require('./assets/btn-prev.png')} />
             </Touchable>
-            <Touchable onPress={noop} style={styles.btn}>
+            <Touchable onPress={this.onPlay} style={styles.btn}>
               <Image style={styles.play} src={require('./assets/btn-play.png')} />
             </Touchable>
             <Touchable onPress={noop} style={styles.btn}>
@@ -47,7 +97,13 @@ const styles = {
     top: 0, left: -(WINDOW_HEIGHT - WINDOW_WIDTH) / 2,
     width: WINDOW_HEIGHT, height: WINDOW_HEIGHT,
     zIndex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: WINDOW_HEIGHT / 2,
+    shadowColor: '#98B3B0',
+    shadowOffsetX: 0,
+    shadowOffsetY: 2,
+    shadowBlur: 50
   },
   mask: {
     position: 'absolute',
