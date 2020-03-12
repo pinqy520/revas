@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, RevasTouchEvent, AnimatedValue } from '../revas'
+import { View, RevasTouchEvent, AnimatedValue } from '../../revas'
 
 export default class Interactable extends React.Component<any, any> {
 
@@ -10,7 +10,8 @@ export default class Interactable extends React.Component<any, any> {
 
   private _style = {
     translateX: new AnimatedValue(this._start.x),
-    translateY: new AnimatedValue(this._start.y)
+    translateY: new AnimatedValue(this._start.y),
+    animated: true
   }
 
   touchStart = (e: RevasTouchEvent) => {

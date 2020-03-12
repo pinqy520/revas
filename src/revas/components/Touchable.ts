@@ -12,7 +12,10 @@ export default class Touchable extends React.Component<TouchableProps> {
     activeOpacity: 0.7
   }
 
-  _style = { opacity: new AnimatedValue(1) }
+  _style = {
+    opacity: new AnimatedValue(1),
+    animated: true
+  }
 
   private _start?: RevasTouch
   private _tid = ''

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Touchable, ScrollView, LinearGradient } from '../revas';
+import { Text, View, Image, Touchable, ScrollView, LinearGradient } from '../../revas';
 import Interactable from './Interactable';
 
 export default function App() {

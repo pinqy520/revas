@@ -4,7 +4,7 @@ import {
   DrawTextOptions, DEFAULT_MEASURE
 } from './common/drawText'
 import { NodeProps, Node } from '../core/Node'
-import { getFrameFromNode, flatten } from '../core/utils'
+import { getFrameFromNode, flatten, applyAnimated } from '../core/utils'
 
 export type TextProps = {
   numberOfLines?: number
@@ -109,6 +109,6 @@ function getTextFromNode(node: Node) {
 function getTextStyleFromNode(node: Node) {
   const style = Object.assign({}, DEFAULT_TEXTSTYLE, ...flatten([node.props.textStyle]))
   style.lineHeight = style.lineHeight || (style.fontSize * 1.1)
-  return style
+  return applyAnimated(style)
 }
 // TODO: nested text support

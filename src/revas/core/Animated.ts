@@ -20,7 +20,9 @@ export class AnimatedValue extends AnimatedNode {
   setValue(value: number) {
     this._value = value
     if (this._observer) {
-      this._observer()
+      const observer = this._observer
+      this._observer = void 0
+      observer()
     }
   }
 
@@ -58,22 +60,6 @@ export class AnimatedInterpolate extends AnimatedNode {
     }
     return 0
   }
-}
-
-export function observeAnimatedValue(observer: Function, value: number | AnimatedNode, defaultValue?: number) {
-  if (value instanceof AnimatedNode)
-    return value.getValue(observer)
-  if (value === undefined)
-    return defaultValue!
-  return value
-}
-
-export function getAnimatedValue(value: number | AnimatedNode, defaultValue?: number) {
-  if (value instanceof AnimatedNode)
-    return value.getValue()
-  if (value === undefined)
-    return defaultValue!
-  return value
 }
 
 export type TimingConfig = {

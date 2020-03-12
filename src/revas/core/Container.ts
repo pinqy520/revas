@@ -38,7 +38,7 @@ export class Container extends Node {
 
   public draw = (reflow = false) => {
     this._reflow = this._reflow || reflow
-    if (this._ready === false) {
+    if (!this._ready) {
       this._next = true;
       return;
     }

@@ -40,9 +40,27 @@ export function insertBefore(parent: Node, child: Node, before: Node) {
   child.parent = parent
 }
 
-export function getMergedStyleFromNode(node: Node) {
+function observeAnimatedValue(value: any, observer?: Function, defaultValue?: number) {
+  if (value === undefined)
+    return defaultValue!
+  if (value && value.getValue)
+    return value.getValue(observer)
+  return value
+}
+
+export function applyAnimated(style: any, callback?: Function) {
+  if (style.animated) {
+    // Animated Styles
+    for (const key in style) {
+      style[key] = observeAnimatedValue(style[key], callback)
+    }
+  }
+  return style
+}
+
+export function getMergedStyleFromNode(node: Node, callback?: Function) {
   const { props: { style = EMPTY_ARRAY } } = node
-  return Object.assign({}, ...flatten([style]))
+  return applyAnimated(Object.assign({}, ...flatten([style])), callback)
 }
 
 export function getFrameFromNode(node: Node) {

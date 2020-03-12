@@ -8,71 +8,94 @@ const music = MUSICS[1]
 
 
 export default class Player extends React.Component {
+  state = {
+    mode: 'normal'
+  }
 
   animated = new AnimatedValue(0)
 
-  rotate = new AnimatedValue(0)
-  scale = this.animated.interpolate(
-    [0, 1],
-    [1, 0.4]
-  )
-  bgScale = this.animated.interpolate(
-    [-1, 0, 1, 2],
-    [1.2, 1.2, 1, 1]
-  )
-  translateX = this.animated.interpolate(
-    [0, 1],
-    [0, WINDOW_WIDTH / 2]
-  )
-  opacity = this.animated.interpolate(
-    [0, 1],
-    [1, 0]
-  )
-
   rotateHandler: any
+
+  _bgStyle = {
+    scale: this.animated.interpolate(
+      [-1, 0, 1, 2],
+      [1.2, 1.2, 1, 1]
+    ),
+    borderRadius: WINDOW_HEIGHT / 2,
+    overflow: 'hidden',
+    animated: true
+  }
+
+  _coverStyle = {
+    rotate: new AnimatedValue(0),
+    animated: true,
+  }
+
+  _containerStyle = {
+    scale: this.animated.interpolate(
+      [0, 1],
+      [1, 0.4]
+    ),
+    translateX: this.animated.interpolate(
+      [0, 1],
+      [0, WINDOW_WIDTH / 2]
+    ),
+    animated: true
+  }
+
+  _opacity = {
+    opacity: this.animated.interpolate(
+      [0, 1],
+      [1, 0]
+    ),
+    animated: true
+  }
 
   onPlay = () => {
     if (this.rotateHandler) {
       this.rotateHandler.stop()
+      this.rotateHandler = void 0
+    } else {
+      this._play()
     }
-    this.rotate.setValue(0)
-    this.rotateHandler = timing(this.rotate, {
-      to: 2 * Math.PI,
-      duration: 10000
-    }).start(this.onPlay)
   }
 
-  onSmall = () => {
-    const value = this.animated.getValue()
-    timing(this.animated, {
-      to: value < 1 ? 1 : 0,
-      duration: 1000,
-      ease: Easing.elastic()
-    }).start()
+  _play = () => {
+    this._coverStyle.rotate.setValue(0)
+    this.rotateHandler = timing(this._coverStyle.rotate, {
+      to: 2 * Math.PI,
+      duration: 10000
+    }).start(this._play)
+  }
+
+  toggle = () => {
+    if (this.state.mode !== 'toggle') {
+      const isNormal = this.state.mode === 'normal'
+      this.setState({ mode: 'toggle' })
+      timing(this.animated, {
+        to: isNormal ? 1 : 0,
+        duration: 1000,
+        ease: Easing.elastic()
+      }).start(() => this.setState({ mode: isNormal ? 'minimal' : 'normal' }))
+    }
   }
 
   render() {
     return (
-      <View style={[styles.container, { scale: this.scale, translateX: this.translateX }]}>
-        <View style={[ABS_FULL, {
-          scale: this.bgScale,
-          borderRadius: WINDOW_HEIGHT / 2,
-          overflow: 'hidden'
-        }]}>
-          <Image pointerEvents="none" style={[ABS_FULL, {
-            rotate: this.rotate,
-          }]} src={music.cover} />
-          <LinearGradient style={[styles.mask, { opacity: this.opacity }]} colors={['#00000080', '#00000000']}
+      <View style={[styles.container, this._containerStyle]}>
+        <View style={[ABS_FULL, this._bgStyle]} pointerEvents="none" >
+          <Image style={[ABS_FULL, this._coverStyle]} src={music.cover} />
+          <LinearGradient style={[styles.mask, this._opacity]} colors={['#00000080', '#00000000']}
             start={{ x: 0, y: 1 }} end={{ x: 0, y: 0 }} />
         </View>
-        <View style={[styles.main, { opacity: this.opacity }]}>
+        <View style={[styles.main, this._opacity]}>
           <Text style={styles.name}>Youth (Gryffin Remix)</Text>
           <Text style={styles.singer}>Troye Sivan</Text>
           <View style={styles.progress}>
             <View style={styles.progressIn} />
           </View>
           <View style={styles.controls}>
-            <Touchable onPress={this.onSmall} style={styles.btn}>
+            <Touchable onPress={this.toggle} style={styles.btn}>
               <Image style={styles.btnS} src={require('./assets/btn-prev.png')} />
             </Touchable>
             <Touchable onPress={this.onPlay} style={styles.btn}>
@@ -84,6 +107,9 @@ export default class Player extends React.Component {
             <Text style={styles.time}>1:03</Text>
           </View>
         </View>
+        {
+          this.state.mode === 'minimal' && <Touchable style={ABS_FULL} onPress={this.toggle} />
+        }
       </View>
     )
   }
@@ -102,7 +128,7 @@ const styles = {
     backgroundColor: '#fff',
     borderRadius: WINDOW_HEIGHT / 2,
     shadowColor: '#98B3B0',
-    shadowOffsetX: 0,
+    shadowOffsetX: 2,
     shadowOffsetY: 2,
     shadowBlur: 50
   },

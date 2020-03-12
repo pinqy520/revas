@@ -18,6 +18,7 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
     translateX: new AnimatedValue(0),
     translateY: new AnimatedValue(0),
     position: 'absolute',
+    animated: true
   }
 
   private _scroller = new Scroller(e => {

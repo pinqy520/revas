@@ -1,6 +1,5 @@
 import { Node } from "./Node";
 import { getMergedStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "./utils";
-import { observeAnimatedValue } from "./Animated";
 import { Container } from "./Container";
 
 function getRadius(style: any) {
@@ -13,40 +12,31 @@ function getRadius(style: any) {
 }
 
 export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Container) {
-  const style = getMergedStyleFromNode(node)
+  const style = getMergedStyleFromNode(node, root.draw)
   const frame = getFrameFromNode(node)
 
-  // Animated Styles
-  const opacity = observeAnimatedValue(root.draw, style.opacity)
-  const translateX = observeAnimatedValue(root.draw, style.translateX, 0)
-  const translateY = observeAnimatedValue(root.draw, style.translateY, 0)
-  const scale = observeAnimatedValue(root.draw, style.scale)
-  const scaleX = observeAnimatedValue(root.draw, style.scaleX, scale)
-  const scaleY = observeAnimatedValue(root.draw, style.scaleY, scale)
-  const rotate = observeAnimatedValue(root.draw, style.rotate)
-
-  if (opacity <= 0) return
+  if (style.opacity <= 0) return
 
   ctx.save()   // Area Range
 
   // Opacity:
-  if (opacity !== null && opacity < 1) {
-    ctx.globalAlpha = opacity;
+  if (style.opacity !== null && style.opacity < 1) {
+    ctx.globalAlpha = style.opacity;
   }
   // Translation:
-  if (translateX || translateY) {
-    ctx.translate(translateX, translateY);
+  if (style.translateX || style.translateY) {
+    ctx.translate(style.translateX || 0, style.translateY || 0);
   }
   // Rotate && Scale
-  if (rotate || scaleX || scaleY) {
+  if (style.rotate || style.scaleX || style.scaleY || style.scale) {
     // Origin Center
     const originX = frame.x + frame.width / 2
     const originY = frame.y + frame.height / 2
     ctx.translate(originX, originY);
-    if (rotate)
-      ctx.rotate(rotate);
-    if (scaleX || scaleY)
-      ctx.scale(scaleX, scaleY);
+    if (style.rotate)
+      ctx.rotate(style.rotate);
+    if (style.scaleX || style.scaleY || style.scale)
+      ctx.scale(style.scaleX || style.scale, style.scaleY || style.scale);
     ctx.translate(-originX, -originY);
   }
 

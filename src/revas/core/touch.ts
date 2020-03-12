@@ -1,6 +1,5 @@
 import { getFrameFromNode, getMergedStyleFromNode, sortByZIndexAscending } from "./utils"
 import { Node, RevasTouchEvent, RevasTouchType, RevasTouch } from "./Node"
-import { getAnimatedValue } from "./Animated"
 
 function scaled(x: number, c: number, s = 1) {
   if (!s && s === 1) return x
@@ -15,16 +14,13 @@ function findNodeByPoint(node: Node, x: number, y: number): Node | void {
   const frame = getFrameFromNode(node)
 
   // tranlate
-  const translateX = getAnimatedValue(style.translateX, 0)
-  const translateY = getAnimatedValue(style.translateY, 0)
-  const scale = getAnimatedValue(style.scale)
-  const scaleX = getAnimatedValue(style.scaleX, scale)
-  const scaleY = getAnimatedValue(style.scaleY, scale)
+  const scaleX = style.scaleX || style.scale
+  const scaleY = style.scaleY || style.scale
   const originX = frame.width / 2 + frame.x
   const originY = frame.height / 2 + frame.y
 
-  x -= translateX
-  y -= translateY
+  x -= style.translateX || 0
+  y -= style.translateY || 0
   x = scaled(x, originX, scaleX)
   y = scaled(y, originY, scaleY)
 
