@@ -1,14 +1,23 @@
 import bezier from 'bezier-easing'
 
-export class AnimatedValue<T> {
+export abstract class AnimatedNode {
+
+  abstract getValue(observer?: Function): number
+
+  interpolate(inRange: number[], outRange: number[], ease = Easing.linear): AnimatedInterpolate {
+    return new AnimatedInterpolate(this, inRange, outRange, ease)
+  }
+}
+
+export class AnimatedValue extends AnimatedNode {
   // TODO: tempor
   private _observer?: Function
 
   constructor(
-    private _value: T
-  ) { }
+    private _value: number
+  ) { super() }
 
-  setValue(value: T) {
+  setValue(value: number) {
     this._value = value
     if (this._observer) {
       this._observer()
@@ -22,16 +31,45 @@ export class AnimatedValue<T> {
   }
 }
 
-export function observeAnimatedValue<T>(observer: Function, value: T | AnimatedValue<T>, defaultValue?: T): T {
-  if (value instanceof AnimatedValue)
+export class AnimatedInterpolate extends AnimatedNode {
+  constructor(
+    private source: AnimatedNode,
+    private inRange: number[],
+    private outRange: number[],
+    private ease: (t: number) => number
+  ) { super() }
+  // TODO: Check inRange is asc  
+
+
+  getValue(observer?: Function) {
+    const value = this.source.getValue(observer)
+    const len = this.inRange.length
+    let i = 1
+    for (; i < len; i++) {
+      const x1 = this.inRange[i]
+      if (value < x1 || i === len - 1) {
+        const x0 = this.inRange[i - 1]
+        const y0 = this.outRange[i - 1]
+        const y1 = this.outRange[i]
+        const percent = (value - x0) / (x1 - x0)
+        const result = (y1 - y0) * this.ease(percent) + y0
+        return result
+      }
+    }
+    return 0
+  }
+}
+
+export function observeAnimatedValue(observer: Function, value: number | AnimatedNode, defaultValue?: number) {
+  if (value instanceof AnimatedNode)
     return value.getValue(observer)
   if (value === undefined)
     return defaultValue!
   return value
 }
 
-export function getAnimatedValue<T>(value: T | AnimatedValue<T>, defaultValue?: T): T {
-  if (value instanceof AnimatedValue)
+export function getAnimatedValue(value: number | AnimatedNode, defaultValue?: number) {
+  if (value instanceof AnimatedNode)
     return value.getValue()
   if (value === undefined)
     return defaultValue!
@@ -51,7 +89,7 @@ export class AnimatedTiming {
   private _next = 0
 
   constructor(
-    private value: AnimatedValue<any>,
+    private value: AnimatedValue,
     private config: TimingConfig
   ) { }
 
@@ -87,7 +125,7 @@ export class AnimatedTiming {
 
 }
 
-export function timing(value: AnimatedValue<any>, config: TimingConfig) {
+export function timing(value: AnimatedValue, config: TimingConfig) {
   return new AnimatedTiming(value, config)
 }
 

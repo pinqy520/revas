@@ -9,11 +9,25 @@ const music = MUSICS[1]
 
 export default class Player extends React.Component {
 
+  animated = new AnimatedValue(0)
+
   rotate = new AnimatedValue(0)
-  scale = new AnimatedValue(1)
-  bgScale = new AnimatedValue(1.2)
-  translateX = new AnimatedValue(0)
-  opacity = new AnimatedValue(1)
+  scale = this.animated.interpolate(
+    [0, 1],
+    [1, 0.4]
+  )
+  bgScale = this.animated.interpolate(
+    [-1, 0, 1, 2],
+    [1.2, 1.2, 1, 1]
+  )
+  translateX = this.animated.interpolate(
+    [0, 1],
+    [0, WINDOW_WIDTH / 2]
+  )
+  opacity = this.animated.interpolate(
+    [0, 1],
+    [1, 0]
+  )
 
   rotateHandler: any
 
@@ -29,22 +43,9 @@ export default class Player extends React.Component {
   }
 
   onSmall = () => {
-    timing(this.bgScale, {
-      to: 1,
-      duration: 1000,
-    }).start()
-    timing(this.scale, {
-      to: .4,
-      duration: 1000,
-      ease: Easing.elastic()
-    }).start()
-    timing(this.translateX, {
-      to: WINDOW_WIDTH / 2,
-      duration: 1000,
-      ease: Easing.elastic()
-    }).start()
-    timing(this.opacity, {
-      to: 0,
+    const value = this.animated.getValue()
+    timing(this.animated, {
+      to: value < 1 ? 1 : 0,
       duration: 1000,
       ease: Easing.elastic()
     }).start()
