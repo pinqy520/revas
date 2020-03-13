@@ -26,8 +26,10 @@
 </head>
 
 <body> </body>
-<script src="//mrdoob.github.io/stats.js/build/stats.min.js"></script>
-<script>
+<script src="%PUBLIC_URL%/touch-emulator.js"></script>
+<script src="%PUBLIC_URL%/stats.min.js"></script>
+<script type="text/javascript">
+  TouchEmulator();
   const stats = new Stats();
   stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
   stats.dom.style.margin = '5px'
@@ -41,9 +43,7 @@
     Promise.resolve().then(stats.end)
     requestAnimationFrame(animate);
   }
-
   requestAnimationFrame(animate);
-
 </script>
 
 </html>

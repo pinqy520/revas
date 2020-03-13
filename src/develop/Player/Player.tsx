@@ -85,7 +85,7 @@ export default class Player extends React.Component {
       <View style={[styles.container, this._containerStyle]}>
         <View style={[ABS_FULL, this._bgStyle]} pointerEvents="none" >
           <Image style={[ABS_FULL, this._coverStyle]} src={music.cover} />
-          <LinearGradient style={[styles.mask, this._opacity]} colors={['#00000080', '#00000000']}
+          <LinearGradient style={[styles.mask, this._opacity]} colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
             start={{ x: 0, y: 1 }} end={{ x: 0, y: 0 }} />
         </View>
         <View style={[styles.main, this._opacity]}>
@@ -134,7 +134,7 @@ const styles = {
   },
   mask: {
     position: 'absolute',
-    top: '50%', left: 0, bottom: 0, right: 0,
+    top: WINDOW_HEIGHT / 2, left: 0, bottom: 0, right: 0,
   },
   main: {
     width: WINDOW_WIDTH,
