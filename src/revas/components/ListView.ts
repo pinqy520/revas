@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { RevasScrollEvent } from './common/Scroller'
-import { ScrollViewProps } from './ScrollView'
-import { ScrollView } from '../common'
+import ScrollView, { ScrollViewProps } from './ScrollView'
 import View from './View'
 import { Frame } from '../core/Node'
 
