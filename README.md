@@ -99,6 +99,16 @@ In the following example, we make use of `React.useEffect()` to invoke `revas.re
   colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
 ```
 
+### ListView
+
+```jsx
+<ListView
+  data={[1, 2, 3, 4, 5, 12, 123, 1, 23, 2]} style={styles.scrollNested} 
+  getItemHeight={() => 80} renderItem={(item, index) => (
+    <View style={{ height: 80, backgroundColor: (index % 2) > 0 ? 'white' : 'black' }} />
+  )} />
+```
+
 
 ## API
 

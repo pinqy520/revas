@@ -88,6 +88,16 @@ render(
   colors={['#9254DE', '#B37FEB', '#91D5FF', '#40A9FF']} />
 ```
 
+### ListView
+
+```jsx
+<ListView
+  data={[1, 2, 3, 4, 5, 12, 123, 1, 23, 2]} style={styles.scrollNested} 
+  getItemHeight={() => 80} renderItem={(item, index) => (
+    <View style={{ height: 80, backgroundColor: (index % 2) > 0 ? 'white' : 'black' }} />
+  )} />
+```
+
 ## API
 
 ## AnimatedValue
@@ -173,8 +183,8 @@ function Comp() {
 
 - [x] 交互事件机制
 - [x] ScrollView基础滑动组件
-- [ ] ListView、FlatList等高性能滑动组件
-- [ ] Animated动画高效控制
+- [x] ListView、FlatList等高性能滑动组件
+- [x] Animated动画高效控制
 - [ ] Native Canvas API
 - [ ] Canvas通用化离屏渲染方案
 - [ ] WebAssembly & GPU
