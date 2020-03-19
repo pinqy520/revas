@@ -22,8 +22,9 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
   }
 
   private _scroller = new Scroller(e => {
-    this._innerStyle.translateX.setValue(-e.x)
-    this._innerStyle.translateY.setValue(-e.y)
+    this.props.horizontal
+      ? this._innerStyle.translateX.setValue(-e.x)
+      : this._innerStyle.translateY.setValue(-e.y)
     this.props.onScroll && this.props.onScroll(e)
   })
 
@@ -36,6 +37,7 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
       this._width = frame.width
       this._checkLayout()
     }
+    this.props.onLayout && this.props.onLayout(frame)
   }
 
   private _onContentLayout = (frame: Frame) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Touchable, ScrollView, LinearGradient } from '../../revas';
+import { Text, View, Image, Touchable, ScrollView, LinearGradient, ListView } from '../../revas';
 import Interactable from './Interactable';
 
 export default function App() {
@@ -29,14 +29,11 @@ export default function App() {
         <View style={styles.item2} />
         <View style={styles.item3} />
         <View style={styles.item4} />
-        <ScrollView style={styles.scrollNested}>
-          <View style={{ height: 80, backgroundColor: 'black' }} />
-          <View style={{ height: 80, backgroundColor: 'white' }} />
-          <View style={{ height: 80, backgroundColor: 'black' }} />
-          <View style={{ height: 80, backgroundColor: 'white' }} />
-          <View style={{ height: 80, backgroundColor: 'black' }} />
-          <View style={{ height: 80, backgroundColor: 'white' }} />
-        </ScrollView>
+        <ListView
+          data={[1, 2, 3, 4, 5, 12, 123, 1, 23, 2]}
+          style={styles.scrollNested} getItemHeight={() => 80} renderItem={(item, index) => (
+            <View style={{ height: 80, backgroundColor: (index % 2) > 0 ? 'white' : 'black' }} />
+          )} />
         <View style={styles.item1} />
         <View style={styles.item2} />
         <View style={styles.item3} />

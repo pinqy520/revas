@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, ScrollView, Text, LinearGradient, Image, Touchable } from '../../revas'
+import { View, Text, LinearGradient, Image, Touchable, ListView } from '../../revas'
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER } from './styles'
 import { MUSICS, MusicItemData } from './data'
 import Player from './Player'
@@ -25,11 +25,7 @@ export default class PlayerApp extends React.Component {
         <Touchable onPress={() => alert(1)} style={styles.title}>
           <Text style={styles.titleText}>Playlist</Text>
         </Touchable>
-        <ScrollView style={styles.list}>
-          {
-            MUSICS.map(this.renderMusic)
-          }
-        </ScrollView>
+        <ListView style={styles.list} renderItem={this.renderMusic} data={MUSICS} getItemHeight={() => 113} />
         <Player />
       </View>
     )

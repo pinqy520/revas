@@ -6,7 +6,8 @@ export interface RevasScrollEvent {
   y: number,
   vx: number,
   vy: number,
-  timestamp: number
+  timestamp: number,
+  tid: string
 }
 
 export default class Scroller {
@@ -109,8 +110,8 @@ export default class Scroller {
     const timestamp = Date.now()
     const duration = timestamp - this._timestamp
     this._timestamp = timestamp
+    this.emit()
     if (this._x.afterEnd(duration) || this._y.afterEnd(duration)) {
-      this.emit()
       requestAnimationFrame(this.afterEnd)
     }
   }
@@ -119,7 +120,7 @@ export default class Scroller {
     this.listener({
       x: this._x.offset, vx: this._x.velocity,
       y: this._y.offset, vy: this._y.velocity,
-      timestamp: this._timestamp
+      timestamp: this._timestamp, tid: this._tid
     })
   }
 }
