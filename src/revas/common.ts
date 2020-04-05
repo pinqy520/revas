@@ -20,5 +20,7 @@ export * from './core/Node'
 export * from './core/Container'
 export * from './core/Animated'
 
+export * from './components/common/Scroller'
+
 export { renderer }
 export { View, Text, Image, Touchable, ScrollView, ListView, LinearGradient }

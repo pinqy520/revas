@@ -70,7 +70,10 @@ export default class ListView extends React.Component<ListViewProps<any>> {
     }
   }
 
-  private _onScroll = (e: RevasScrollEvent) => this.checkVisible(e.y, e.tid)
+  private _onScroll = (e: RevasScrollEvent) => {
+    this.checkVisible(e.y, e.tid)
+    this.props.onScroll && this.props.onScroll(e)
+  }
 
   private _onLayout = (frame: Frame) => {
     this._height = frame.height
