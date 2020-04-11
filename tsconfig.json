@@ -17,6 +17,7 @@
     "isolatedModules": true,
     "declaration": true,
     "declarationDir": "dist/types",
+    "outDir": "dist/raw",
     "noEmit": true,
     "jsx": "react",
     "allowJs": true

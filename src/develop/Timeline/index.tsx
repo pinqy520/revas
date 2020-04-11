@@ -47,7 +47,11 @@ function createItemTextStyle(index: number, animated: AnimatedValue) {
     [offset, offset + WINDOW_HEIGHT],
     [-WINDOW_HEIGHT / 2, 0]
   )
-  return [styles.text, { translateY, animated: true }]
+  const opacity = animated.interpolate(
+    [offset + (WINDOW_HEIGHT / 2), offset + WINDOW_HEIGHT, offset + (2 * WINDOW_HEIGHT)],
+    [0, 1, 0]
+  )
+  return [styles.text, { translateY, opacity, animated: true }]
 }
 
 const WINDOW_HEIGHT = window.innerHeight
@@ -68,6 +72,7 @@ const styles = {
   text: {
     padding: 10,
     fontSize: 16,
-    lineHeight: 25
+    lineHeight: 26,
+    color: '#333'
   }
 }

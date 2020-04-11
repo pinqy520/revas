@@ -31,7 +31,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "react": "^16.13.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "3.2.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -60,9 +60,9 @@
       "not op_mini all"
     ],
     "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
     ]
   }
 }
