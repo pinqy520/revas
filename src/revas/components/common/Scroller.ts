@@ -38,6 +38,14 @@ export default class Scroller {
     return this._y.max
   }
 
+  set pagingX(value: number) {
+    this._x.paging = value
+  }
+
+  set pagingY(value: number) {
+    this._y.paging = value
+  }
+
   private _sign(e: RevasTouchEvent) {
     e.scroll = { ...e.scroll, x: true, y: true, }
     const stopPropagation = e.scroll.stopPropagation || noop
@@ -111,7 +119,7 @@ export default class Scroller {
     const duration = timestamp - this._timestamp
     this._timestamp = timestamp
     this.emit()
-    if (this._x.afterEnd(duration) || this._y.afterEnd(duration)) {
+    if (this.horizontal ? this._x.afterEnd(duration) : this._y.afterEnd(duration)) {
       requestAnimationFrame(this.afterEnd)
     }
   }
@@ -129,6 +137,7 @@ class Handler {
   offset = 0
   velocity = 0
   max = -1
+  paging = 0
 
   private _last = -1
 
@@ -154,8 +163,19 @@ class Handler {
 
   afterEnd(duration: number) {
     if (this._last < 0) {
-      if (Math.abs(this.velocity) > 0.05) {
-        this.velocity = friction(this.velocity, duration)
+      if (this.paging > 0 && Math.abs(this.velocity) < 3) {
+        const distance = Math.round(this.offset / this.paging) * this.paging - this.offset
+        this.velocity = distance / 2000 + friction(this.velocity, duration, 0.01)
+        if (Math.abs(distance) > 0.1 || Math.abs(this.velocity) > 1) {
+          const move = this.velocity * duration
+          this.change(move)
+          return true
+        } else {
+          this.change(distance)
+        }
+      } else if (Math.abs(this.velocity) > 0.05) {
+        this.velocity = clamp(-10, this.velocity, 10)
+        this.velocity = friction(this.velocity, duration, 0.003)
         const move = this.velocity * duration
         this.change(move)
         return true
@@ -177,6 +197,6 @@ class Handler {
   }
 }
 
-function friction(v: number, duration: number) {
-  return v - (duration * 0.004 * v)
+function friction(v: number, duration: number, factor: number) {
+  return v - (Math.min(duration * factor, 1) * v)
 }

@@ -6,6 +6,7 @@ import { AnimatedValue } from '../core/Animated'
 export type ScrollViewProps = {
   horizontal?: boolean
   onScroll?: (e: RevasScrollEvent) => any
+  paging?: boolean
 } & NodeProps
 
 export default class ScrollView extends React.Component<ScrollViewProps> {
@@ -36,6 +37,10 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
       this._height = frame.height
       this._width = frame.width
       this._checkLayout()
+      if (this.props.paging) {
+        this._scroller.pagingX = frame.width
+        this._scroller.pagingY = frame.height
+      }
     }
     this.props.onLayout && this.props.onLayout(frame)
   }

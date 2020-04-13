@@ -42,7 +42,7 @@ export default class TimelineApp extends React.Component {
   render() {
     return (
       <ListView
-        data={data}
+        data={data} paging
         renderItem={this.renderItem}
         getItemHeight={this.getItemHeight}
         onScroll={this.onScroll} style={styles.container}
@@ -65,7 +65,7 @@ function createItemTextStyle(index: number, animated: AnimatedValue) {
 }
 
 const WINDOW_HEIGHT = window.innerHeight
-const MAX_LINES = Math.floor((WINDOW_HEIGHT / 3 - 20) / 22)
+const MAX_LINES = Math.floor((WINDOW_HEIGHT / 3 - 20) / 26)
 
 const styles = {
   container: {
@@ -73,24 +73,24 @@ const styles = {
   },
   item: {
     height: WINDOW_HEIGHT,
-    // overflow: 'hidden'
   },
   cover: {
-    backgroundColor: '#fafafa',
+    backgroundColor: '#eee',
     height: WINDOW_HEIGHT / 2,
     zIndex: 1,
   },
   title: {
     marginBottom: 10,
-    fontSize: 20,
-    lineHeight: 26,
-    fontWeight: 'bold',
-    color: '#333'
+    fontSize: 26,
+    lineHeight: 34,
+    fontWeight: '800',
+    color: '#333',
+    fontFamily: 'serif'
   },
   text: {
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: 18,
+    lineHeight: 26,
     color: '#333',
-    opacity: 0.8
+    fontFamily: 'fantasy'
   }
 }
