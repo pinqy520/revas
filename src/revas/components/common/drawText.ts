@@ -28,12 +28,12 @@ function measureLines(
     if (force || text) lines.push({ width, text })
     if (cursor < chars.length && numberOfLines > 0 && lines.length >= numberOfLines) {
       const lastLine = lines[lines.length - 1]
-      lastLine.text = lastLine.text + '...'
+      lastLine.text = lastLine.text.slice(0, -3) + '...'
       lastLine.width = ctx.measureText(lastLine.text).width
       cursor = chars.length + 1
     } else {
       width = charWidth
-      text = char
+      text = char.trim()
     }
   }
   while (cursor++ <= chars.length) {
