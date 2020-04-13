@@ -29,8 +29,8 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
     || style.borderBottomRightRadius
   const hasClip = style.overflow === 'hidden'
 
-  const useFrame = hasBG || hasBorder || hasClip
-  const usePath = hasRadius || hasClip
+  const useFrame = hasBG || hasBorder || hasClip || style.path
+  const usePath = hasRadius || hasClip || style.path
   const useSave = hasTransform || hasClip
 
   if (useSave)

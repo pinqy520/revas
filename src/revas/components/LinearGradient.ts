@@ -8,7 +8,7 @@ export type LinearGradientProps = {
   colors: string[]
 } & NodeProps
 
-const DEFAULT_STYLE = { backgroundColor: 'black' }
+const DEFAULT_STYLE = { path: true }
 
 export default class LinearGradient extends React.Component<LinearGradientProps> {
 
