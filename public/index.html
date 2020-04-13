@@ -23,6 +23,8 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <title>Revas</title>
+  <script src="%PUBLIC_URL%/touch-emulator.js"></script>
+  <script src="%PUBLIC_URL%/stats.min.js"></script>
   <!-- <script src="//cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
   <script>
@@ -31,8 +33,6 @@
 </head>
 
 <body> </body>
-<script src="%PUBLIC_URL%/touch-emulator.js"></script>
-<script src="%PUBLIC_URL%/stats.min.js"></script>
 <script type="text/javascript">
   TouchEmulator();
   const stats = new Stats();
@@ -45,7 +45,7 @@
     stats.begin();
 
     // monitored code goes here
-    Promise.resolve().then(stats.end)
+    stats.end()
     requestAnimationFrame(animate);
   }
   requestAnimationFrame(animate);

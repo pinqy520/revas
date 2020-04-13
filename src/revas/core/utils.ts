@@ -89,6 +89,35 @@ export function getWords(str: string): readonly string[] {
   return str.match(WORD_RANGE) || EMPTY_ARRAY
 }
 
+export function setShadow(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, blur: number) {
+  if (color) {
+    const { shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY } = ctx
+    ctx.shadowBlur = blur;
+    ctx.shadowColor = color;
+    ctx.shadowOffsetX = x;
+    ctx.shadowOffsetY = y;
+    return () => {
+      ctx.shadowBlur = shadowBlur;
+      ctx.shadowColor = shadowColor;
+      ctx.shadowOffsetX = shadowOffsetX;
+      ctx.shadowOffsetY = shadowOffsetY;
+    }
+  }
+  return noop
+}
+
+export function pushOpacity(ctx: CanvasRenderingContext2D, opacity: number) {
+  if (opacity !== null && opacity < 1 && opacity >= 0) {
+    const cachedOpacity = ctx.globalAlpha || 1
+    ctx.globalAlpha = cachedOpacity * opacity
+    return () => {
+      ctx.globalAlpha = cachedOpacity
+    }
+  }
+  return noop
+}
+
+
 export type RevasAdapter = {
   createImage: () => HTMLImageElement
   createOffscreenCanvas?: () => HTMLCanvasElement

@@ -63,7 +63,7 @@ const styles = {
   },
   item: {
     height: WINDOW_HEIGHT,
-    overflow: 'hidden'
+    // overflow: 'hidden'
   },
   cover: {
     height: WINDOW_HEIGHT / 2,

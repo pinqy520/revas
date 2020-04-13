@@ -1,5 +1,5 @@
 import { Node } from "./Node";
-import { getMergedStyleFromNode, getFrameFromNode, sortByZIndexAscending } from "./utils";
+import { getMergedStyleFromNode, getFrameFromNode, sortByZIndexAscending, setShadow, pushOpacity } from "./utils";
 import { Container } from "./Container";
 
 function getRadius(style: any) {
@@ -17,12 +17,28 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
 
   if (style.opacity <= 0) return
 
-  ctx.save()   // Area Range
+  // flags
+  const hasTransform = style.translateX || style.translateY
+    || style.rotate || style.scaleX || style.scaleY || style.scale
+  const hasBG = style.backgroundColor && style.backgroundColor !== 'transparent'
+  const hasBorder = style.borderColor && style.borderWidth > 0
+  const hasRadius = style.borderRadius
+    || style.borderTopLeftRadius
+    || style.borderTopRightRadius
+    || style.borderBottomLeftRadius
+    || style.borderBottomRightRadius
+  const hasClip = style.overflow === 'hidden'
+
+  const useFrame = hasBG || hasBorder || hasClip
+  const usePath = hasRadius || hasClip
+  const useSave = hasTransform || hasClip
+
+  if (useSave)
+    ctx.save()   // Area Range
 
   // Opacity:
-  if (style.opacity !== null && style.opacity < 1) {
-    ctx.globalAlpha = style.opacity;
-  }
+  const popOpacity = pushOpacity(ctx, style.opacity)
+
   // Translation:
   if (style.translateX || style.translateY) {
     ctx.translate(style.translateX || 0, style.translateY || 0);
@@ -41,46 +57,62 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
   }
 
 
-  // Draw Path
-  const radius = getRadius(style)
-  ctx.beginPath();
-  ctx.moveTo(frame.x + radius.tl, frame.y);
-  ctx.arcTo(frame.x + frame.width, frame.y, frame.x + frame.width, frame.y + frame.height, radius.tr);
-  ctx.arcTo(frame.x + frame.width, frame.y + frame.height, frame.x, frame.y + frame.height, radius.br);
-  ctx.arcTo(frame.x, frame.y + frame.height, frame.x, frame.y, radius.bl);
-  ctx.arcTo(frame.x, frame.y, frame.x + frame.width, frame.y, radius.tl);
-  ctx.closePath();
+  if (useFrame) {
 
-  if (style.overflow === 'hidden')
-    ctx.clip()
+    if (usePath) {
+      // Draw Path
+      ctx.beginPath();
+      if (hasRadius) {
+        const radius = getRadius(style)
+        ctx.moveTo(frame.x + radius.tl, frame.y);
+        ctx.arcTo(frame.x + frame.width, frame.y, frame.x + frame.width, frame.y + frame.height, radius.tr);
+        ctx.arcTo(frame.x + frame.width, frame.y + frame.height, frame.x, frame.y + frame.height, radius.br);
+        ctx.arcTo(frame.x, frame.y + frame.height, frame.x, frame.y, radius.bl);
+        ctx.arcTo(frame.x, frame.y, frame.x + frame.width, frame.y, radius.tl);
+      } else {
+        ctx.rect(frame.x, frame.y, frame.width, frame.height)
+      }
+      ctx.closePath();
 
-  ctx.save()   // Draw Self Start
-  // Background color & Shadow
-  const background = style.backgroundColor || 'transparent'
-  if (background !== 'transparent') {
-    // Shadow:
-    if (style.shadowColor) {
-      ctx.shadowBlur = style.shadowBlur;
-      ctx.shadowColor = style.shadowColor;
-      ctx.shadowOffsetX = style.shadowOffsetX;
-      ctx.shadowOffsetY = style.shadowOffsetY;
+      if (hasClip)
+        ctx.clip()
     }
-    ctx.fillStyle = background;
-    ctx.fill();
-  }
 
-  // Border with border radius:
-  if (style.borderColor && style.borderWidth > 0) {
-    ctx.lineWidth = style.borderWidth;
-    ctx.strokeStyle = style.borderColor;
-    ctx.stroke();
+    if (hasBG || hasBorder) {
+      // Shadow:
+      const resetShadow = setShadow(
+        ctx,
+        style.shadowColor,
+        style.shadowOffsetX,
+        style.shadowOffsetY,
+        style.shadowBlur,
+      )
+      // Background color & Shadow
+      if (hasBG) {
+        ctx.fillStyle = style.backgroundColor;
+        if (usePath) {
+          ctx.fill();
+        } else {
+          ctx.fillRect(frame.x, frame.y, frame.width, frame.height)
+        }
+      }
+
+      // Border with border radius:
+      if (hasBorder) {
+        ctx.lineWidth = style.borderWidth;
+        ctx.strokeStyle = style.borderColor;
+        if (usePath) {
+          ctx.stroke();
+        } else {
+          ctx.strokeRect(frame.x, frame.y, frame.width, frame.height)
+        }
+      }
+      resetShadow()
+    }
   }
-  ctx.restore() // Draw Self  End
 
   if (node.props.customDrawer) {
-    ctx.save() // Draw Inner
     node.props.customDrawer(ctx, node);
-    ctx.restore()
   }
 
   // Draw child layers, sorted by their z-index.
@@ -91,5 +123,9 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
       drawNode(ctx, child, root);
     });
 
-  ctx.restore()
+  popOpacity()
+
+  if (useSave)
+    ctx.restore()
 }
+

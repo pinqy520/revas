@@ -4,9 +4,12 @@ import { Container } from '../core/Container'
 import { RevasTouch, RevasTouchEvent } from '../core/Node'
 
 function createRevasTouchEvent(e: TouchEvent): RevasTouchEvent {
+  e.preventDefault()
+  e.stopPropagation()
   const touches: { [key: number]: RevasTouch } = {}
   const type: any = e.type === 'touchcancel' ? 'touchend' : e.type
-  Object.values(e.changedTouches).forEach(touch => {
+  Object.keys(e.changedTouches).forEach((key: any) => {
+    const touch = e.changedTouches[key]
     if (touch && touch.target) {
       const { offsetLeft, offsetTop } = touch.target as HTMLCanvasElement
       touches[touch.identifier] = {

@@ -1,5 +1,5 @@
 import { Frame } from "../../core/Node"
-import { getChars, getWords } from "../../core/utils"
+import { getChars, getWords, setShadow } from "../../core/utils"
 
 export interface DrawTextOptions {
   textStyle: any,
@@ -92,12 +92,13 @@ export function drawText(ctx: CanvasRenderingContext2D, options: DrawTextOptions
   const { textStyle: style, frame } = options
 
   // Shadow:
-  if (style.textShadowColor) {
-    ctx.shadowBlur = style.textShadowBlur;
-    ctx.shadowColor = style.textShadowColor;
-    ctx.shadowOffsetX = style.textShadowOffsetX;
-    ctx.shadowOffsetY = style.textShadowOffsetY;
-  }
+  const resetShadow = setShadow(
+    ctx,
+    style.textShadowColor,
+    style.textShadowOffsetX,
+    style.textShadowOffsetY,
+    style.textShadowBlur,
+  )
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
@@ -112,4 +113,5 @@ export function drawText(ctx: CanvasRenderingContext2D, options: DrawTextOptions
     }
     ctx.fillText(line.text, x, style.lineHeight * (i + 0.5) + frame.y);
   }
+  resetShadow()
 }
