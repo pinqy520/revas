@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from './revas'
-import App from './develop/Timeline';
+import App from './develop/Intro';
 import * as serviceWorker from './develop/serviceWorker';
 import createCanvas from './develop/createCanvas'
 

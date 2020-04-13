@@ -53,10 +53,10 @@ const styles = {
     padding: 20,
     margin: 10,
     borderRadius: 10,
-    shadowBlur: 20,
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    shadowOffsetX: 0,
-    shadowOffsetY: 5,
+    // shadowBlur: 20,
+    // shadowColor: 'rgba(0, 0, 0, 0.2)',
+    // shadowOffsetX: 0,
+    // shadowOffsetY: 5,
     backgroundColor: '#fff',
     // alignItems: 'center',
     zIndex: 1,
@@ -64,7 +64,7 @@ const styles = {
   },
   decorator: {
     height: 4, borderRadius: 2,
-    margin: 10, marginLeft: 40, marginRight: 40
+    margin: 10, marginLeft: 40, marginRight: 40,
   },
   title: {
     fontSize: 20,
@@ -85,7 +85,7 @@ const styles = {
     // width: 200,
     height: 100,
     borderRadius: 10,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     resizeMode: 'contain'
   },
   btn: {
@@ -110,5 +110,8 @@ const styles = {
   item2: { height: 80, backgroundColor: '#40A9FF' },
   item3: { height: 80, backgroundColor: '#9254DE' },
   item4: { height: 80, backgroundColor: '#91D5FF' },
-  scrollNested: { height: 150, overflow: 'hidden' }
+  scrollNested: {
+    height: 150,
+    overflow: 'hidden'
+  }
 }
