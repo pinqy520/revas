@@ -163,10 +163,10 @@ class Handler {
 
   afterEnd(duration: number) {
     if (this._last < 0) {
-      if (this.paging > 0 && Math.abs(this.velocity) < 3) {
-        const distance = Math.round(this.offset / this.paging) * this.paging - this.offset
+      if (this.paging > 0 && Math.abs(this.velocity) < 0.5) {
+        const distance = Math.round(this.offset / this.paging + this.velocity) * this.paging - this.offset
         this.velocity = distance / 2000 + friction(this.velocity, duration, 0.01)
-        if (Math.abs(distance) > 0.1 || Math.abs(this.velocity) > 1) {
+        if (Math.abs(distance) > 0.1) {
           const move = this.velocity * duration
           this.change(move)
           return true
@@ -174,7 +174,7 @@ class Handler {
           this.change(distance)
         }
       } else if (Math.abs(this.velocity) > 0.05) {
-        this.velocity = clamp(-10, this.velocity, 10)
+        this.velocity = clamp(-8, this.velocity, 8)
         this.velocity = friction(this.velocity, duration, 0.003)
         const move = this.velocity * duration
         this.change(move)

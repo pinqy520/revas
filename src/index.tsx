@@ -1,8 +1,8 @@
 import React from 'react';
-import { render } from './revas'
-import App from './develop/Timeline';
+import { render } from './revas';
+import App from './develop/App';
 import * as serviceWorker from './develop/serviceWorker';
-import createCanvas from './develop/createCanvas'
+import createCanvas from './develop/createCanvas';
 
 import './develop/index.css';
 
@@ -10,7 +10,7 @@ import './develop/index.css';
 const app = render(
   React.createElement(App),
   createCanvas()
-)
+);
 
 // try unmount
 // setTimeout(() => {

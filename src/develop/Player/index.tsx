@@ -1,34 +1,38 @@
-import * as React from 'react'
-import { View, Text, LinearGradient, Image, Touchable, ListView } from '../../revas'
-import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER } from './styles'
-import { MUSICS, MusicItemData } from './data'
-import Player from './Player'
+import * as React from 'react';
+import { View, Text, LinearGradient, Image, Touchable, ScrollView } from '../../revas';
+import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER } from './styles';
+import { MUSICS, MusicItemData } from './data';
+import Player from './Player';
 
 export default class PlayerApp extends React.Component {
-  renderMusic = (item: MusicItemData, index: number) => {
-    return (
-      <View style={styles.musicItem} key={index}>
-        <Image style={styles.musicCover}
-          src={item.cover} />
-        <View style={styles.musicInfo}>
-          <Text style={styles.musicName}>{item.name}</Text>
-          <Text style={styles.musicSinger}>{item.singer}</Text>
-        </View>
+  renderMusic = (item: MusicItemData, index: number) => (
+    <View style={styles.musicItem} key={index}>
+      <Image
+        style={styles.musicCover}
+        src={item.cover}
+      />
+      <View style={styles.musicInfo}>
+        <Text style={styles.musicName}>{item.name}</Text>
+        <Text style={styles.musicSinger}>{item.singer}</Text>
       </View>
-    )
-  }
+    </View>
+  );
   render() {
     return (
       <View style={styles.container}>
-        <LinearGradient style={styles.bg} colors={['#D3E6E4', '#98B3B0', '#A8C8C4']}
-          start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }} />
+        <LinearGradient
+          style={styles.bg} colors={['#D3E6E4', '#98B3B0', '#A8C8C4']}
+          start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}
+        />
         <Touchable onPress={() => alert(1)} style={styles.title}>
           <Text style={styles.titleText}>Playlist</Text>
         </Touchable>
-        <ListView style={styles.list} renderItem={this.renderMusic} data={MUSICS} getItemHeight={() => 113} />
+        <ScrollView style={styles.list}>
+          {MUSICS.map(this.renderMusic)}
+        </ScrollView>
         <Player />
       </View>
-    )
+    );
   }
 }
 
@@ -86,4 +90,4 @@ const styles = {
     fontWeight: '400',
     opacity: 0.5
   }
-}
+};
