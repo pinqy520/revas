@@ -6,7 +6,7 @@ import Player from './Player';
 
 export default class PlayerApp extends React.Component {
   renderMusic = (item: MusicItemData, index: number) => (
-    <View style={styles.musicItem} key={index}>
+    <View style={styles.musicItem} key={index} cache>
       <Image
         style={styles.musicCover}
         src={item.cover}

@@ -1,20 +1,20 @@
-import * as React from 'react'
-import { View, Image, LinearGradient, Text, Touchable, noop, AnimatedValue, timing, Easing } from '../../revas'
-import { MUSICS } from './data'
-import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER, CENTER_AREA } from './styles'
+import * as React from 'react';
+import { View, Image, LinearGradient, Text, Touchable, noop, AnimatedValue, timing, Easing } from '../../revas';
+import { MUSICS } from './data';
+import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER, CENTER_AREA } from './styles';
 
-const music = MUSICS[1]
+const music = MUSICS[1];
 
 
 
 export default class Player extends React.Component {
   state = {
     mode: 'normal'
-  }
+  };
 
-  animated = new AnimatedValue(0)
+  animated = new AnimatedValue(0);
 
-  rotateHandler: any
+  rotateHandler: any;
 
   _bgStyle = {
     scale: this.animated.interpolate(
@@ -24,12 +24,12 @@ export default class Player extends React.Component {
     borderRadius: WINDOW_HEIGHT / 2,
     overflow: 'hidden',
     animated: true
-  }
+  };
 
   _coverStyle = {
     rotate: new AnimatedValue(0),
     animated: true,
-  }
+  };
 
   _containerStyle = {
     scale: this.animated.interpolate(
@@ -41,7 +41,7 @@ export default class Player extends React.Component {
       [0, WINDOW_WIDTH / 2]
     ),
     animated: true
-  }
+  };
 
   _opacity = {
     opacity: this.animated.interpolate(
@@ -49,46 +49,48 @@ export default class Player extends React.Component {
       [1, 0]
     ),
     animated: true
-  }
+  };
 
   onPlay = () => {
     if (this.rotateHandler) {
-      this.rotateHandler.stop()
-      this.rotateHandler = void 0
+      this.rotateHandler.stop();
+      this.rotateHandler = void 0;
     } else {
-      this._play()
+      this._play();
     }
-  }
+  };
 
   _play = () => {
-    this._coverStyle.rotate.setValue(0)
+    this._coverStyle.rotate.setValue(0);
     this.rotateHandler = timing(this._coverStyle.rotate, {
       to: 2 * Math.PI,
       duration: 10000
-    }).start(this._play)
-  }
+    }).start(this._play);
+  };
 
   toggle = () => {
     if (this.state.mode !== 'toggle') {
-      const isNormal = this.state.mode === 'normal'
-      this.setState({ mode: 'toggle' })
+      const isNormal = this.state.mode === 'normal';
+      this.setState({ mode: 'toggle' });
       timing(this.animated, {
         to: isNormal ? 1 : 0,
         duration: 1000,
         ease: Easing.elastic()
-      }).start(() => this.setState({ mode: isNormal ? 'minimal' : 'normal' }))
+      }).start(() => this.setState({ mode: isNormal ? 'minimal' : 'normal' }));
     }
-  }
+  };
 
   render() {
     return (
       <View style={[styles.container, this._containerStyle]}>
-        <View style={[ABS_FULL, this._bgStyle]} pointerEvents="none" >
-          <Image style={[ABS_FULL, this._coverStyle]} src={music.cover} />
-          <LinearGradient style={[styles.mask, this._opacity]} colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
-            start={{ x: 0, y: 1 }} end={{ x: 0, y: 0 }} />
+        <View style={[ABS_FULL, this._bgStyle]} pointerEvents="none">
+          <Image style={[ABS_FULL, this._coverStyle]} src={music.cover} cache />
+          <LinearGradient
+            style={[styles.mask, this._opacity]} colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
+            start={{ x: 0, y: 1 }} end={{ x: 0, y: 0 }}
+          />
         </View>
-        <View style={[styles.main, this._opacity]}>
+        <View style={[styles.main, this._opacity]} cache>
           <Text style={styles.name}>Youth (Gryffin Remix)</Text>
           <Text style={styles.singer}>Troye Sivan</Text>
           <View style={styles.progress}>
@@ -111,12 +113,12 @@ export default class Player extends React.Component {
           this.state.mode === 'minimal' && <Touchable style={ABS_FULL} onPress={this.toggle} />
         }
       </View>
-    )
+    );
   }
 }
 
-const WINDOW_WIDTH = window.innerWidth
-const WINDOW_HEIGHT = window.innerHeight
+const WINDOW_WIDTH = window.innerWidth;
+const WINDOW_HEIGHT = window.innerHeight;
 
 const styles = {
   container: {
@@ -127,10 +129,10 @@ const styles = {
     alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: WINDOW_HEIGHT / 2,
-    shadowColor: '#98B3B0',
-    shadowOffsetX: 2,
-    shadowOffsetY: 2,
-    shadowBlur: 50
+    // shadowColor: '#98B3B0',
+    // shadowOffsetX: 2,
+    // shadowOffsetY: 2,
+    // shadowBlur: 50
   },
   mask: {
     position: 'absolute',
@@ -190,4 +192,4 @@ const styles = {
     width: '80%',
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
   }
-}
+};

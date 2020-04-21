@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode } from 'react';
 
 
 export class Frame {
@@ -11,41 +11,42 @@ export class Frame {
 }
 
 export class Node {
-  public readonly children: Node[] = []
-  public frame = new Frame()
-  public parent?: Node
+  public readonly children: Node[] = [];
+  public frame = new Frame();
+  public parent?: Node;
   constructor(
     public readonly type: string,
-    public props: NodeProps & any,
+    public props: NodeProps & any
   ) { }
 }
 
 export interface RevasTouch {
-  identifier: number,
-  x: number,
-  y: number,
+  identifier: number;
+  x: number;
+  y: number;
 }
 
-export type RevasTouchType = 'touchstart' | 'touchmove' | 'touchend'
+export type RevasTouchType = 'touchstart' | 'touchmove' | 'touchend';
 
 export interface RevasTouchEvent {
-  type: RevasTouchType
-  touches: { [key: string]: RevasTouch }
-  timestamp: number
-  [key: string]: any
+  type: RevasTouchType;
+  touches: { [key: string]: RevasTouch };
+  timestamp: number;
+  [key: string]: any;
 }
 
-export type RevasTouchEventListener = (event: RevasTouchEvent) => any
+export type RevasTouchEventListener = (event: RevasTouchEvent) => any;
 
 export interface BaseProps {
-  children?: ReactNode,
-  style?: any | any[],
+  children?: ReactNode;
+  style?: any | any[];
 }
 
 export interface NodeProps extends BaseProps {
-  onTouchStart?: RevasTouchEventListener
-  onTouchMove?: RevasTouchEventListener
-  onTouchEnd?: RevasTouchEventListener
-  onLayout?: (frame: Frame) => any
-  pointerEvents?: 'auto' | 'none' | 'box-none'
+  onTouchStart?: RevasTouchEventListener;
+  onTouchMove?: RevasTouchEventListener;
+  onTouchEnd?: RevasTouchEventListener;
+  onLayout?: (frame: Frame) => any;
+  pointerEvents?: 'auto' | 'none' | 'box-none';
+  cache?: boolean;
 }
