@@ -74,22 +74,19 @@ interface CachedCanvas {
 const canvasCache = new WeakMap<Node, CachedCanvas>();
 
 function drawCache(ctx: CanvasRenderingContext2D, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
-  let _cached: CachedCanvas | void;
+  let cached: CachedCanvas | void;
   if (!canvasCache.has(node)) {
+    if (!node.$ready) {
+      return drawContent(ctx, node, root, style, frame, hasClip);
+    }
     const _ctx = adapter.createOffscreenCanvas!(frame.width, frame.height);
     _ctx.translate(-frame.x, -frame.y);
     drawContent(_ctx, node, root, style, frame, hasClip);
     _ctx.translate(frame.x, frame.y);
-    _cached = { ctx: _ctx, frame };
-    canvasCache.set(node, _cached);
-  }
-  const cached = _cached || canvasCache.get(node)!;
-  if (cached.frame !== frame) {
-    adapter.resetOffscreenCanvas!(cached.ctx, frame.width, frame.height);
-    cached.ctx.translate(-frame.x, -frame.y);
-    drawContent(cached.ctx, node, root, style, frame, hasClip);
-    cached.ctx.translate(frame.x, frame.y);
-    cached.frame = frame;
+    cached = { ctx: _ctx, frame };
+    canvasCache.set(node, cached);
+  } else {
+    cached = canvasCache.get(node)!;
   }
   ctx.drawImage(cached.ctx.canvas, frame.x, frame.y, frame.width, frame.height);
 }

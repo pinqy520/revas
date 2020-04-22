@@ -47,7 +47,8 @@ export default class Text extends React.Component<TextProps> {
         customDrawer: this.drawText,
         textStyle: others.style,
         style: this.state,
-        numberOfLines
+        numberOfLines,
+        $ready: Boolean(this._drawed)
       })
     );
   }

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { View, Text, LinearGradient, Image, Touchable, ScrollView } from '../../revas';
+import { View, Text, LinearGradient, Image, ScrollView } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER } from './styles';
 import { MUSICS, MusicItemData } from './data';
 import Player from './Player';
 
 export default class PlayerApp extends React.Component {
   renderMusic = (item: MusicItemData, index: number) => (
-    <View style={styles.musicItem} key={index} cache>
+    <View style={styles.musicItem} key={index}>
       <Image
         style={styles.musicCover}
         src={item.cover}
@@ -24,11 +24,10 @@ export default class PlayerApp extends React.Component {
           style={styles.bg} colors={['#D3E6E4', '#98B3B0', '#A8C8C4']}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}
         />
-        <Touchable onPress={() => alert(1)} style={styles.title}>
-          <Text style={styles.titleText}>Playlist</Text>
-        </Touchable>
         <ScrollView style={styles.list}>
-          {MUSICS.map(this.renderMusic)}
+          <View cache>
+            {MUSICS.map(this.renderMusic)}
+          </View>
         </ScrollView>
         <Player />
       </View>

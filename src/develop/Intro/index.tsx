@@ -5,7 +5,7 @@ import Interactable from './Interactable';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Interactable style={styles.card}>
+      <Interactable style={styles.card} cache>
         <Text style={styles.title}>Drag and Move! </Text>
         <Image
           style={styles.logo}

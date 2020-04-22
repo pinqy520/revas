@@ -7,7 +7,7 @@ import Player from './Player';
 
 export default class App extends React.Component {
   state = {
-    route: 'timeline'
+    route: 'intro'
   };
 
   render() {

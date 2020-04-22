@@ -18,6 +18,18 @@ export class Node {
     public readonly type: string,
     public props: NodeProps & any
   ) { }
+  get $ready() {
+    if (this.props.$ready === false) {
+      return false;
+    }
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+      if (child.$ready === false) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 export interface RevasTouch {
@@ -49,4 +61,5 @@ export interface NodeProps extends BaseProps {
   onLayout?: (frame: Frame) => any;
   pointerEvents?: 'auto' | 'none' | 'box-none';
   cache?: boolean;
+  $ready?: boolean;
 }
