@@ -11,11 +11,11 @@ interface ItemProps {
 class Item extends React.Component<ItemProps> {
   style = createItemTextStyle(this.props.index, this.props.animated);
   render() {
-    const { item } = this.props;
+    const { item, index } = this.props;
     return (
       <View style={styles.item}>
         <Image style={styles.cover} src={item.imageUrl} />
-        <View style={this.style} cache>
+        <View style={this.style} cache={`text_${index}`}>
           <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
           <Text style={styles.text} numberOfLines={MAX_LINES}>
             {item.excerpt}
@@ -59,7 +59,7 @@ function createItemTextStyle(index: number, animated: AnimatedValue) {
     [offset + (WINDOW_HEIGHT / 2), offset + WINDOW_HEIGHT, offset + (2 * WINDOW_HEIGHT)],
     [0, 1, 0]
   );
-  return { margin: 20, translateY, opacity, animated: true };
+  return { margin: 20, translateY, opacity, animated: true, height: WINDOW_HEIGHT / 2 };
 }
 
 const WINDOW_HEIGHT = window.innerHeight;

@@ -60,6 +60,6 @@ export interface NodeProps extends BaseProps {
   onTouchEnd?: RevasTouchEventListener;
   onLayout?: (frame: Frame) => any;
   pointerEvents?: 'auto' | 'none' | 'box-none';
-  cache?: boolean;
+  cache?: string | boolean;
   $ready?: boolean;
 }

@@ -45,7 +45,7 @@
     "start": "react-scripts start",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "build:pwa": "react-scripts build",
+    "build:pwa": "rimraf build && react-scripts build",
     "test": "react-scripts test",
     "prepare": "npm run build",
     "postpublish": "git push"
