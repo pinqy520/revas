@@ -3,31 +3,28 @@ import { View, Text, AnimatedValue, timing, AnimatedTiming, Touchable } from '..
 import Intro from './Intro';
 import Timeline from './Timeline';
 import Player from './Player';
+import SimpleRouter from './common/simple-router';
 
 
 export default class App extends React.Component {
-  state = {
-    route: 'main'
+  router = React.createRef<SimpleRouter>();
+
+  push = (Comp: any) => () => {
+    this.router.current?.push(Comp);
   };
 
   render() {
-    switch (this.state.route) {
-      case 'intro':
-        return <Intro />;
-      case 'timeline':
-        return <Timeline />;
-      case 'player':
-        return <Player />;
-    }
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Revas Examples</Text>
-        <View style={styles.cards}>
-          <Card color="#9254DE" text="Intro" tap={() => this.setState({ route: 'intro' })} />
-          <Card color="#F759AB" text="Timeline" tap={() => this.setState({ route: 'timeline' })} />
-          <Card color="#597EF7" text="Player" tap={() => this.setState({ route: 'player' })} />
+      <SimpleRouter ref={this.router} width={window.innerWidth}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Revas Examples</Text>
+          <View style={styles.cards}>
+            <Card color="#9254DE" text="Intro" tap={this.push(Intro)} />
+            <Card color="#F759AB" text="Timeline" tap={this.push(Timeline)} />
+            <Card color="#597EF7" text="Player" tap={this.push(Player)} />
+          </View>
         </View>
-      </View>
+      </SimpleRouter>
     );
   }
 }
@@ -97,7 +94,7 @@ const styles = {
     alignItems: 'center',
   },
   card: {
-    height: 130, width: 280,
+    height: window.innerHeight / 6, width: 280,
     shadowOffsetX: 0,
     borderRadius: 15,
     justifyContent: 'center',

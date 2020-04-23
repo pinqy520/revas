@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, Image, View, RevasScrollEvent, AnimatedValue, ListView } from '../../revas';
 import data from './data';
+import Back from '../common/back';
 
 interface ItemProps {
   animated: AnimatedValue;
@@ -26,7 +27,7 @@ class Item extends React.Component<ItemProps> {
   }
 }
 
-export default class TimelineApp extends React.Component {
+export default class TimelineApp extends React.Component<any> {
   animated = new AnimatedValue(0);
 
   onScroll = (e: RevasScrollEvent) => {
@@ -39,12 +40,15 @@ export default class TimelineApp extends React.Component {
 
   render() {
     return (
-      <ListView
-        data={data} paging
-        renderItem={this.renderItem}
-        getItemHeight={this.getItemHeight}
-        onScroll={this.onScroll} style={styles.container}
-      />
+      <React.Fragment>
+        <ListView
+          data={data} paging
+          renderItem={this.renderItem}
+          getItemHeight={this.getItemHeight}
+          onScroll={this.onScroll} style={styles.container}
+        />
+        <Back router={this.props.router} />
+      </React.Fragment>
     );
   }
 }
@@ -90,5 +94,5 @@ const styles = {
     lineHeight: 26,
     color: '#333',
     fontFamily: 'fantasy'
-  }
+  },
 };

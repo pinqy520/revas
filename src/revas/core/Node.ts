@@ -52,6 +52,7 @@ export type RevasTouchEventListener = (event: RevasTouchEvent) => any;
 export interface BaseProps {
   children?: ReactNode;
   style?: any | any[];
+  cache?: string | boolean;
 }
 
 export interface NodeProps extends BaseProps {
@@ -60,6 +61,5 @@ export interface NodeProps extends BaseProps {
   onTouchEnd?: RevasTouchEventListener;
   onLayout?: (frame: Frame) => any;
   pointerEvents?: 'auto' | 'none' | 'box-none';
-  cache?: string | boolean;
   $ready?: boolean;
 }

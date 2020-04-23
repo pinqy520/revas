@@ -37,8 +37,14 @@
   TouchEmulator();
   const stats = new Stats();
   stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-  stats.dom.style.margin = '5px'
-  stats.dom.style.boxShadow = 'rgba(0, 0, 0, 0.2) 0px 2px 4px'
+  stats.dom.style = `
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    opacity: 0.9;
+    z-index: 10000;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;`
   document.body.appendChild(stats.dom);
 
   function animate() {

@@ -3,6 +3,7 @@ import { View, Text, LinearGradient, Image, ScrollView } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER } from './styles';
 import { MUSICS, MusicItemData } from './data';
 import Player from './Player';
+import Back from '../common/back';
 
 export default class PlayerApp extends React.Component {
   renderMusic = (item: MusicItemData, index: number) => (
@@ -30,6 +31,7 @@ export default class PlayerApp extends React.Component {
           </View>
         </ScrollView>
         <Player />
+        <Back {...this.props} />
       </View>
     );
   }

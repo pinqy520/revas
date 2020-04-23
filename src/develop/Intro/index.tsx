@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text, View, Image, Touchable, LinearGradient } from '../../revas';
 import Interactable from './Interactable';
+import Back from '../common/back';
 
-export default function App() {
+export default function Intro(props: any) {
   return (
     <View style={styles.container}>
       <Interactable style={styles.card} cache>
@@ -14,7 +15,7 @@ export default function App() {
         <Text style={styles.text} numberOfLines={2}>
           Revas让你可以用React和CSS，在Canvas上绘制高性能交互界面，基于React v16和Yoga Layout～{'🎉'}
         </Text>
-        <Touchable style={styles.btn} onPress={() => alert('Enjoy!~🎉')}>
+        <Touchable style={styles.btn} onPress={() => props.router.pop()}>
           <Text style={styles.btnText}>Go</Text>
         </Touchable>
       </Interactable>
@@ -23,6 +24,7 @@ export default function App() {
         start={{ x: 0, y: 0.3 }} end={{ x: 1, y: 0.7 }}
         colors={['#91D5FF', '#40A9FF']}
       />
+      <Back {...props} />
     </View>
   );
 }
