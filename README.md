@@ -146,6 +146,7 @@ function Comp() {
 - Layout
   - onLayout
 - pointerEvents
+- cache // boolean\string
 
 ## Styles
 
