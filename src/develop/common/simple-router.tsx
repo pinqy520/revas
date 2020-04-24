@@ -19,6 +19,7 @@ export default class SimpleRouter extends React.Component<SimpleRouterProps> {
 
   push = (Component: any, params: any = {}) => {
     this.pages.push(<Component {...params} router={this} />);
+    this.style.translateX.setValue(this.props.width);
     this.setState({ animating: true });
     setTimeout(() => {
       timing(this.style.translateX, {
@@ -30,6 +31,7 @@ export default class SimpleRouter extends React.Component<SimpleRouterProps> {
 
   pop = () => {
     this.setState({ animating: true });
+    this.style.translateX.setValue(0);
     timing(this.style.translateX, {
       to: this.props.width,
       duration: 200,
