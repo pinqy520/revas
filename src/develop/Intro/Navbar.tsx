@@ -17,25 +17,30 @@ export default function NavBar(props: NavBarProps) {
   );
 }
 
-
 const styles = {
   container: {
     height: 50,
     backgroundColor: '#505050',
     justifyContent: 'center',
+    zIndex: 100,
   },
   title: {
     textAlign: 'center',
     color: '#fff',
     fontSize: 17,
-    fontWeight: '600'
+    fontWeight: '600',
   },
   icon: {
-    width: 9, height: 14,
+    width: 9,
+    height: 14,
   },
   back: {
     position: 'absolute',
-    left: 0, top: 0, bottom: 0, width: 40,
-    justifyContent: 'center', alignItems: 'center'
-  }
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 };
