@@ -4,11 +4,12 @@ import { View, Text } from '../../revas';
 export interface PanelItemProps {
   label: string;
   children?: any;
+  style?: any;
 }
 
 export function PanelItem(props: PanelItemProps) {
   return (
-    <View style={styles.item}>
+    <View style={[styles.item, props.style]}>
       {props.children}
       <Text style={styles.itemText}>{props.label}</Text>
     </View>
@@ -18,11 +19,12 @@ export function PanelItem(props: PanelItemProps) {
 export interface PanelProps {
   label: string;
   children?: any;
+  style?: any;
 }
 
 export default function Panel(props: PanelProps) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, props.style]}>
       <Text style={styles.label}>{props.label}</Text>
       <View style={styles.line} />
       {props.children}
