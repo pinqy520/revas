@@ -45,6 +45,31 @@ export default function Components(props: any) {
             <Text style={styles.button.text}>Button</Text>
           </Touchable>
         </Panel>
+        <Panel label="ScrollView">
+          <ScrollView horizontal style={styles.scrollView.container}>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>1</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>2</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>3</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>4</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>5</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>6</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>7</Text>
+            </View>
+          </ScrollView>
+        </Panel>
         <Panel label="LinearGradient">
           <LinearGradient style={styles.gradient} colors={['#C48DF1', '#91D5FF', '#40A9FF']} />
         </Panel>
@@ -127,6 +152,24 @@ const styles = {
       shadowOffsetY: 2,
       shadowBlur: 6,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
+    },
+  },
+  scrollView: {
+    container: {
+      height: 55,
+    },
+    box: {
+      width: 60,
+      height: 55,
+      justifyContent: 'center',
+      backgroundColor: '#333',
+      marginRight: 10,
+    },
+    text: {
+      color: '#fff',
+      fontWeight: '600',
+      fontSize: 14,
+      textAlign: 'center',
     },
   },
 };

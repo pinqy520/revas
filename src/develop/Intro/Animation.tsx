@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, Touchable, Text } from '../../revas';
+import { View, ScrollView, Touchable, Text, AnimatedValue, timing, AnimatedTiming, Easing } from '../../revas';
 import NavBar from './Navbar';
 import Panel from './Panel';
 
@@ -8,43 +8,123 @@ export default function Animation(props: any) {
     <View style={styles.container}>
       <NavBar title="Animation" {...props} />
       <ScrollView style={styles.container}>
-        <Panel label="Basic">
-          <View style={styles.box} />
-          <View style={styles.row}>
-            <Touchable style={styles.button.container} onPress={() => alert('press')}>
-              <Text style={styles.button.text}>opacity</Text>
-            </Touchable>
-            <Touchable style={styles.button.container} onPress={() => alert('press')}>
-              <Text style={styles.button.text}>translateX</Text>
-            </Touchable>
-            <Touchable style={styles.button.container} onPress={() => alert('press')}>
-              <Text style={styles.button.text}>rotation</Text>
-            </Touchable>
-            <Touchable style={styles.button.container} onPress={() => alert('press')}>
-              <Text style={styles.button.text}>scale</Text>
-            </Touchable>
-          </View>
-        </Panel>
-        <Panel label="Easing">
-          <View style={styles.box} />
-          <View style={styles.row}>
-            <Touchable style={styles.button.container} onPress={() => alert('press')}>
-              <Text style={styles.button.text}>linear</Text>
-            </Touchable>
-            <Touchable style={styles.button.container} onPress={() => alert('press')}>
-              <Text style={styles.button.text}>ease-in</Text>
-            </Touchable>
-            <Touchable style={styles.button.container} onPress={() => alert('press')}>
-              <Text style={styles.button.text}>ease-out</Text>
-            </Touchable>
-            <Touchable style={styles.button.container} onPress={() => alert('press')}>
-              <Text style={styles.button.text}>ease</Text>
-            </Touchable>
-          </View>
-        </Panel>
+        <AnimateTypeExample />
+        <AnimateEaseExample />
       </ScrollView>
     </View>
   );
+}
+
+class AnimateEaseExample extends React.Component {
+  state = {
+    style: {},
+  };
+  onAnim = (style: any) => this.setState({ style });
+  render() {
+    return (
+      <Panel label="Basic">
+        <View style={[styles.box, this.state.style]} />
+        <View style={styles.row}>
+          <AnimateButton
+            label="linear"
+            type="translateX"
+            ease={Easing.linear}
+            from={0}
+            to={window.innerWidth / 1.5}
+            onAnimate={this.onAnim}
+          />
+          <AnimateButton
+            label="ease"
+            type="translateX"
+            ease={Easing.ease}
+            from={0}
+            to={window.innerWidth / 1.5}
+            onAnimate={this.onAnim}
+          />
+          <AnimateButton
+            label="bounce"
+            type="translateX"
+            ease={Easing.bounce}
+            from={0}
+            to={window.innerWidth / 1.5}
+            onAnimate={this.onAnim}
+          />
+          <AnimateButton
+            label="ease-out"
+            type="translateX"
+            ease={Easing.out()}
+            from={0}
+            to={window.innerWidth / 1.5}
+            onAnimate={this.onAnim}
+          />
+        </View>
+      </Panel>
+    );
+  }
+}
+
+class AnimateTypeExample extends React.Component {
+  state = {
+    style: {},
+  };
+  onAnim = (style: any) => this.setState({ style });
+  render() {
+    return (
+      <Panel label="Basic">
+        <View style={[styles.box, this.state.style]} />
+        <View style={styles.row}>
+          <AnimateButton label="opacity" type="opacity" from={1} to={0} onAnimate={this.onAnim} />
+          <AnimateButton
+            label="translateX"
+            type="translateX"
+            from={0}
+            to={window.innerWidth / 1.5}
+            onAnimate={this.onAnim}
+          />
+          <AnimateButton label="rotation" type="rotate" from={0} to={Math.PI / 2} onAnimate={this.onAnim} />
+          <AnimateButton label="scale" type="scale" from={1} to={0.5} onAnimate={this.onAnim} />
+        </View>
+      </Panel>
+    );
+  }
+}
+
+interface AnimateButtonProps {
+  ease?: any;
+  label: string;
+  type: string;
+  from: number;
+  to: number;
+  onAnimate: Function;
+}
+
+class AnimateButton extends React.Component<AnimateButtonProps> {
+  style: any = {
+    [this.props.type]: new AnimatedValue(this.props.from),
+    animated: true,
+  };
+
+  timing?: AnimatedTiming;
+
+  onPress = () => {
+    this.timing && this.timing.stop();
+    const animated: AnimatedValue = this.style[this.props.type];
+    animated.setValue(this.props.from);
+    this.timing = timing(animated, {
+      to: this.props.to,
+      duration: 1000,
+      ease: this.props.ease || Easing.ease,
+    }).start(() => animated.setValue(this.props.from));
+    this.props.onAnimate(this.style);
+  };
+
+  render() {
+    return (
+      <Touchable style={styles.button.container} onPress={this.onPress}>
+        <Text style={styles.button.text}>{this.props.label}</Text>
+      </Touchable>
+    );
+  }
 }
 
 const styles = {
