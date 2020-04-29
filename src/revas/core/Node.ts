@@ -1,23 +1,14 @@
 import { ReactNode } from 'react';
 
-
 export class Frame {
-  constructor(
-    public x = 0,
-    public y = 0,
-    public width = 0,
-    public height = 0
-  ) { }
+  constructor(public x = 0, public y = 0, public width = 0, public height = 0) {}
 }
 
 export class Node {
   public readonly children: Node[] = [];
   public frame = new Frame();
   public parent?: Node;
-  constructor(
-    public readonly type: string,
-    public props: NodeProps & any
-  ) { }
+  constructor(public readonly type: string, public props: NodeProps & any) {}
   get $ready() {
     if (this.props.$ready === false) {
       return false;
@@ -53,6 +44,7 @@ export interface BaseProps {
   children?: ReactNode;
   style?: any | any[];
   cache?: string | boolean;
+  forceCache?: boolean;
 }
 
 export interface NodeProps extends BaseProps {

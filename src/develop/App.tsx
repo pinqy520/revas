@@ -2,9 +2,8 @@ import * as React from 'react';
 import { View, Text, AnimatedValue, timing, AnimatedTiming, Touchable } from '../revas';
 import Intro from './Intro';
 import Timeline from './Timeline';
-import Player from './Player';
+// import Player from './Player';
 import SimpleRouter from './common/simple-router';
-
 
 export default class App extends React.Component {
   router = React.createRef<SimpleRouter>();
@@ -19,9 +18,9 @@ export default class App extends React.Component {
         <View style={styles.container}>
           <Text style={styles.title}>Revas Examples</Text>
           <View style={styles.cards}>
-            <Card color="#9254DE" text="Intro" tap={this.push(Intro)} />
-            <Card color="#F759AB" text="Timeline" tap={this.push(Timeline)} />
-            <Card color="#597EF7" text="Player" tap={this.push(Player)} />
+            <Card color="#9254DE" text="Overview" tap={this.push(Intro)} />
+            <Card color="#F759AB" text="Timeline App" tap={this.push(Timeline)} />
+            {/* <Card color="#597EF7" text="Player" tap={this.push(Player)} /> */}
           </View>
         </View>
       </SimpleRouter>
@@ -39,16 +38,16 @@ class Card extends React.Component<CardProps> {
   animated = new AnimatedValue(30);
   animating?: AnimatedTiming;
 
-  style = [styles.card, {
-    backgroundColor: this.props.color,
-    shadowColor: `${this.props.color }90`,
-    shadowBlur: this.animated,
-    shadowOffsetY: this.animated.interpolate(
-      [4, 30],
-      [1, 5]
-    ),
-    animated: true
-  }];
+  style = [
+    styles.card,
+    {
+      backgroundColor: this.props.color,
+      shadowColor: `${this.props.color}90`,
+      shadowBlur: this.animated,
+      shadowOffsetY: this.animated.interpolate([4, 30], [1, 5]),
+      animated: true,
+    },
+  ];
 
   onPress = () => {
     this.animating?.stop();
@@ -68,18 +67,23 @@ class Card extends React.Component<CardProps> {
 
   render() {
     return (
-      <Touchable activeOpacity={1} style={this.style} onPress={this.props.tap} onPressIn={this.onPress} onPressOut={this.onPressOut}>
+      <Touchable
+        activeOpacity={1}
+        style={this.style}
+        onPress={this.props.tap}
+        onPressIn={this.onPress}
+        onPressOut={this.onPressOut}
+      >
         <Text style={styles.text}>{this.props.text}</Text>
       </Touchable>
     );
   }
 }
 
-
 const styles = {
   container: {
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
   title: {
     textAlign: 'center',
@@ -88,13 +92,15 @@ const styles = {
     color: '#000',
     opacity: 0.56,
     marginBottom: 20,
-    fontFamily: "'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'"
+    fontFamily:
+      "'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
   },
   cards: {
     alignItems: 'center',
   },
   card: {
-    height: window.innerHeight / 6, width: 280,
+    height: window.innerHeight / 6,
+    width: 280,
     shadowOffsetX: 0,
     borderRadius: 15,
     justifyContent: 'center',
@@ -105,6 +111,7 @@ const styles = {
     fontSize: 24,
     fontWeight: '500',
     color: '#fff',
-    fontFamily: "'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'"
+    fontFamily:
+      "'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
   },
 };

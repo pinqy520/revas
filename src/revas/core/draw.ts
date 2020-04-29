@@ -63,7 +63,9 @@ export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
     canvas.transform.translate(-originX, -originY);
   }
 
-  canvas.apply();
+  if (hasTransform) {
+    canvas.apply();
+  }
 
   if (node.props.cache && adapter.createOffscreenCanvas && frame.height > 0 && frame.width > 0) {
     drawCache(canvas, node, root, style, frame, hasClip);
@@ -73,12 +75,13 @@ export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
 
   if (hasTransform) {
     canvas.transform.restore();
+    canvas.apply();
   }
 
   popOpacity();
 
   if (hasClip) {
-    canvas.context.save();
+    canvas.context.restore();
   }
 }
 
@@ -86,7 +89,7 @@ function drawCache(canvas: RevasCanvas, node: Node, root: Container, style: any,
   const cachedId: string = node.props.cache === true ? autoCacheId(node) : node.props.cache;
   let cached = getCache(cachedId);
   if (!cached) {
-    if (!node.$ready) {
+    if (!node.$ready && !node.props.forceCache) {
       return drawContent(canvas, node, root, style, frame, hasClip);
     }
     cached = createCache(frame.width, frame.height, cachedId);

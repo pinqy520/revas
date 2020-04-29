@@ -7,53 +7,76 @@ export interface SimpleRouterProps {
 
 export default class SimpleRouter extends React.Component<SimpleRouterProps> {
   state = {
-    animating: false,
+    animating: 0,
   };
 
   pages: React.ReactNode[] = [this.props.children];
 
+  animated = new AnimatedValue(0);
+
   style = {
-    translateX: new AnimatedValue(this.props.width),
-    animated: true,
+    first: {
+      translateX: this.animated.interpolate([0, 1], [0, this.props.width]),
+      animated: true,
+    },
+    second: {
+      opacity: this.animated.interpolate([0, 1], [0.7, 1]),
+      scale: this.animated.interpolate([0, 1], [0.9, 1]),
+      animated: true,
+    },
+    others: {
+      opacity: 0,
+    },
   };
 
   push = (Component: any, params: any = {}) => {
     this.pages.push(<Component {...params} router={this} />);
-    this.style.translateX.setValue(this.props.width);
-    this.setState({ animating: true });
-    setTimeout(() => {
-      timing(this.style.translateX, {
+    this.animated.setValue(1);
+    this.setState({ animating: -1 });
+    requestAnimationFrame(() => {
+      this.setState({ animating: 1 });
+      timing(this.animated, {
         to: 0,
-        duration: 300,
-      }).start(() => this.setState({ animating: false }));
-    }, 120);
+        duration: 200,
+      }).start(() => this.setState({ animating: 0 }));
+    });
   };
 
   pop = () => {
-    this.setState({ animating: true });
-    this.style.translateX.setValue(0);
-    timing(this.style.translateX, {
-      to: this.props.width,
+    this.setState({ animating: 1 });
+    this.animated.setValue(0);
+    timing(this.animated, {
+      to: 1,
       duration: 200,
     }).start(() => {
       this.pages.pop();
-      this.setState({ animating: false });
+      this.setState({ animating: 0 });
     });
   };
+
+  getStyle(index: number, pages: any[]) {
+    if (index === pages.length - 1) {
+      return this.style.first;
+    }
+    if (index === pages.length - 2) {
+      return this.style.second;
+    }
+    return this.style.others;
+  }
 
   id = 0;
 
   renderPage = (page: React.ReactNode, index: number, pages: React.ReactNode[]) => {
     const { animating } = this.state;
     const isLast = index === pages.length - 1;
-    const id = isLast && animating ? `pages_anim_${this.id++}` : false;
-
+    const id = isLast && animating > 0 ? `pages_anim_${this.id++}` : false;
     return (
       <View
         key={index}
         cache={!isLast || id}
+        forceCache
         pointerEvents={animating ? 'none' : 'auto'}
-        style={animating && isLast ? [styles.page, this.style] : styles.page}
+        style={animating ? [styles.page, this.getStyle(index, pages)] : styles.page}
       >
         {page}
       </View>

@@ -22,7 +22,7 @@ class AnimateEaseExample extends React.Component {
   onAnim = (style: any) => this.setState({ style });
   render() {
     return (
-      <Panel label="Basic">
+      <Panel label="Easing">
         <View style={[styles.box, this.state.style]} />
         <View style={styles.row}>
           <AnimateButton
@@ -81,7 +81,7 @@ class AnimateTypeExample extends React.Component {
             to={window.innerWidth / 1.5}
             onAnimate={this.onAnim}
           />
-          <AnimateButton label="rotation" type="rotate" from={0} to={Math.PI / 2} onAnimate={this.onAnim} />
+          <AnimateButton label="rotation" type="rotate" from={0} to={Math.PI} onAnimate={this.onAnim} />
           <AnimateButton label="scale" type="scale" from={1} to={0.5} onAnimate={this.onAnim} />
         </View>
       </Panel>
@@ -99,8 +99,10 @@ interface AnimateButtonProps {
 }
 
 class AnimateButton extends React.Component<AnimateButtonProps> {
+  animated = new AnimatedValue(0);
+
   style: any = {
-    [this.props.type]: new AnimatedValue(this.props.from),
+    [this.props.type]: this.animated.interpolate([0, 0.5, 1], [this.props.from, this.props.to, this.props.from]),
     animated: true,
   };
 
@@ -108,13 +110,12 @@ class AnimateButton extends React.Component<AnimateButtonProps> {
 
   onPress = () => {
     this.timing && this.timing.stop();
-    const animated: AnimatedValue = this.style[this.props.type];
-    animated.setValue(this.props.from);
-    this.timing = timing(animated, {
-      to: this.props.to,
-      duration: 1000,
+    this.animated.setValue(0);
+    this.timing = timing(this.animated, {
+      to: 1,
+      duration: 2000,
       ease: this.props.ease || Easing.ease,
-    }).start(() => animated.setValue(this.props.from));
+    }).start();
     this.props.onAnimate(this.style);
   };
 
