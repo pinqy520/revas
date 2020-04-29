@@ -20,11 +20,12 @@ export interface PanelProps {
   label: string;
   children?: any;
   style?: any;
+  cache?: boolean;
 }
 
 export default function Panel(props: PanelProps) {
   return (
-    <View style={[styles.container, props.style]}>
+    <View style={[styles.container, props.style]} cache={props.cache} pointerEvents={props.cache ? 'none' : 'auto'}>
       <Text style={styles.label}>{props.label}</Text>
       <View style={styles.line} />
       {props.children}

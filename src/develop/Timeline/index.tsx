@@ -93,8 +93,7 @@ const styles = {
   text: {
     fontSize: 18,
     lineHeight: 26,
-    fontWeight: '200',
     color: '#555',
-    fontFamily: 'serif',
+    fontFamily: 'fantasy',
   },
 };

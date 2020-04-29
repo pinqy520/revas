@@ -8,41 +8,43 @@ export default function Style(props: any) {
     <View style={styles.container}>
       <NavBar title="Style" {...props} />
       <ScrollView style={styles.container}>
-        <Panel label="Box">
-          <Box text="width: 200; height: 55" style={styles.box.wh} />
-          <Box text="backgroundColor: yellow" style={styles.box.yellow} />
-          <Box text="borderRadius: 10" style={styles.box.radius} />
-          <Box text="shadowOffsetX|Y\shadowColor\shadowBlur" style={styles.box.shadow} />
-          <Box text="borderWidth\borderColor" style={styles.box.border} />
-        </Panel>
-        <Panel label="Layout">
-          <View style={styles.row}>
-            <PanelItem label="padding" style={styles.container}>
-              <View style={styles.layout.padding.out}>
-                <View style={styles.layout.padding.in} />
-              </View>
-            </PanelItem>
-            <PanelItem label="margin" style={styles.container}>
-              <View style={styles.layout.margin.out}>
-                <View style={styles.layout.margin.in} />
-              </View>
-            </PanelItem>
-          </View>
-          <View style={styles.row}>
-            <PanelItem label="absolute" style={styles.container}>
-              <View style={styles.layout.padding.out}>
-                <View style={styles.layout.padding.in} />
-                <View style={styles.layout.absolute} />
-              </View>
-            </PanelItem>
-            <PanelItem label="zIndex" style={styles.container}>
-              <View style={styles.layout.margin.out}>
-                <View style={styles.layout.margin.in} />
-                <View style={styles.layout.absolute} />
-              </View>
-            </PanelItem>
-          </View>
-        </Panel>
+        <View cache pointerEvents="none">
+          <Panel label="Box">
+            <Box text="width: 200; height: 55" style={styles.box.wh} />
+            <Box text="backgroundColor: yellow" style={styles.box.yellow} />
+            <Box text="borderRadius: 10" style={styles.box.radius} />
+            <Box text="shadowOffsetX|Y\shadowColor\shadowBlur" style={styles.box.shadow} />
+            <Box text="borderWidth\borderColor" style={styles.box.border} />
+          </Panel>
+          <Panel label="Layout">
+            <View style={styles.row}>
+              <PanelItem label="padding" style={styles.container}>
+                <View style={styles.layout.padding.out}>
+                  <View style={styles.layout.padding.in} />
+                </View>
+              </PanelItem>
+              <PanelItem label="margin" style={styles.container}>
+                <View style={styles.layout.margin.out}>
+                  <View style={styles.layout.margin.in} />
+                </View>
+              </PanelItem>
+            </View>
+            <View style={styles.row}>
+              <PanelItem label="absolute" style={styles.container}>
+                <View style={styles.layout.padding.out}>
+                  <View style={styles.layout.padding.in} />
+                  <View style={styles.layout.absolute} />
+                </View>
+              </PanelItem>
+              <PanelItem label="zIndex" style={styles.container}>
+                <View style={styles.layout.margin.out}>
+                  <View style={styles.layout.margin.in} />
+                  <View style={styles.layout.absolute} />
+                </View>
+              </PanelItem>
+            </View>
+          </Panel>
+        </View>
       </ScrollView>
     </View>
   );

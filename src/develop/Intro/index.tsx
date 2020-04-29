@@ -11,7 +11,7 @@ import Gesture from './Gesture';
 export default function Intro(props: any) {
   return (
     <View style={styles.container}>
-      <NavBar {...props} title="Introduction" />
+      <NavBar {...props} title="Overview" />
       <View style={styles.entries}>
         <Entry label="Component" onPress={() => props.router.push(Components)} />
         <Entry label="Style" onPress={() => props.router.push(Style)} />

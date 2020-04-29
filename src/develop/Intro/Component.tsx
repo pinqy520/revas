@@ -16,7 +16,7 @@ export default function Components(props: any) {
             <View style={[styles.view.base, styles.view.shadow]} />
           </View>
         </Panel>
-        <Panel label="Text">
+        <Panel label="Text" cache>
           <View style={styles.row}>
             <Text style={styles.text.base}>default style</Text>
             <Text style={[styles.text.base, styles.text.weight]}>fontWeight</Text>
@@ -30,7 +30,7 @@ export default function Components(props: any) {
             <Text style={[styles.text.base, styles.text.shadow]}>textShadow</Text>
           </View>
         </Panel>
-        <Panel label="Image">
+        <Panel label="Image" cache>
           <View style={styles.rowLeft}>
             <PanelItem label="contain">
               <Image style={[styles.view.base, styles.image.contain]} src={require('./logo.png')} />
@@ -70,7 +70,7 @@ export default function Components(props: any) {
             </View>
           </ScrollView>
         </Panel>
-        <Panel label="LinearGradient">
+        <Panel label="LinearGradient" cache>
           <LinearGradient style={styles.gradient} colors={['#C48DF1', '#91D5FF', '#40A9FF']} />
         </Panel>
       </ScrollView>
