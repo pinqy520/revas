@@ -11,19 +11,15 @@ adapter.createOffscreenCanvas = (width: number, height: number) => {
   const context = dom.getContext('2d')!;
   const canvas = new RevasCanvas(context);
   canvas.transform.scale(scale, scale);
-  canvas.apply();
   return canvas;
 };
 
 adapter.resetOffscreenCanvas = (prev: RevasCanvas, width: number, height: number) => {
-  const {
-    context: { canvas: dom },
-  } = prev;
+  const { context, element } = prev;
   const scale = window.devicePixelRatio;
-  dom.width = width * scale;
-  dom.height = height * scale;
-  const canvas = new RevasCanvas(prev.context);
+  element.width = width * scale;
+  element.height = height * scale;
+  const canvas = new RevasCanvas(context);
   canvas.transform.scale(scale, scale);
-  canvas.apply();
   return canvas;
 };

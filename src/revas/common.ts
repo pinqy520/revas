@@ -19,7 +19,6 @@ export * from './core/utils';
 export * from './core/Node';
 export * from './core/Container';
 export * from './core/Animated';
-export * from './core/Transform';
 export * from './core/Canvas';
 
 export * from './components/common/Scroller';

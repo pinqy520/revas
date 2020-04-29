@@ -27,7 +27,6 @@ export function render(app: React.ReactNode, dom: HTMLCanvasElement) {
   const canvas = new RevasCanvas(dom.getContext('2d')!);
   const scale = window.devicePixelRatio;
   canvas.transform.scale(scale, scale);
-  canvas.apply();
   const container = new Container(canvas, dom.clientWidth, dom.clientHeight);
   const touchHandler = (e: any) => container.handleTouch(createRevasTouchEvent(e));
   const resizeHandler = () => container.handleResize(dom.clientWidth, dom.clientHeight);

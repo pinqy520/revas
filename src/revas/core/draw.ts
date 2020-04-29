@@ -35,14 +35,13 @@ export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
 
   if (hasClip) {
     canvas.context.save();
-  } // Area Range
+  } else if (hasTransform) {
+    canvas.transform.save();
+  }
+  // Area Range
 
   // Opacity:
   const popOpacity = pushOpacity(canvas, style.opacity);
-
-  if (hasTransform) {
-    canvas.transform.save();
-  }
 
   // Translation:
   if (style.translateX || style.translateY) {
@@ -63,25 +62,18 @@ export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
     canvas.transform.translate(-originX, -originY);
   }
 
-  if (hasTransform) {
-    canvas.apply();
-  }
-
   if (node.props.cache && adapter.createOffscreenCanvas && frame.height > 0 && frame.width > 0) {
     drawCache(canvas, node, root, style, frame, hasClip);
   } else {
     drawContent(canvas, node, root, style, frame, hasClip);
   }
 
-  if (hasTransform) {
-    canvas.transform.restore();
-    canvas.apply();
-  }
-
   popOpacity();
 
   if (hasClip) {
     canvas.context.restore();
+  } else if (hasTransform) {
+    canvas.transform.restore();
   }
 }
 
@@ -94,10 +86,10 @@ function drawCache(canvas: RevasCanvas, node: Node, root: Container, style: any,
     }
     cached = createCache(frame.width, frame.height, cachedId);
     cached.canvas.transform.translate(-frame.x, -frame.y);
-    cached.canvas.apply();
     drawContent(cached.canvas, node, root, style, frame, hasClip);
+    cached.canvas.transform.translate(frame.x, frame.y);
   }
-  canvas.context.drawImage(cached.canvas.context.canvas, frame.x, frame.y, frame.width, frame.height);
+  canvas.context.drawImage(cached.canvas.element, frame.x, frame.y, frame.width, frame.height);
 }
 
 function drawContent(canvas: RevasCanvas, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
