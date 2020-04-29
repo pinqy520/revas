@@ -8,10 +8,7 @@ import Back from '../common/back';
 export default class PlayerApp extends React.Component {
   renderMusic = (item: MusicItemData, index: number) => (
     <View style={styles.musicItem} key={index}>
-      <Image
-        style={styles.musicCover}
-        src={item.cover}
-      />
+      <Image style={styles.musicCover} src={item.cover} />
       <View style={styles.musicInfo}>
         <Text style={styles.musicName}>{item.name}</Text>
         <Text style={styles.musicSinger}>{item.singer}</Text>
@@ -22,13 +19,13 @@ export default class PlayerApp extends React.Component {
     return (
       <View style={styles.container}>
         <LinearGradient
-          style={styles.bg} colors={['#D3E6E4', '#98B3B0', '#A8C8C4']}
-          start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}
+          style={styles.bg}
+          colors={['#D3E6E4', '#98B3B0', '#A8C8C4']}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 1, y: 0 }}
         />
         <ScrollView style={styles.list}>
-          <View cache>
-            {MUSICS.map(this.renderMusic)}
-          </View>
+          <View cache>{MUSICS.map(this.renderMusic)}</View>
         </ScrollView>
         <Player />
         <Back {...this.props} />
@@ -59,22 +56,25 @@ const styles = {
   },
   list: {
     flex: 1,
-    overflow: 'hidden'
+    overflow: 'hidden',
     // backgroundColor: 'red'
   },
   musicItem: {
     ...ROW_CENTER,
   },
   musicCover: {
-    width: 83, height: 83,
+    width: 83,
+    height: 83,
     borderRadius: 5,
-    marginLeft: 20, marginRight: 20,
-    marginTop: 15, marginBottom: 15,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 15,
+    marginBottom: 15,
     shadowColor: '#98B3B0',
     shadowBlur: 15,
     shadowOffsetY: 2,
     shadowOffsetX: 0,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   musicInfo: {
     flex: 1,
@@ -89,6 +89,6 @@ const styles = {
     ...DEFAULT_TEXT,
     fontSize: 14,
     fontWeight: '400',
-    opacity: 0.5
-  }
+    opacity: 0.5,
+  },
 };

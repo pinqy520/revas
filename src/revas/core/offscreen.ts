@@ -1,15 +1,16 @@
 import { adapter } from './utils';
 import { Node } from './Node';
+import { RevasCanvas } from './Canvas';
 
 export interface CachedCanvas {
   id: string;
-  ctx: CanvasRenderingContext2D;
+  canvas: RevasCanvas;
 }
 
 const MAX_SIZE = 30;
 
 const cache = new Map<string, CachedCanvas>();
-const ids: string [] = [];
+const ids: string[] = [];
 
 export function getCache(id: string) {
   return cache.get(id);
@@ -18,23 +19,23 @@ export function getCache(id: string) {
 export function createCache(width: number, height: number, id: string): CachedCanvas {
   if (ids.length >= MAX_SIZE) {
     const expiredId = ids.shift()!;
-    const { ctx } = cache.get(expiredId)!;
-    const canvas: CachedCanvas = {
-      ctx: adapter.resetOffscreenCanvas!(ctx, width, height),
+    const { canvas } = cache.get(expiredId)!;
+    const cached: CachedCanvas = {
+      canvas: adapter.resetOffscreenCanvas!(canvas, width, height),
       id,
     };
     cache.delete(expiredId);
-    cache.set(canvas.id, canvas);
-    ids.push(canvas.id);
-    return canvas;
+    cache.set(cached.id, cached);
+    ids.push(cached.id);
+    return cached;
   } else {
-    const canvas: CachedCanvas = {
-      ctx: adapter.createOffscreenCanvas!(width, height),
+    const cached: CachedCanvas = {
+      canvas: adapter.createOffscreenCanvas!(width, height),
       id,
     };
-    cache.set(canvas.id, canvas);
-    ids.push(canvas.id);
-    return canvas;
+    cache.set(cached.id, cached);
+    ids.push(cached.id);
+    return cached;
   }
 }
 

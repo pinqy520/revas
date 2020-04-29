@@ -35,25 +35,27 @@
 <body> </body>
 <script type="text/javascript">
   TouchEmulator();
-  const stats = new Stats();
-  stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-  stats.dom.style = `
+  if (location.host.indexOf(':') > 0) {
+    const stats = new Stats();
+    stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+    stats.dom.style = `
     position: fixed;
     top: 1px;
     right: 1px;
     cursor: pointer;
     opacity: 0.9;
     z-index: 10000;`
-  document.body.appendChild(stats.dom);
+    document.body.appendChild(stats.dom);
 
-  function animate() {
-    stats.begin();
+    const animate = () => {
+      stats.begin();
 
-    // monitored code goes here
-    stats.end()
+      // monitored code goes here
+      stats.end()
+      requestAnimationFrame(animate);
+    }
     requestAnimationFrame(animate);
   }
-  requestAnimationFrame(animate);
 </script>
 
 </html>

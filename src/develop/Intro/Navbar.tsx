@@ -20,7 +20,7 @@ export default function NavBar(props: NavBarProps) {
 const styles = {
   container: {
     height: 50,
-    backgroundColor: '#505050',
+    backgroundColor: '#333',
     justifyContent: 'center',
     zIndex: 100,
   },

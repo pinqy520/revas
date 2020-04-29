@@ -1,22 +1,29 @@
 import { adapter } from '../core/utils';
+import { RevasCanvas } from '../core/Canvas';
 
 export * from './render';
 
 adapter.createOffscreenCanvas = (width: number, height: number) => {
-  const canvas = document.createElement('canvas');
+  const dom = document.createElement('canvas');
   const scale = window.devicePixelRatio;
-  canvas.width = width * scale;
-  canvas.height = height * scale;
-  const context = canvas.getContext('2d')!;
-  context.scale(scale, scale);
-  return context;
+  dom.width = width * scale;
+  dom.height = height * scale;
+  const context = dom.getContext('2d')!;
+  const canvas = new RevasCanvas(context);
+  canvas.transform.scale(scale, scale);
+  canvas.apply();
+  return canvas;
 };
 
-adapter.resetOffscreenCanvas = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-  const { canvas } = ctx;
+adapter.resetOffscreenCanvas = (prev: RevasCanvas, width: number, height: number) => {
+  const {
+    context: { canvas: dom },
+  } = prev;
   const scale = window.devicePixelRatio;
-  canvas.width = width * scale;
-  canvas.height = height * scale;
-  ctx.scale(scale, scale);
-  return ctx;
+  dom.width = width * scale;
+  dom.height = height * scale;
+  const canvas = new RevasCanvas(prev.context);
+  canvas.transform.scale(scale, scale);
+  canvas.apply();
+  return canvas;
 };

@@ -1,6 +1,7 @@
 import { Node } from './Node';
+import { RevasCanvas } from './Canvas';
 
-export function noop(): any { }
+export function noop(): any {}
 export const EMPTY_OBJECT = Object.freeze({});
 export const EMPTY_ARRAY = Object.freeze([]);
 
@@ -64,7 +65,9 @@ export function applyAnimated(style: any, callback?: Function) {
 }
 
 export function getMergedStyleFromNode(node: Node, callback?: Function) {
-  const { props: { style = EMPTY_ARRAY } } = node;
+  const {
+    props: { style = EMPTY_ARRAY },
+  } = node;
   return applyAnimated(Object.assign({}, ...flatten([style])), callback);
 }
 
@@ -94,8 +97,9 @@ export function getWords(str: string): readonly string[] {
   return str.match(WORD_RANGE) || EMPTY_ARRAY;
 }
 
-export function setShadow(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, blur: number) {
+export function setShadow(canvas: RevasCanvas, color: string, x: number, y: number, blur: number) {
   if (color) {
+    const { context: ctx } = canvas;
     const { shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY } = ctx;
     ctx.shadowBlur = blur;
     ctx.shadowColor = color;
@@ -111,12 +115,12 @@ export function setShadow(ctx: CanvasRenderingContext2D, color: string, x: numbe
   return noop;
 }
 
-export function pushOpacity(ctx: CanvasRenderingContext2D, opacity: number) {
+export function pushOpacity(canvas: RevasCanvas, opacity: number) {
   if (opacity !== null && opacity < 1 && opacity >= 0) {
-    const cachedOpacity = ctx.globalAlpha || 1;
-    ctx.globalAlpha = cachedOpacity * opacity;
+    const cachedOpacity = canvas.context.globalAlpha || 1;
+    canvas.context.globalAlpha = cachedOpacity * opacity;
     return () => {
-      ctx.globalAlpha = cachedOpacity;
+      canvas.context.globalAlpha = cachedOpacity;
     };
   }
   return noop;
@@ -124,8 +128,8 @@ export function pushOpacity(ctx: CanvasRenderingContext2D, opacity: number) {
 
 export type RevasAdapter = {
   createImage: () => HTMLImageElement;
-  createOffscreenCanvas?: (width: number, height: number) => CanvasRenderingContext2D;
-  resetOffscreenCanvas?: (ctx: CanvasRenderingContext2D, width: number, height: number) => CanvasRenderingContext2D;
+  createOffscreenCanvas?: (width: number, height: number) => RevasCanvas;
+  resetOffscreenCanvas?: (ctx: RevasCanvas, width: number, height: number) => RevasCanvas;
 };
 
 export const adapter: RevasAdapter = {

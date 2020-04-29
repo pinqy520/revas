@@ -1,10 +1,8 @@
 import * as React from 'react';
-import {
-  drawText, measureText, applyTextStyle,
-  DrawTextOptions, DEFAULT_MEASURE
-} from './common/drawText';
+import { drawText, measureText, applyTextStyle, DrawTextOptions, DEFAULT_MEASURE } from './common/drawText';
 import { NodeProps, Node } from '../core/Node';
 import { getFrameFromNode, flatten, applyAnimated } from '../core/utils';
+import { RevasCanvas } from '../core/Canvas';
 
 export type TextProps = {
   numberOfLines?: number;
@@ -17,7 +15,7 @@ export default class Text extends React.Component<TextProps> {
 
   _drawed?: DrawTextOptions;
 
-  drawText = (ctx: CanvasRenderingContext2D, node: Node) => {
+  drawText = (canvas: RevasCanvas, node: Node) => {
     const content = getTextFromNode(node);
     if (content) {
       const options = {
@@ -26,29 +24,31 @@ export default class Text extends React.Component<TextProps> {
         frame: getFrameFromNode(node),
         content,
       };
-      applyTextStyle(ctx, options);
+      applyTextStyle(canvas, options);
       if (textPropsChanged(options, this._drawed)) {
-        this._measured = measureText(ctx, options);
+        this._measured = measureText(canvas, options);
         this._drawed = options;
       }
       const [lines, height] = this._measured;
       if (height !== this.state.height) {
         this.setState({ height });
       } else {
-        drawText(ctx, options, lines);
+        drawText(canvas, options, lines);
       }
     }
   };
   render() {
     const { children, numberOfLines, ...others } = this.props as any;
-    return React.createElement('View', others,
+    return React.createElement(
+      'View',
+      others,
       React.createElement('Text', {
         content: children,
         customDrawer: this.drawText,
         textStyle: others.style,
         style: this.state,
         numberOfLines,
-        $ready: Boolean(this._drawed)
+        $ready: Boolean(this._drawed),
       })
     );
   }
@@ -61,11 +61,12 @@ const TEXT_STYLES_LIST = [
   'fontFamily',
   'textBaseline',
   'wordBreak',
-  'lineHeight'
+  'lineHeight',
 ];
 
 const DEFAULT_TEXTSTYLE = {
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
+  fontFamily:
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
   fontWeight: 'normal',
   fontSize: 14,
   color: '#000',
@@ -114,7 +115,7 @@ function getTextFromNode(node: Node) {
 
 function getTextStyleFromNode(node: Node) {
   const style = Object.assign({}, DEFAULT_TEXTSTYLE, ...flatten([node.props.textStyle]));
-  style.lineHeight = style.lineHeight || (style.fontSize * 1.1);
+  style.lineHeight = style.lineHeight || style.fontSize * 1.1;
   return applyAnimated(style);
 }
 // TODO: nested text support

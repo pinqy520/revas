@@ -1,7 +1,15 @@
 import { Node, Frame } from './Node';
-import { getMergedStyleFromNode, getFrameFromNode, sortByZIndexAscending, setShadow, pushOpacity, adapter } from './utils';
+import {
+  getMergedStyleFromNode,
+  getFrameFromNode,
+  sortByZIndexAscending,
+  setShadow,
+  pushOpacity,
+  adapter
+} from './utils';
 import { Container } from './Container';
 import { getCache, createCache, autoCacheId } from './offscreen';
+import { RevasCanvas } from './Canvas';
 
 function getRadius(style: any) {
   return {
@@ -12,7 +20,7 @@ function getRadius(style: any) {
   };
 }
 
-export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Container) {
+export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
   const style = getMergedStyleFromNode(node, root.draw);
   const frame = getFrameFromNode(node);
 
@@ -21,71 +29,79 @@ export function drawNode(ctx: CanvasRenderingContext2D, node: Node, root: Contai
   }
 
   // flags
-  const hasTransform = style.translateX || style.translateY ||
-    style.rotate || style.scaleX || style.scaleY || style.scale;
+  const hasTransform =
+    style.translateX || style.translateY || style.rotate || style.scaleX || style.scaleY || style.scale;
   const hasClip = style.overflow === 'hidden';
 
-
-  const useSave = hasTransform || hasClip;
-
-  if (useSave) {
-    ctx.save();
+  if (hasClip) {
+    canvas.context.save();
   } // Area Range
 
   // Opacity:
-  const popOpacity = pushOpacity(ctx, style.opacity);
+  const popOpacity = pushOpacity(canvas, style.opacity);
+
+  if (hasTransform) {
+    canvas.transform.save();
+  }
 
   // Translation:
   if (style.translateX || style.translateY) {
-    ctx.translate(style.translateX || 0, style.translateY || 0);
+    canvas.transform.translate(style.translateX || 0, style.translateY || 0);
   }
   // Rotate && Scale
   if (style.rotate || style.scaleX || style.scaleY || style.scale) {
     // Origin Center
     const originX = frame.x + frame.width / 2;
     const originY = frame.y + frame.height / 2;
-    ctx.translate(originX, originY);
+    canvas.transform.translate(originX, originY);
     if (style.rotate) {
-      ctx.rotate(style.rotate);
+      canvas.transform.rotate(style.rotate);
     }
     if (style.scaleX || style.scaleY || style.scale) {
-      ctx.scale(style.scaleX || style.scale, style.scaleY || style.scale);
+      canvas.transform.scale(style.scaleX || style.scale, style.scaleY || style.scale);
     }
-    ctx.translate(-originX, -originY);
+    canvas.transform.translate(-originX, -originY);
   }
 
+  canvas.apply();
+
   if (node.props.cache && adapter.createOffscreenCanvas && frame.height > 0 && frame.width > 0) {
-    drawCache(ctx, node, root, style, frame, hasClip);
+    drawCache(canvas, node, root, style, frame, hasClip);
   } else {
-    drawContent(ctx, node, root, style, frame, hasClip);
+    drawContent(canvas, node, root, style, frame, hasClip);
+  }
+
+  if (hasTransform) {
+    canvas.transform.restore();
   }
 
   popOpacity();
 
-  if (useSave) {
-    ctx.restore();
+  if (hasClip) {
+    canvas.context.save();
   }
 }
 
-function drawCache(ctx: CanvasRenderingContext2D, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
+function drawCache(canvas: RevasCanvas, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
   const cachedId: string = node.props.cache === true ? autoCacheId(node) : node.props.cache;
   let cached = getCache(cachedId);
   if (!cached) {
     if (!node.$ready) {
-      return drawContent(ctx, node, root, style, frame, hasClip);
+      return drawContent(canvas, node, root, style, frame, hasClip);
     }
     cached = createCache(frame.width, frame.height, cachedId);
-    cached.ctx.translate(-frame.x, -frame.y);
-    drawContent(cached.ctx, node, root, style, frame, hasClip);
-    cached.ctx.translate(frame.x, frame.y);
+    cached.canvas.transform.translate(-frame.x, -frame.y);
+    cached.canvas.apply();
+    drawContent(cached.canvas, node, root, style, frame, hasClip);
   }
-  ctx.drawImage(cached.ctx.canvas, frame.x, frame.y, frame.width, frame.height);
+  canvas.context.drawImage(cached.canvas.context.canvas, frame.x, frame.y, frame.width, frame.height);
 }
 
-function drawContent(ctx: CanvasRenderingContext2D, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
+function drawContent(canvas: RevasCanvas, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
   const hasBG = style.backgroundColor && style.backgroundColor !== 'transparent';
   const hasBorder = style.borderColor && style.borderWidth > 0;
-  const hasRadius = style.borderRadius ||
+  const hasRadius =
+    style.borderRadius ||
     style.borderTopLeftRadius ||
     style.borderTopRightRadius ||
     style.borderBottomLeftRadius ||
@@ -96,7 +112,7 @@ function drawContent(ctx: CanvasRenderingContext2D, node: Node, root: Container,
   const usePath = hasRadius || hasClip || style.path;
 
   if (useFrame) {
-
+    const { context: ctx } = canvas;
     if (usePath) {
       // Draw Path
       ctx.beginPath();
@@ -120,7 +136,7 @@ function drawContent(ctx: CanvasRenderingContext2D, node: Node, root: Container,
     if (hasBG || hasBorder) {
       // Shadow:
       const resetShadow = setShadow(
-        ctx,
+        canvas,
         style.shadowColor,
         style.shadowOffsetX,
         style.shadowOffsetY,
@@ -151,7 +167,7 @@ function drawContent(ctx: CanvasRenderingContext2D, node: Node, root: Container,
   }
 
   if (node.props.customDrawer) {
-    node.props.customDrawer(ctx, node);
+    node.props.customDrawer(canvas, node);
   }
 
   // Draw child layers, sorted by their z-index.
@@ -159,8 +175,6 @@ function drawContent(ctx: CanvasRenderingContext2D, node: Node, root: Container,
     .slice()
     .sort(sortByZIndexAscending)
     .forEach(child => {
-      drawNode(ctx, child, root);
+      drawNode(canvas, child, root);
     });
-
 }
-

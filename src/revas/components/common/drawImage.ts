@@ -1,36 +1,36 @@
-import { Node } from '../../core/Node'
-import * as imageLoader from './imageLoader'
-import { clamp, getMergedStyleFromNode, getFrameFromNode } from '../../core/utils'
+import { Node } from '../../core/Node';
+import * as imageLoader from './imageLoader';
+import { clamp, getMergedStyleFromNode, getFrameFromNode } from '../../core/utils';
+import { RevasCanvas } from '../../core/Canvas';
 
-export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
-  const image = imageLoader.get(node.props.src)
-  if (image.height <= 0) return
-  const frame = getFrameFromNode(node)
-  const { width, height, x, y } = frame
-  if (width <= 0 || height <= 0) return
-  const style = getMergedStyleFromNode(node)
-
+export default function drawImage(canvas: RevasCanvas, node: Node) {
+  const image = imageLoader.get(node.props.src);
+  if (image.height <= 0) {
+    return;
+  }
+  const frame = getFrameFromNode(node);
+  const { width, height, x, y } = frame;
+  if (width <= 0 || height <= 0) {
+    return;
+  }
+  const style = getMergedStyleFromNode(node);
 
   const actualSize = {
     width: image.width,
-    height: image.height
+    height: image.height,
   };
 
   const focusPoint = style.focusPoint || {
     x: actualSize.width * 0.5,
-    y: actualSize.height * 0.5
+    y: actualSize.height * 0.5,
   };
 
   if (style.resizeMode === 'contain') {
-
-    const scale = Math.min(
-      width / actualSize.width,
-      height / actualSize.height
-    ) || 1;
+    const scale = Math.min(width / actualSize.width, height / actualSize.height) || 1;
 
     const scaledSize = {
       width: actualSize.width * scale,
-      height: actualSize.height * scale
+      height: actualSize.height * scale,
     };
 
     // Clip the image to rectangle (sx, sy, sw, sh).
@@ -45,24 +45,20 @@ export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
     const dx = Math.round((width - scaledSize.width) / 2 + x);
     const dy = Math.round((height - scaledSize.height) / 2 + y);
 
-    ctx.drawImage(image, 0, 0, sw, sh, dx, dy, dw, dh);
+    canvas.context.drawImage(image, 0, 0, sw, sh, dx, dy, dw, dh);
   } else {
-
-    const scale = Math.max(
-      width / actualSize.width,
-      height / actualSize.height
-    ) || 1;
+    const scale = Math.max(width / actualSize.width, height / actualSize.height) || 1;
 
     const scaledSize = {
       width: actualSize.width * scale,
-      height: actualSize.height * scale
+      height: actualSize.height * scale,
     };
 
     // Clip the image to rectangle (sx, sy, sw, sh).
     const sx = Math.round(clamp(width * 0.5 - focusPoint.x * scale, width - scaledSize.width, 0)) * (-1 / scale);
     const sy = Math.round(clamp(height * 0.5 - focusPoint.y * scale, height - scaledSize.height, 0)) * (-1 / scale);
-    const sw = Math.round(actualSize.width - (sx * 2));
-    const sh = Math.round(actualSize.height - (sy * 2));
+    const sw = Math.round(actualSize.width - sx * 2);
+    const sh = Math.round(actualSize.height - sy * 2);
 
     // Scale the image to dimensions (dw, dh).
     const dw = Math.round(width);
@@ -72,7 +68,6 @@ export default function drawImage(ctx: CanvasRenderingContext2D, node: Node) {
     const dx = Math.round(x);
     const dy = Math.round(y);
 
-    ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
-
+    canvas.context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
   }
 }

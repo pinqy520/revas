@@ -17,7 +17,9 @@ class Item extends React.Component<ItemProps> {
       <View style={styles.item}>
         <Image style={styles.cover} src={item.imageUrl} />
         <View style={this.style} cache={`text_${index}`}>
-          <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+          <Text style={styles.title} numberOfLines={2}>
+            {item.title}
+          </Text>
           <Text style={styles.text} numberOfLines={MAX_LINES}>
             {item.excerpt}
           </Text>
@@ -42,10 +44,12 @@ export default class TimelineApp extends React.Component<any> {
     return (
       <React.Fragment>
         <ListView
-          data={data} paging
+          data={data}
+          paging
           renderItem={this.renderItem}
           getItemHeight={this.getItemHeight}
-          onScroll={this.onScroll} style={styles.container}
+          onScroll={this.onScroll}
+          style={styles.container}
         />
         <Back router={this.props.router} />
       </React.Fragment>
@@ -55,12 +59,9 @@ export default class TimelineApp extends React.Component<any> {
 
 function createItemTextStyle(index: number, animated: AnimatedValue) {
   const offset = (index - 1) * WINDOW_HEIGHT;
-  const translateY = animated.interpolate(
-    [offset, offset + WINDOW_HEIGHT],
-    [-WINDOW_HEIGHT / 2, 0]
-  );
+  const translateY = animated.interpolate([offset, offset + WINDOW_HEIGHT], [-WINDOW_HEIGHT / 2, 0]);
   const opacity = animated.interpolate(
-    [offset + (WINDOW_HEIGHT / 2), offset + WINDOW_HEIGHT, offset + (2 * WINDOW_HEIGHT)],
+    [offset + WINDOW_HEIGHT / 2, offset + WINDOW_HEIGHT, offset + 2 * WINDOW_HEIGHT],
     [0, 1, 0]
   );
   return { margin: 20, translateY, opacity, animated: true, height: WINDOW_HEIGHT / 2 };
@@ -71,7 +72,7 @@ const MAX_LINES = Math.floor((WINDOW_HEIGHT / 3 - 20) / 26);
 
 const styles = {
   container: {
-    flex: 1
+    flex: 1,
   },
   item: {
     height: WINDOW_HEIGHT,
@@ -87,12 +88,12 @@ const styles = {
     lineHeight: 34,
     fontWeight: '800',
     color: '#333',
-    fontFamily: 'serif'
+    fontFamily: 'serif',
   },
   text: {
     fontSize: 18,
     lineHeight: 26,
     color: '#333',
-    fontFamily: 'fantasy'
+    fontFamily: 'fantasy',
   },
 };
