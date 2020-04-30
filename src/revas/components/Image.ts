@@ -9,7 +9,7 @@ export type ImageViewProps = {
 
 export default class ImageView extends React.Component<ImageViewProps> {
   state = {
-    ready: false
+    ready: false,
   };
   componentDidMount() {
     if (this.props.src) {
@@ -18,6 +18,7 @@ export default class ImageView extends React.Component<ImageViewProps> {
   }
   componentDidUpdate(prev: any) {
     if (prev.src !== this.props.src) {
+      this.setState({ ready: false });
       if (prev.src) {
         imageLoader.remove(prev.src, this.onReady);
       }
@@ -38,7 +39,7 @@ export default class ImageView extends React.Component<ImageViewProps> {
     return React.createElement('Image', {
       customDrawer: this.state.ready ? drawImage : void 0,
       ...this.props,
-      $ready: this.state.ready
+      $ready: this.state.ready,
     });
   }
 }

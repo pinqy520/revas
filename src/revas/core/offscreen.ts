@@ -1,10 +1,11 @@
 import { adapter } from './utils';
-import { Node } from './Node';
+import { Node, Frame } from './Node';
 import { RevasCanvas } from './Canvas';
 
 export interface CachedCanvas {
   id: string;
   canvas: RevasCanvas;
+  frame: Frame;
 }
 
 const MAX_SIZE = 30;
@@ -16,13 +17,14 @@ export function getCache(id: string) {
   return cache.get(id);
 }
 
-export function createCache(width: number, height: number, id: string): CachedCanvas {
+export function createCache(x: number, y: number, w: number, h: number, id: string): CachedCanvas {
   if (ids.length >= MAX_SIZE) {
     const expiredId = ids.shift()!;
     const { canvas } = cache.get(expiredId)!;
     const cached: CachedCanvas = {
-      canvas: adapter.resetOffscreenCanvas!(canvas, width, height),
+      canvas: adapter.resetOffscreenCanvas!(canvas, w, h),
       id,
+      frame: new Frame(x, y, w, h),
     };
     cache.delete(expiredId);
     cache.set(cached.id, cached);
@@ -30,8 +32,9 @@ export function createCache(width: number, height: number, id: string): CachedCa
     return cached;
   } else {
     const cached: CachedCanvas = {
-      canvas: adapter.createOffscreenCanvas!(width, height),
+      canvas: adapter.createOffscreenCanvas!(w, h),
       id,
+      frame: new Frame(x, y, w, h),
     };
     cache.set(cached.id, cached);
     ids.push(cached.id);

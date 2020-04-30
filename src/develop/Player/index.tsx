@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, LinearGradient, Image, ScrollView } from '../../revas';
-import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER } from './styles';
+import { ABS_FULL, DEFAULT_TEXT } from './styles';
 import { MUSICS, MusicItemData } from './data';
 import Player from './Player';
 import Back from '../common/back';
@@ -12,21 +12,32 @@ export default class PlayerApp extends React.Component {
       <View style={styles.musicInfo}>
         <Text style={styles.musicName}>{item.name}</Text>
         <Text style={styles.musicSinger}>{item.singer}</Text>
+        <View style={styles.line} />
       </View>
     </View>
   );
   render() {
     return (
       <View style={styles.container}>
-        <LinearGradient
-          style={styles.bg}
-          colors={['#D3E6E4', '#98B3B0', '#A8C8C4']}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 1, y: 0 }}
-        />
-        <ScrollView style={styles.list}>
-          <View cache>{MUSICS.map(this.renderMusic)}</View>
+        <ScrollView style={styles.list} paging={113}>
+          <View style={styles.inner} cache>
+            {MUSICS.map(this.renderMusic)}
+          </View>
         </ScrollView>
+        <LinearGradient
+          style={styles.top}
+          colors={['#EFF5F400', '#EBF1F0']}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 0, y: 0.15 }}
+          pointerEvents="none"
+        />
+        <LinearGradient
+          style={styles.bottom}
+          colors={['#EBF1F0', '#FCFDFD00']}
+          start={{ x: 0, y: 0.85 }}
+          end={{ x: 0, y: 0 }}
+          pointerEvents="none"
+        />
         <Player />
         <Back {...this.props} />
       </View>
@@ -39,33 +50,28 @@ const styles = {
     flex: 1,
     backgroundColor: '#fff',
   },
-  bg: {
+  top: {
     ...ABS_FULL,
-    opacity: 0.2,
-    // zIndex: -1
+    bottom: '60%',
   },
-  title: {
-    justifyContent: 'center',
-    height: 120,
-  },
-  titleText: {
-    ...DEFAULT_TEXT,
-    textAlign: 'center',
-    fontWeight: '600',
-    fontSize: 25,
+  bottom: {
+    ...ABS_FULL,
+    top: '60%',
   },
   list: {
     flex: 1,
-    overflow: 'hidden',
-    // backgroundColor: 'red'
+    marginLeft: 50,
+  },
+  inner: {
+    marginTop: window.innerHeight / 2 - 57,
+    marginBottom: window.innerHeight / 2 - 57,
   },
   musicItem: {
-    ...ROW_CENTER,
+    flexDirection: 'row',
   },
   musicCover: {
     width: 83,
     height: 83,
-    borderRadius: 5,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 15,
@@ -81,14 +87,21 @@ const styles = {
   },
   musicName: {
     ...DEFAULT_TEXT,
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 10,
-    fontWeight: '600',
+    opacity: 0.8,
+    marginTop: 20,
   },
   musicSinger: {
     ...DEFAULT_TEXT,
     fontSize: 14,
     fontWeight: '400',
-    opacity: 0.5,
+    opacity: 0.3,
+  },
+  line: {
+    height: 1,
+    backgroundColor: '#98B3B0',
+    opacity: 0.1,
+    marginTop: 5,
   },
 };
