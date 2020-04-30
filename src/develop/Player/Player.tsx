@@ -68,7 +68,7 @@ export default class Player extends React.Component {
 
   render() {
     return (
-      <View style={[styles.container, this._containerStyle]} cache={this.state.mode !== 'toggle'}>
+      <View style={[styles.container, this._containerStyle]} cache={this.state.mode === 'minimal'}>
         <View style={[ABS_FULL, this._bgStyle]} pointerEvents="none">
           <Image style={[ABS_FULL, this._coverStyle]} src={music.cover} />
           <LinearGradient

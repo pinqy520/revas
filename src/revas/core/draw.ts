@@ -80,28 +80,22 @@ export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
 function drawCache(canvas: RevasCanvas, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
   const cachedId = node.props.cache === true ? autoCacheId(node) : node.props.cache;
   let cached = getCache(cachedId);
+  const { shadowBlur = 0, shadowOffsetX = 0, shadowOffsetY = 0 } = cached ? cached.style : style;
+  const spread = shadowBlur * 2;
+  const x = frame.x - shadowOffsetX - shadowBlur;
+  const y = frame.y - shadowOffsetY - shadowBlur;
+  const w = frame.width + spread;
+  const h = frame.height + spread;
   if (!cached) {
     if (!node.$ready && !node.props.forceCache) {
       return drawContent(canvas, node, root, style, frame, hasClip);
     }
-    const { shadowBlur = 0, shadowOffsetX = 0, shadowOffsetY = 0 } = style;
-    const spread = shadowBlur * 2;
-    const x = frame.x - shadowOffsetX - shadowBlur;
-    const y = frame.y - shadowOffsetY - shadowBlur;
-    const w = frame.width + spread;
-    const h = frame.height + spread;
-    cached = createCache(x, y, w, h, cachedId);
+    cached = createCache(style, w, h, cachedId);
     cached.canvas.transform.translate(-x, -y);
     drawContent(cached.canvas, node, root, style, frame, hasClip);
     cached.canvas.transform.translate(x, y);
   }
-  canvas.context.drawImage(
-    cached.canvas.element,
-    cached.frame.x,
-    cached.frame.y,
-    cached.frame.width,
-    cached.frame.height
-  );
+  canvas.context.drawImage(cached.canvas.element, x, y, w, h);
 }
 
 function drawContent(canvas: RevasCanvas, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {

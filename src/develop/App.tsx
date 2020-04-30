@@ -73,6 +73,7 @@ class Card extends React.Component<CardProps> {
         onPress={this.props.tap}
         onPressIn={this.onPress}
         onPressOut={this.onPressOut}
+        cache
       >
         <Text style={styles.text}>{this.props.text}</Text>
       </Touchable>
