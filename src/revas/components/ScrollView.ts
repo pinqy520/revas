@@ -6,6 +6,8 @@ import { AnimatedValue } from '../core/Animated';
 export type ScrollViewProps = {
   horizontal?: boolean;
   onScroll?: (e: RevasScrollEvent) => any;
+  onScrollStart?: (e: RevasScrollEvent) => any;
+  onScrollEnd?: (e: RevasScrollEvent) => any;
   paging?: boolean | number;
 } & NodeProps;
 
@@ -23,7 +25,14 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
 
   private _scroller = new Scroller(e => {
     this.props.horizontal ? this._innerStyle.translateX.setValue(-e.x) : this._innerStyle.translateY.setValue(-e.y);
-    this.props.onScroll && this.props.onScroll(e);
+    switch (e.type) {
+      case 'scroll':
+        return this.props.onScroll && this.props.onScroll(e);
+      case 'start':
+        return this.props.onScrollStart && this.props.onScrollStart(e);
+      case 'end':
+        return this.props.onScrollEnd && this.props.onScrollEnd(e);
+    }
   });
 
   private _onLayout = (frame: Frame) => {
@@ -56,7 +65,7 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
     if ((maxX > 0 && maxX !== this._scroller.maxX) || (maxY > 0 && maxY !== this._scroller.maxY)) {
       this._scroller.maxX = maxX;
       this._scroller.maxY = maxY;
-      this._scroller.emit();
+      this._scroller.emit('none');
     }
   };
 

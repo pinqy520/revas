@@ -1,11 +1,18 @@
 import * as React from 'react';
-import { View, Text, LinearGradient, Image, ScrollView } from '../../revas';
+import { View, Text, LinearGradient, Image, ScrollView, RevasScrollEvent } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT } from './styles';
 import { MUSICS, MusicItemData } from './data';
 import Player from './Player';
 import Back from '../common/back';
 
-export default class PlayerApp extends React.Component {
+export default class MusicApp extends React.Component {
+  state = { index: 0 };
+
+  checkIndex = (e: RevasScrollEvent) => {
+    const index = Math.round(e.y / 113);
+    this.setState({ index });
+  };
+
   renderMusic = (item: MusicItemData, index: number) => (
     <View style={styles.musicItem} key={index}>
       <Image style={styles.musicCover} src={item.cover} />
@@ -19,7 +26,7 @@ export default class PlayerApp extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.list} paging={113}>
+        <ScrollView style={styles.list} paging={113} onScrollEnd={this.checkIndex}>
           <View style={styles.inner} cache>
             {MUSICS.map(this.renderMusic)}
           </View>
@@ -38,7 +45,7 @@ export default class PlayerApp extends React.Component {
           end={{ x: 0, y: 0 }}
           pointerEvents="none"
         />
-        <Player />
+        <Player music={MUSICS[this.state.index]} />
         <Back {...this.props} />
       </View>
     );
@@ -60,7 +67,7 @@ const styles = {
   },
   list: {
     flex: 1,
-    marginLeft: 50,
+    marginLeft: 20,
   },
   inner: {
     marginTop: window.innerHeight / 2 - 57,

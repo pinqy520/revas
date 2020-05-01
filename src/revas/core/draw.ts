@@ -168,7 +168,7 @@ function drawContent(canvas: RevasCanvas, node: Node, root: Container, style: an
   }
 
   if (node.props.customDrawer) {
-    node.props.customDrawer(canvas, node);
+    node.props.customDrawer(canvas, node, { hasRadius, hasClip });
   }
 
   // Draw child layers, sorted by their z-index.

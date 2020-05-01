@@ -3,7 +3,7 @@ import * as imageLoader from './imageLoader';
 import { clamp, getMergedStyleFromNode, getFrameFromNode } from '../../core/utils';
 import { RevasCanvas } from '../../core/Canvas';
 
-export default function drawImage(canvas: RevasCanvas, node: Node) {
+export default function drawImage(canvas: RevasCanvas, node: Node, flags: any) {
   const image = imageLoader.get(node.props.src);
   if (image.height <= 0) {
     return;
@@ -24,6 +24,13 @@ export default function drawImage(canvas: RevasCanvas, node: Node) {
     x: actualSize.width * 0.5,
     y: actualSize.height * 0.5,
   };
+
+  const hasClip = flags.hasRadius && !flags.hasClip;
+
+  if (hasClip) {
+    canvas.context.save();
+    canvas.context.clip();
+  }
 
   if (style.resizeMode === 'contain') {
     const scale = Math.min(width / actualSize.width, height / actualSize.height) || 1;
@@ -69,5 +76,8 @@ export default function drawImage(canvas: RevasCanvas, node: Node) {
     const dy = Math.round(y);
 
     canvas.context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+  }
+  if (hasClip) {
+    canvas.context.restore();
   }
 }

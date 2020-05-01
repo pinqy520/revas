@@ -94,6 +94,10 @@ export class AnimatedTiming {
     return this;
   }
 
+  promise() {
+    return new Promise(resolve => (this._onEnd = resolve));
+  }
+
   private _loop = () => {
     const duration = Date.now() - this._startTime;
     if (duration < this.config.duration) {

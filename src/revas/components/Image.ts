@@ -7,6 +7,8 @@ export type ImageViewProps = {
   src: string;
 } & NodeProps;
 
+const DEFAULT_STYLE = { path: true };
+
 export default class ImageView extends React.Component<ImageViewProps> {
   state = {
     ready: false,
@@ -39,6 +41,7 @@ export default class ImageView extends React.Component<ImageViewProps> {
     return React.createElement('Image', {
       customDrawer: this.state.ready ? drawImage : void 0,
       ...this.props,
+      style: [DEFAULT_STYLE, this.props.style],
       $ready: this.state.ready,
     });
   }

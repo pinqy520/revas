@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, AnimatedValue, timing, AnimatedTiming, Touchable } from '../revas';
 import Intro from './Intro';
 import Timeline from './Timeline';
-import Player from './Player';
+import MusicApp from './Music';
 import SimpleRouter from './common/simple-router';
 
 export default class App extends React.Component {
@@ -20,7 +20,7 @@ export default class App extends React.Component {
           <View style={styles.cards}>
             <Card color="#9254DE" text="Overview" tap={this.push(Intro)} />
             <Card color="#F759AB" text="Timeline App" tap={this.push(Timeline)} />
-            <Card color="#597EF7" text="Music App" tap={this.push(Player)} />
+            <Card color="#597EF7" text="Music App" tap={this.push(MusicApp)} />
           </View>
         </View>
       </SimpleRouter>

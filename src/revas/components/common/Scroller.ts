@@ -1,7 +1,10 @@
 import { RevasTouchEvent } from '../../core/Node';
 import { clamp, noop } from '../../core/utils';
 
+export type RevasScrollEventType = 'start' | 'scroll' | 'end' | 'none';
+
 export interface RevasScrollEvent {
+  type: RevasScrollEventType;
   x: number;
   y: number;
   vx: number;
@@ -86,6 +89,7 @@ export default class Scroller {
       this._timestamp = e.timestamp;
       const { x, y } = e.touches[this._tid];
       this.horizontal ? this._x.capture(x) : this._y.capture(y);
+      this.emit('start');
     }
   };
 
@@ -95,7 +99,7 @@ export default class Scroller {
       const duration = e.timestamp - this._timestamp;
       this._timestamp = e.timestamp;
       this.horizontal ? this._x.onMove(x, duration) : this._y.onMove(y, duration);
-      this.emit();
+      this.emit('scroll');
       this._sign(e);
     }
   };
@@ -114,14 +118,17 @@ export default class Scroller {
     const timestamp = Date.now();
     const duration = timestamp - this._timestamp;
     this._timestamp = timestamp;
-    this.emit();
     if (this.horizontal ? this._x.afterEnd(duration) : this._y.afterEnd(duration)) {
+      this.emit('scroll');
       requestAnimationFrame(this.afterEnd);
+    } else {
+      this.emit('end');
     }
   };
 
-  emit() {
+  emit(type: RevasScrollEventType) {
     this.listener({
+      type,
       x: this._x.offset,
       vx: this._x.velocity,
       y: this._y.offset,
@@ -162,17 +169,18 @@ class Handler {
 
   afterEnd(duration: number) {
     if (this._last < 0) {
-      if (this.paging > 0 && Math.abs(this.velocity) < 0.5) {
+      const absv = Math.abs(this.velocity);
+      if (this.paging > 0 && absv < 0.5) {
         const distance = Math.round(this.offset / this.paging + this.velocity) * this.paging - this.offset;
         this.velocity = distance / 2000 + friction(this.velocity, duration, 0.01);
-        if (Math.abs(distance) > 0.1) {
+        if (Math.abs(distance) > 0.1 && absv > 0) {
           const move = this.velocity * duration;
           this.change(move);
           return true;
         } else {
           this.change(distance);
         }
-      } else if (Math.abs(this.velocity) > 0.05) {
+      } else if (absv > 0.05) {
         this.velocity = clamp(-10, this.velocity, 10);
         this.velocity = friction(this.velocity, duration, 0.003);
         const move = this.velocity * duration;
