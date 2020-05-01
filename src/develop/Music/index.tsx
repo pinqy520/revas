@@ -33,14 +33,14 @@ export default class MusicApp extends React.Component {
         </ScrollView>
         <LinearGradient
           style={styles.top}
-          colors={['#EFF5F400', '#EBF1F0']}
+          colors={['rgba(239, 245, 244, 0)', '#EBF1F0']}
           start={{ x: 0, y: 1 }}
           end={{ x: 0, y: 0.15 }}
           pointerEvents="none"
         />
         <LinearGradient
           style={styles.bottom}
-          colors={['#EBF1F0', '#FCFDFD00']}
+          colors={['#EBF1F0', 'rgba(235, 241, 240, 0)']}
           start={{ x: 0, y: 0.85 }}
           end={{ x: 0, y: 0 }}
           pointerEvents="none"

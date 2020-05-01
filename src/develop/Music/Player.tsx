@@ -141,7 +141,8 @@ export default class Player extends React.Component<PlayerProps> {
 
 const WINDOW_WIDTH = window.innerWidth;
 const WINDOW_HEIGHT = window.innerHeight;
-const SIZE = WINDOW_WIDTH * 0.8;
+const SIZE = Math.min(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT * 0.5);
+console.log(SIZE);
 const RADIO = SIZE / 2;
 
 const styles = {
@@ -160,9 +161,12 @@ const styles = {
   },
 
   main: {
-    width: WINDOW_WIDTH,
-    height: WINDOW_HEIGHT,
-    justifyContent: 'flex-end',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 20,
+    height: WINDOW_HEIGHT * 0.9 - SIZE,
+    justifyContent: 'center',
   },
   name: {
     ...DEFAULT_TEXT,
@@ -181,7 +185,6 @@ const styles = {
   controls: {
     ...ROW_CENTER,
     marginLeft: 10,
-    marginBottom: 100,
     marginTop: 30,
   },
   btnS: {
