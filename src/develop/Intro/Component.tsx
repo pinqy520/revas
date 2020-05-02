@@ -68,6 +68,18 @@ export default function Components(props: any) {
             <View style={styles.scrollView.box}>
               <Text style={styles.scrollView.text}>7</Text>
             </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>8</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>9</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>10</Text>
+            </View>
+            <View style={styles.scrollView.box}>
+              <Text style={styles.scrollView.text}>11</Text>
+            </View>
           </ScrollView>
         </Panel>
         <Panel label="LinearGradient" cache>

@@ -47,20 +47,20 @@ export default class MusicApp extends React.Component {
               {MUSICS.map(this.renderMusic)}
             </View>
           </ScrollView>
-          <LinearGradient
-            style={styles.top}
-            colors={['rgba(239, 245, 244, 0)', '#EBF1F0']}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 0, y: 0.15 }}
-            pointerEvents="none"
-          />
-          <LinearGradient
-            style={styles.bottom}
-            colors={['#EBF1F0', 'rgba(235, 241, 240, 0)']}
-            start={{ x: 0, y: 0.85 }}
-            end={{ x: 0, y: 0 }}
-            pointerEvents="none"
-          />
+          <View style={ABS_FULL} cache pointerEvents="none">
+            <LinearGradient
+              style={styles.top}
+              colors={['rgba(239, 245, 244, 0)', '#EBF1F0']}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 0, y: 0.15 }}
+            />
+            <LinearGradient
+              style={styles.bottom}
+              colors={['#EBF1F0', 'rgba(235, 241, 240, 0)']}
+              start={{ x: 0, y: 0.85 }}
+              end={{ x: 0, y: 0 }}
+            />
+          </View>
           <Back {...this.props} />
         </View>
         <Player transaction={this.transaction} disabled={this.state.picking} music={MUSICS[this.state.index]} />

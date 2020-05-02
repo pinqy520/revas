@@ -44,6 +44,122 @@ export default function Style(props: any) {
               </PanelItem>
             </View>
           </Panel>
+          <Panel label="JustifyContent">
+            <View style={styles.row}>
+              <PanelItem label="center" style={styles.container}>
+                <View style={[styles.flex.out, styles.flex.justifyCenter]}>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>1</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>2</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>3</Text>
+                  </View>
+                </View>
+              </PanelItem>
+              <PanelItem label="space-between" style={styles.container}>
+                <View style={[styles.flex.out, styles.flex.justifyBetween]}>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>1</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>2</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>3</Text>
+                  </View>
+                </View>
+              </PanelItem>
+            </View>
+            <View style={styles.row}>
+              <PanelItem label="space-around" style={styles.container}>
+                <View style={[styles.flex.out, styles.flex.justifyAround]}>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>1</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>2</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>3</Text>
+                  </View>
+                </View>
+              </PanelItem>
+              <PanelItem label="flex-start (default)" style={styles.container}>
+                <View style={styles.flex.out}>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>1</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>2</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>3</Text>
+                  </View>
+                </View>
+              </PanelItem>
+            </View>
+          </Panel>
+          <Panel label="AlignItems & AlignSelf">
+            <View style={styles.row}>
+              <PanelItem label="center" style={styles.container}>
+                <View style={[styles.flex.out, styles.flex.justifyAround, styles.flex.alignCenter]}>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>1</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>2</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>3</Text>
+                  </View>
+                </View>
+              </PanelItem>
+              <PanelItem label="flex-start" style={styles.container}>
+                <View style={[styles.flex.out, styles.flex.justifyAround, styles.flex.alignStart]}>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>1</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>2</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>3</Text>
+                  </View>
+                </View>
+              </PanelItem>
+            </View>
+            <View style={styles.row}>
+              <PanelItem label="flex-end" style={styles.container}>
+                <View style={[styles.flex.out, styles.flex.justifyAround, styles.flex.alignEnd]}>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>1</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>2</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>3</Text>
+                  </View>
+                </View>
+              </PanelItem>
+              <PanelItem label="alignSelf" style={styles.container}>
+                <View style={[styles.flex.out, styles.flex.justifyAround]}>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>1</Text>
+                  </View>
+                  <View style={[styles.flex.in, styles.flex.alignSelf]}>
+                    <Text style={styles.flex.text}>2</Text>
+                  </View>
+                  <View style={styles.flex.in}>
+                    <Text style={styles.flex.text}>3</Text>
+                  </View>
+                </View>
+              </PanelItem>
+            </View>
+          </Panel>
         </View>
       </ScrollView>
     </View>
@@ -128,6 +244,47 @@ const styles = {
       color: '#000',
       fontWeight: '600',
       textAlign: 'center',
+    },
+  },
+  flex: {
+    out: {
+      height: 55,
+      backgroundColor: '#D8D8D8',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    in: {
+      width: 30,
+      height: 30,
+      backgroundColor: '#6B6B6B',
+      borderColor: '#000',
+      borderWidth: 1,
+      justifyContent: 'center',
+    },
+    text: {
+      color: '#fff',
+      textAlign: 'center',
+    },
+    justifyCenter: {
+      justifyContent: 'center',
+    },
+    justifyBetween: {
+      justifyContent: 'space-between',
+    },
+    justifyAround: {
+      justifyContent: 'space-around',
+    },
+    alignStart: {
+      alignItems: 'flex-start',
+    },
+    alignCenter: {
+      alignItems: 'center',
+    },
+    alignEnd: {
+      alignItems: 'flex-end',
+    },
+    alignSelf: {
+      alignSelf: 'flex-start',
     },
   },
 };

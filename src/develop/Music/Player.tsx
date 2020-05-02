@@ -193,7 +193,7 @@ export default class Player extends React.Component<PlayerProps> {
     return (
       <React.Fragment>
         {this.renderMain()}
-        <Image style={[styles.cover, this._coverStyle]} src={this.state.current.cover} cache={this.state.current.cover}>
+        <Image style={[styles.cover, this._coverStyle]} src={this.state.current.cover} cache={this.state.current.name}>
           <Touchable style={ABS_FULL} onPress={this.toggle} />
         </Image>
       </React.Fragment>
