@@ -1,26 +1,55 @@
 import * as React from 'react';
-import { View, Image, Touchable, AnimatedValue, Text, timing, Easing, noop, LinearGradient } from '../../revas';
+import {
+  View,
+  Image,
+  Touchable,
+  AnimatedValue,
+  Text,
+  timing,
+  Easing,
+  noop,
+  LinearGradient,
+  AnimatedTiming
+} from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER, CENTER_AREA } from './styles';
 
 export interface PlayerProps {
   music: any;
+  disabled: boolean;
+  transaction: AnimatedValue;
 }
 
 enum PlayerMode {
   Mini,
   Toggle,
   Full,
+  Switch,
+}
+
+function isMini(mode: PlayerMode) {
+  return mode === PlayerMode.Mini || mode === PlayerMode.Switch;
+}
+
+function isAnim(mode: PlayerMode) {
+  return mode === PlayerMode.Toggle || mode === PlayerMode.Switch;
 }
 
 export default class Player extends React.Component<PlayerProps> {
   state = {
     mode: PlayerMode.Mini,
     current: this.props.music,
+    playing: false,
   };
 
-  rotateHandler: any;
+  get transaction() {
+    return this.props.transaction;
+  }
 
-  transaction = new AnimatedValue(1);
+  audio = new Audio(this.props.music.audio);
+
+  rotateHandler?: AnimatedTiming;
+
+  switchHandler?: AnimatedTiming;
 
   _coverStyle = {
     translateX: this.transaction.interpolate(
@@ -43,45 +72,76 @@ export default class Player extends React.Component<PlayerProps> {
     }
   }
 
+  componentWillUnmount() {
+    this.audio.pause();
+    this.audio.remove();
+    this.audio.src = '';
+  }
+
   onPlay = () => {
     if (this.rotateHandler) {
+      this.audio.pause();
       this.rotateHandler.stop();
       this.rotateHandler = void 0;
+      this.setState({ playing: false });
     } else {
       this._play();
+      this.audio.loop = true;
+      this.audio.play();
+      this.setState({ playing: true });
     }
   };
 
   _play = () => {
-    this._coverStyle.rotate.setValue(0);
+    const to = 2 * Math.PI;
+    if (this._coverStyle.rotate.getValue() >= to) {
+      this._coverStyle.rotate.setValue(0);
+    }
     this.rotateHandler = timing(this._coverStyle.rotate, {
-      to: 2 * Math.PI,
-      duration: 10000,
+      to,
+      duration: ((to - this._coverStyle.rotate.getValue()) / to) * 10000,
     }).start(this._play);
   };
 
   next = async () => {
-    if (this.state.mode === PlayerMode.Mini) {
-      await timing(this.transaction, {
-        to: 2,
-        duration: 1000,
-        ease: Easing.elastic(),
-      })
-        .start()
-        .promise();
+    if (isMini(this.state.mode)) {
+      if (this.state.mode === PlayerMode.Switch) {
+        this.switchHandler?.stop();
+        const currentValue = this.transaction.getValue();
+        if (currentValue < 2) {
+          this.switchHandler = timing(this.transaction, {
+            to: 2,
+            duration: (2 - currentValue) * 500,
+          }).start();
+          await this.switchHandler.promise();
+        }
+      } else {
+        this.setState({ mode: PlayerMode.Switch });
+        this.switchHandler = timing(this.transaction, {
+          to: 2,
+          duration: 500,
+        }).start();
+        await this.switchHandler.promise();
+      }
       this.setState({ current: this.props.music });
-      await timing(this.transaction, {
+      this.audio.src = this.props.music.audio;
+      if (this.rotateHandler) {
+        this.audio.play();
+      } else {
+        this._coverStyle.rotate.setValue(0);
+      }
+      this.switchHandler = timing(this.transaction, {
         to: 1,
         duration: 1000,
         ease: Easing.elastic(),
-      })
-        .start()
-        .promise();
+      }).start();
+      await this.switchHandler.promise();
+      this.setState({ mode: PlayerMode.Mini });
     }
   };
 
   toggle = async () => {
-    if (this.state.mode !== PlayerMode.Toggle) {
+    if (!this.props.disabled && !isAnim(this.state.mode)) {
       const isFull = this.state.mode === PlayerMode.Full;
       this.setState({ mode: PlayerMode.Toggle });
       await timing(this.transaction, {
@@ -96,7 +156,7 @@ export default class Player extends React.Component<PlayerProps> {
   };
 
   renderMain() {
-    if (this.state.mode !== PlayerMode.Mini) {
+    if (!isMini(this.state.mode)) {
       const { music } = this.props;
       return (
         <LinearGradient
@@ -114,12 +174,14 @@ export default class Player extends React.Component<PlayerProps> {
                 <Image style={styles.btnS} src={require('./assets/btn-prev.png')} />
               </Touchable>
               <Touchable onPress={this.onPlay} style={styles.btn}>
-                <Image style={styles.play} src={require('./assets/btn-play.png')} />
+                <Image
+                  style={styles.play}
+                  src={this.state.playing ? require('./assets/btn-pause.png') : require('./assets/btn-play.png')}
+                />
               </Touchable>
               <Touchable onPress={noop} style={styles.btn}>
                 <Image style={styles.btnS} src={require('./assets/btn-next.png')} />
               </Touchable>
-              <Text style={styles.time}>1:03</Text>
             </View>
           </View>
         </LinearGradient>
@@ -142,7 +204,6 @@ export default class Player extends React.Component<PlayerProps> {
 const WINDOW_WIDTH = window.innerWidth;
 const WINDOW_HEIGHT = window.innerHeight;
 const SIZE = Math.min(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT * 0.5);
-console.log(SIZE);
 const RADIO = SIZE / 2;
 
 const styles = {
@@ -173,14 +234,14 @@ const styles = {
     color: '#fff',
     fontSize: 25,
     fontWeight: '600',
-    marginLeft: 38,
+    marginLeft: 45,
   },
   singer: {
     ...DEFAULT_TEXT,
     color: '#fff',
     fontSize: 14,
     marginTop: 10,
-    marginLeft: 38,
+    marginLeft: 45,
   },
   controls: {
     ...ROW_CENTER,
@@ -188,8 +249,8 @@ const styles = {
     marginTop: 30,
   },
   btnS: {
-    width: 14,
-    height: 14,
+    width: 16,
+    height: 16,
   },
   play: {
     width: 29,
@@ -197,15 +258,7 @@ const styles = {
   },
   btn: {
     ...CENTER_AREA,
-    width: 78,
+    width: 85,
     height: 54,
-  },
-  time: {
-    ...DEFAULT_TEXT,
-    color: '#fff',
-    fontSize: 14,
-    width: 70,
-    textAlign: 'center',
-    marginTop: 3,
   },
 };

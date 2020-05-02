@@ -1,16 +1,31 @@
 import * as React from 'react';
-import { View, Text, LinearGradient, Image, ScrollView, RevasScrollEvent } from '../../revas';
+import { View, Text, LinearGradient, Image, ScrollView, RevasScrollEvent, AnimatedValue } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT } from './styles';
 import { MUSICS, MusicItemData } from './data';
 import Player from './Player';
 import Back from '../common/back';
 
 export default class MusicApp extends React.Component {
-  state = { index: 0 };
+  state = {
+    index: 0,
+    picking: false,
+  };
+
+  transaction = new AnimatedValue(1);
+
+  style = {
+    opacity: this.transaction,
+    flex: 1,
+    animated: true,
+  };
+
+  startScroll = () => {
+    this.setState({ picking: true });
+  };
 
   checkIndex = (e: RevasScrollEvent) => {
     const index = Math.round(e.y / 113);
-    this.setState({ index });
+    this.setState({ index, picking: false });
   };
 
   renderMusic = (item: MusicItemData, index: number) => (
@@ -26,27 +41,29 @@ export default class MusicApp extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.list} paging={113} onScrollEnd={this.checkIndex}>
-          <View style={styles.inner} cache>
-            {MUSICS.map(this.renderMusic)}
-          </View>
-        </ScrollView>
-        <LinearGradient
-          style={styles.top}
-          colors={['rgba(239, 245, 244, 0)', '#EBF1F0']}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 0, y: 0.15 }}
-          pointerEvents="none"
-        />
-        <LinearGradient
-          style={styles.bottom}
-          colors={['#EBF1F0', 'rgba(235, 241, 240, 0)']}
-          start={{ x: 0, y: 0.85 }}
-          end={{ x: 0, y: 0 }}
-          pointerEvents="none"
-        />
-        <Player music={MUSICS[this.state.index]} />
-        <Back {...this.props} />
+        <View style={this.style}>
+          <ScrollView style={styles.list} paging={113} onScrollStart={this.startScroll} onScrollEnd={this.checkIndex}>
+            <View style={styles.inner} cache>
+              {MUSICS.map(this.renderMusic)}
+            </View>
+          </ScrollView>
+          <LinearGradient
+            style={styles.top}
+            colors={['rgba(239, 245, 244, 0)', '#EBF1F0']}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0.15 }}
+            pointerEvents="none"
+          />
+          <LinearGradient
+            style={styles.bottom}
+            colors={['#EBF1F0', 'rgba(235, 241, 240, 0)']}
+            start={{ x: 0, y: 0.85 }}
+            end={{ x: 0, y: 0 }}
+            pointerEvents="none"
+          />
+          <Back {...this.props} />
+        </View>
+        <Player transaction={this.transaction} disabled={this.state.picking} music={MUSICS[this.state.index]} />
       </View>
     );
   }
