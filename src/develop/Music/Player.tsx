@@ -162,7 +162,7 @@ export default class Player extends React.Component<PlayerProps> {
         <LinearGradient
           cache={this.state.mode === PlayerMode.Toggle}
           style={[ABS_FULL, this._opacity]}
-          colors={['#B9C9CF', '#8398A1']}
+          colors={music.color}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
         >
@@ -171,7 +171,7 @@ export default class Player extends React.Component<PlayerProps> {
             <Text style={styles.singer}>{music.singer}</Text>
             <View style={styles.controls}>
               <Touchable onPress={this.toggle} style={styles.btn}>
-                <Image style={styles.btnS} src={require('./assets/btn-prev.png')} />
+                <Image style={styles.btnS} src={require('./assets/btn-mini.png')} />
               </Touchable>
               <Touchable onPress={this.onPlay} style={styles.btn}>
                 <Image
@@ -180,7 +180,7 @@ export default class Player extends React.Component<PlayerProps> {
                 />
               </Touchable>
               <Touchable onPress={noop} style={styles.btn}>
-                <Image style={styles.btnS} src={require('./assets/btn-next.png')} />
+                <Image style={styles.btnS} src={require('./assets/btn-loop.png')} />
               </Touchable>
             </View>
           </View>
@@ -193,9 +193,10 @@ export default class Player extends React.Component<PlayerProps> {
     return (
       <React.Fragment>
         {this.renderMain()}
-        <Image style={[styles.cover, this._coverStyle]} src={this.state.current.cover} cache={this.state.current.name}>
+        <View style={[styles.cover, this._coverStyle]} cache={this.state.current.name}>
+          <Image style={styles.coverImage} src={this.state.current.cover} />
           <Touchable style={ABS_FULL} onPress={this.toggle} />
-        </Image>
+        </View>
       </React.Fragment>
     );
   }
@@ -203,8 +204,10 @@ export default class Player extends React.Component<PlayerProps> {
 
 const WINDOW_WIDTH = window.innerWidth;
 const WINDOW_HEIGHT = window.innerHeight;
-const SIZE = Math.min(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT * 0.5);
+const SIZE = Math.min(WINDOW_WIDTH * 0.85, WINDOW_HEIGHT * 0.6);
 const RADIO = SIZE / 2;
+const IMAGE_SIZE = SIZE - 20;
+const IMAGE_RADIO = IMAGE_SIZE / 2;
 
 const styles = {
   cover: {
@@ -214,11 +217,18 @@ const styles = {
     width: SIZE,
     height: SIZE,
     borderRadius: RADIO,
-    shadowColor: '#98B3B0',
+    shadowColor: 'rgba(55, 72, 80, 0.4)',
     shadowOffsetX: 0,
     shadowOffsetY: 2,
     shadowBlur: 30,
     backgroundColor: '#fff',
+    ...CENTER_AREA,
+  },
+
+  coverImage: {
+    width: IMAGE_SIZE,
+    height: IMAGE_SIZE,
+    borderRadius: IMAGE_RADIO,
   },
 
   main: {
@@ -245,20 +255,21 @@ const styles = {
   },
   controls: {
     ...ROW_CENTER,
-    marginLeft: 10,
+    paddingLeft: 13,
     marginTop: 30,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
   btnS: {
-    width: 16,
-    height: 16,
+    width: 22,
+    height: 22,
   },
   play: {
-    width: 29,
-    height: 34,
+    width: 40,
+    height: 40,
   },
   btn: {
     ...CENTER_AREA,
-    width: 85,
+    width: 90,
     height: 54,
   },
 };
