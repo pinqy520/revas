@@ -188,10 +188,10 @@ function Comp() {
 | :-:| :-: | :-: | :-: |
 | <img src="https://user-images.githubusercontent.com/5719833/75115614-25a96700-569b-11ea-944a-5fd87f264812.png" width=100 /> | [revas-wxgame-example](https://github.com/pinqy520/revas-wxgame-example) | [revas-bytegame-example](https://github.com/pinqy520/revas-bytegame-example) | WIP |
 
-## Screenshot
+## Screenshots
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/5719833/74612290-052f5900-513f-11ea-94ff-17ea50b31a50.png" width=600 />
+  <img src="https://user-images.githubusercontent.com/5719833/81006150-9b8f3300-8e81-11ea-8cb1-08de6550ea03.png" width=800 />
 </p>
 
 ## Try

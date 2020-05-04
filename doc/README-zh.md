@@ -176,8 +176,9 @@ function Comp() {
 ## 效果截图
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/5719833/74612290-052f5900-513f-11ea-94ff-17ea50b31a50.png" width=600 />
+  <img src="https://user-images.githubusercontent.com/5719833/81006150-9b8f3300-8e81-11ea-8cb1-08de6550ea03.png" width=800 />
 </p>
+
 
 ## TODO
 
