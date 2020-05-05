@@ -17,7 +17,7 @@ The main difference from `react-canvas` is that it does not depend strongly on `
 In terms of performance, `react-canvas` was previously focused on smooth 60FPS interaction, because after getting rid of the constraints of DOM operations, UI drawing on canvas can be rendered faster. In terms of cross-end capabilities, it depends on the unified definition of the canvas interface, which makes it easier to migrate between platforms. When the native canvas interface is delisted or dynamic cannot be used, it is easier to migrate / downgrade to the Web.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/5719833/74748350-52c4d680-52a3-11ea-9a00-f23c8f359b72.png" width=600 />
+  <img src="https://user-images.githubusercontent.com/5719833/81074433-9252a480-8f1b-11ea-8e29-fda1e3957204.gif" width=600 />
 </p>
 
 ## Install
