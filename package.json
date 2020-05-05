@@ -14,8 +14,8 @@
     "@types/yoga-layout": "^1.9.1",
     "bezier-easing": "^2.1.0",
     "css-layout": "^1.1.1",
-    "react-reconciler": "^0.25.0",
-    "tslib": "^1.11.0",
+    "react-reconciler": "^0.25.1",
+    "tslib": "^1.11.1",
     "yoga-layout-prebuilt": "^1.9.5"
   },
   "keywords": [
@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
-    "react": "^16.13.0",
+    "@types/react": "^16.9.34",
+    "react": "^16.13.1",
     "react-scripts": "3.2.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
@@ -39,7 +39,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-sourcemaps": "^0.5.0",
     "rollup-plugin-typescript2": "^0.26.0",
-    "typescript": "~3.8.2"
+    "typescript": "~3.8.3"
   },
   "scripts": {
     "start": "react-scripts start",

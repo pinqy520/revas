@@ -1,28 +1,31 @@
 import ReactReconciler from 'react-reconciler';
-import { Node } from './Node'
-import { appendChild, noop, removeChild, insertBefore } from './utils'
+import { Node } from './Node';
+import { appendChild, noop, removeChild, insertBefore } from './utils';
 import { Container } from './Container';
+
+export const now =
+  typeof performance === 'object' && typeof performance.now === 'function' ? () => performance.now() : () => Date.now();
 
 export default ReactReconciler({
   supportsHydration: false,
   supportsPersistence: false,
   supportsMutation: true,
-  isPrimaryRenderer: true,
+  isPrimaryRenderer: false,
 
   createInstance(type: string, props: any, container: Container) {
     return new Node(type, props);
   },
 
   createTextInstance() {
-    throw new Error('Revas: string cannot be child out of <Text/>')
+    throw new Error('Revas: string cannot be child out of <Text/>');
   },
 
   appendInitialChild: appendChild,
-  appendChild: appendChild,
+  appendChild,
   appendChildToContainer: appendChild,
-  removeChild: removeChild,
+  removeChild,
   removeChildFromContainer: removeChild,
-  insertBefore: insertBefore,
+  insertBefore,
   insertInContainerBefore: insertBefore,
 
   finalizeInitialChildren() {
@@ -38,19 +41,19 @@ export default ReactReconciler({
   },
 
   commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-    instance.props = newProps
+    instance.props = newProps;
   },
 
   prepareForCommit: noop,
 
   resetAfterCommit(container: Container) {
-    container.draw(true)
+    container.draw(true);
   },
 
   resetTextContent: noop,
 
   getRootHostContext() {
-    return {}
+    return {};
   },
 
   getChildHostContext(parentHostContext: object) {
@@ -58,15 +61,15 @@ export default ReactReconciler({
   },
 
   shouldSetTextContent() {
-    return false
+    return false;
   },
 
   shouldDeprioritizeSubtree: () => false,
 
   scheduleDeferredCallback: noop,
   cancelDeferredCallback: noop,
-  setTimeout: setTimeout,
-  clearTimeout: clearTimeout,
+  setTimeout,
+  clearTimeout,
   noTimeout: -1,
-  now: Date.now,
-})
+  now,
+});

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, ScrollView, Touchable, Text, AnimatedValue, timing, AnimatedTiming, Easing } from '../../revas';
 import NavBar from './Navbar';
 import Panel from './Panel';
+import { appConsumer, AppConsumerProps } from '../context';
 
 export default function Animation(props: any) {
   return (
@@ -15,7 +16,8 @@ export default function Animation(props: any) {
   );
 }
 
-class AnimateEaseExample extends React.Component {
+@appConsumer
+class AnimateEaseExample extends React.Component<AppConsumerProps> {
   state = {
     style: {},
   };
@@ -30,7 +32,7 @@ class AnimateEaseExample extends React.Component {
             type="translateX"
             ease={Easing.linear}
             from={0}
-            to={window.innerWidth / 1.5}
+            to={this.props.width! / 1.5}
             onAnimate={this.onAnim}
           />
           <AnimateButton
@@ -38,7 +40,7 @@ class AnimateEaseExample extends React.Component {
             type="translateX"
             ease={Easing.ease}
             from={0}
-            to={window.innerWidth / 1.5}
+            to={this.props.width! / 1.5}
             onAnimate={this.onAnim}
           />
           <AnimateButton
@@ -46,7 +48,7 @@ class AnimateEaseExample extends React.Component {
             type="translateX"
             ease={Easing.bounce}
             from={0}
-            to={window.innerWidth / 1.5}
+            to={this.props.width! / 1.5}
             onAnimate={this.onAnim}
           />
           <AnimateButton
@@ -54,7 +56,7 @@ class AnimateEaseExample extends React.Component {
             type="translateX"
             ease={Easing.out()}
             from={0}
-            to={window.innerWidth / 1.5}
+            to={this.props.width! / 1.5}
             onAnimate={this.onAnim}
           />
         </View>
@@ -63,7 +65,8 @@ class AnimateEaseExample extends React.Component {
   }
 }
 
-class AnimateTypeExample extends React.Component {
+@appConsumer
+class AnimateTypeExample extends React.Component<AppConsumerProps> {
   state = {
     style: {},
   };
@@ -78,7 +81,7 @@ class AnimateTypeExample extends React.Component {
             label="translateX"
             type="translateX"
             from={0}
-            to={window.innerWidth / 1.5}
+            to={this.props.width! / 1.5}
             onAnimate={this.onAnim}
           />
           <AnimateButton label="rotation" type="rotate" from={0} to={Math.PI} onAnimate={this.onAnim} />

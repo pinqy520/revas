@@ -4,8 +4,14 @@ import Intro from './Intro';
 import Timeline from './Timeline';
 import MusicApp from './Music';
 import SimpleRouter from './common/simple-router';
+import { AppContext } from './context';
 
-export default class App extends React.Component {
+export interface AppProps {
+  width: number;
+  height: number;
+}
+
+export default class App extends React.Component<AppProps> {
   router = React.createRef<SimpleRouter>();
 
   push = (Comp: any) => () => {
@@ -13,25 +19,48 @@ export default class App extends React.Component {
   };
 
   render() {
+    const cardHeight = this.props.height / 6;
     return (
-      <SimpleRouter ref={this.router} width={window.innerWidth}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Revas Examples</Text>
-          <View style={styles.cards}>
-            <Card color="#9254DE" text="Overview" tap={this.push(Intro)} />
-            <Card color="#F759AB" text="Timeline App" tap={this.push(Timeline)} />
-            <Card color="#597EF7" text="Music App" tap={this.push(MusicApp)} />
+      <AppContext.Provider value={this.props}>
+        <SimpleRouter ref={this.router} width={this.props.width}>
+          <View style={styles.container}>
+            <Text style={styles.title}>Revas Examples</Text>
+            <View style={styles.cards}>
+              <Card
+                color="#9254DE"
+                shadowColor="rgba(146, 84, 222, 0.5)"
+                height={cardHeight}
+                text="Overview"
+                tap={this.push(Intro)}
+              />
+              <Card
+                color="#F759AB"
+                shadowColor="rgba(247, 89, 171, 0.5)"
+                height={cardHeight}
+                text="Timeline App"
+                tap={this.push(Timeline)}
+              />
+              <Card
+                color="#597EF7"
+                shadowColor="rgba(89, 126, 247, 0.5)"
+                height={cardHeight}
+                text="Music App"
+                tap={this.push(MusicApp)}
+              />
+            </View>
           </View>
-        </View>
-      </SimpleRouter>
+        </SimpleRouter>
+      </AppContext.Provider>
     );
   }
 }
 
 interface CardProps {
   color: string;
+  shadowColor: string;
   text: string;
   tap: Function;
+  height: number;
 }
 
 class Card extends React.Component<CardProps> {
@@ -41,8 +70,9 @@ class Card extends React.Component<CardProps> {
   style = [
     styles.card,
     {
+      height: this.props.height,
       backgroundColor: this.props.color,
-      shadowColor: `${this.props.color}90`,
+      shadowColor: this.props.shadowColor,
       shadowBlur: this.animated,
       shadowOffsetY: this.animated.interpolate([4, 30], [1, 5]),
       animated: true,
@@ -100,7 +130,6 @@ const styles = {
     alignItems: 'center',
   },
   card: {
-    height: window.innerHeight / 6,
     width: 280,
     shadowOffsetX: 0,
     borderRadius: 15,

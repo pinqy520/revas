@@ -2,25 +2,28 @@ import * as React from 'react';
 import { Text, Image, View, RevasScrollEvent, AnimatedValue, ListView } from '../../revas';
 import data from './data';
 import Back from '../common/back';
+import { appConsumer } from '../context';
 
 interface ItemProps {
   animated: AnimatedValue;
   index: number;
   item: any;
+  lines: number;
+  height: number;
 }
 
 class Item extends React.Component<ItemProps> {
-  style = createItemTextStyle(this.props.index, this.props.animated);
+  style = createItemTextStyle(this.props.index, this.props.animated, this.props.height);
   render() {
-    const { item, index } = this.props;
+    const { item, index, lines } = this.props;
     return (
-      <View style={styles.item}>
-        <Image style={styles.cover} src={item.imageUrl} />
-        <View style={this.style} cache={`text_${index}`}>
+      <View style={this.style.item}>
+        <Image style={this.style.cover} src={item.imageUrl} />
+        <View style={this.style.text} cache={`text_${index}`}>
           <Text style={styles.title} numberOfLines={2}>
             {item.title}
           </Text>
-          <Text style={styles.text} numberOfLines={MAX_LINES}>
+          <Text style={styles.text} numberOfLines={lines}>
             {item.excerpt}
           </Text>
         </View>
@@ -29,16 +32,22 @@ class Item extends React.Component<ItemProps> {
   }
 }
 
+@appConsumer
 export default class TimelineApp extends React.Component<any> {
+  WINDOW_HEIGHT = this.props.height;
+  MAX_LINES = Math.floor((this.WINDOW_HEIGHT / 3 - 20) / 26);
+
   animated = new AnimatedValue(0);
 
   onScroll = (e: RevasScrollEvent) => {
     this.animated.setValue(e.y);
   };
 
-  renderItem = (item: any, index: number) => <Item index={index} item={item} animated={this.animated} />;
+  renderItem = (item: any, index: number) => (
+    <Item index={index} item={item} animated={this.animated} lines={this.MAX_LINES} height={this.WINDOW_HEIGHT} />
+  );
 
-  getItemHeight = () => WINDOW_HEIGHT;
+  getItemHeight = () => this.WINDOW_HEIGHT;
 
   render() {
     return (
@@ -57,30 +66,26 @@ export default class TimelineApp extends React.Component<any> {
   }
 }
 
-function createItemTextStyle(index: number, animated: AnimatedValue) {
-  const offset = (index - 1) * WINDOW_HEIGHT;
-  const translateY = animated.interpolate([offset, offset + WINDOW_HEIGHT], [-WINDOW_HEIGHT / 2, 0]);
-  const opacity = animated.interpolate(
-    [offset + WINDOW_HEIGHT / 2, offset + WINDOW_HEIGHT, offset + 2 * WINDOW_HEIGHT],
-    [0, 1, 0]
-  );
-  return { margin: 20, translateY, opacity, animated: true, height: WINDOW_HEIGHT / 2 };
+function createItemTextStyle(index: number, animated: AnimatedValue, height: number) {
+  const offset = (index - 1) * height;
+  const translateY = animated.interpolate([offset, offset + height], [-height / 2, 0]);
+  const opacity = animated.interpolate([offset + height / 2, offset + height, offset + 2 * height], [0, 1, 0]);
+  return {
+    item: {
+      height,
+    },
+    cover: {
+      backgroundColor: '#eee',
+      height: height / 2,
+      zIndex: 1,
+    },
+    text: { margin: 20, translateY, opacity, animated: true, height: height / 2 },
+  };
 }
-
-const WINDOW_HEIGHT = window.innerHeight;
-const MAX_LINES = Math.floor((WINDOW_HEIGHT / 3 - 20) / 26);
 
 const styles = {
   container: {
     flex: 1,
-  },
-  item: {
-    height: WINDOW_HEIGHT,
-  },
-  cover: {
-    backgroundColor: '#eee',
-    height: WINDOW_HEIGHT / 2,
-    zIndex: 1,
   },
   title: {
     marginBottom: 10,

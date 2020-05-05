@@ -16,6 +16,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": true,
+    "experimentalDecorators": true,
     "declarationDir": "dist/types",
     "outDir": "dist/raw",
     "noEmit": true,

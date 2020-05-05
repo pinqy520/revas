@@ -12,8 +12,9 @@ import {
   AnimatedTiming
 } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER, CENTER_AREA } from './styles';
+import { appConsumer, AppConsumerProps } from '../context';
 
-export interface PlayerProps {
+export interface PlayerProps extends AppConsumerProps {
   music: any;
   disabled: boolean;
   transaction: AnimatedValue;
@@ -34,11 +35,51 @@ function isAnim(mode: PlayerMode) {
   return mode === PlayerMode.Toggle || mode === PlayerMode.Switch;
 }
 
+@appConsumer
 export default class Player extends React.Component<PlayerProps> {
   state = {
     mode: PlayerMode.Mini,
     current: this.props.music,
     playing: false,
+  };
+
+  WINDOW_WIDTH = this.props.width!;
+  WINDOW_HEIGHT = this.props.height!;
+  SIZE = Math.min(this.WINDOW_WIDTH * 0.85, this.WINDOW_HEIGHT * 0.6);
+  RADIO = this.SIZE / 2;
+  IMAGE_SIZE = this.SIZE - 20;
+  IMAGE_RADIO = this.IMAGE_SIZE / 2;
+
+  STYLES = {
+    cover: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: this.SIZE,
+      height: this.SIZE,
+      borderRadius: this.RADIO,
+      shadowColor: 'rgba(55, 72, 80, 0.4)',
+      shadowOffsetX: 0,
+      shadowOffsetY: 2,
+      shadowBlur: 30,
+      backgroundColor: '#fff',
+      ...CENTER_AREA,
+    },
+
+    coverImage: {
+      width: this.IMAGE_SIZE,
+      height: this.IMAGE_SIZE,
+      borderRadius: this.IMAGE_RADIO,
+    },
+
+    main: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 20,
+      height: this.WINDOW_HEIGHT * 0.9 - this.SIZE,
+      justifyContent: 'center',
+    },
   };
 
   get transaction() {
@@ -54,9 +95,9 @@ export default class Player extends React.Component<PlayerProps> {
   _coverStyle = {
     translateX: this.transaction.interpolate(
       [0, 1, 2],
-      [(WINDOW_WIDTH - SIZE) / 2, WINDOW_WIDTH - SIZE / 2, WINDOW_WIDTH + 30]
+      [(this.WINDOW_WIDTH - this.SIZE) / 2, this.WINDOW_WIDTH - this.SIZE / 2, this.WINDOW_WIDTH + 30]
     ),
-    translateY: this.transaction.interpolate([0, 1], [WINDOW_HEIGHT * 0.1, (WINDOW_HEIGHT - SIZE) / 2]),
+    translateY: this.transaction.interpolate([0, 1], [this.WINDOW_HEIGHT * 0.1, (this.WINDOW_HEIGHT - this.SIZE) / 2]),
     rotate: new AnimatedValue(0),
     animated: true,
   };
@@ -166,7 +207,7 @@ export default class Player extends React.Component<PlayerProps> {
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
         >
-          <View style={styles.main}>
+          <View style={this.STYLES.main}>
             <Text style={styles.name}>{music.name}</Text>
             <Text style={styles.singer}>{music.singer}</Text>
             <View style={styles.controls}>
@@ -193,8 +234,8 @@ export default class Player extends React.Component<PlayerProps> {
     return (
       <React.Fragment>
         {this.renderMain()}
-        <View style={[styles.cover, this._coverStyle]} cache={this.state.current.name}>
-          <Image style={styles.coverImage} src={this.state.current.cover} />
+        <View style={[this.STYLES.cover, this._coverStyle]} cache={this.state.current.name}>
+          <Image style={this.STYLES.coverImage} src={this.state.current.cover} />
           <Touchable style={ABS_FULL} onPress={this.toggle} />
         </View>
       </React.Fragment>
@@ -202,43 +243,7 @@ export default class Player extends React.Component<PlayerProps> {
   }
 }
 
-const WINDOW_WIDTH = window.innerWidth;
-const WINDOW_HEIGHT = window.innerHeight;
-const SIZE = Math.min(WINDOW_WIDTH * 0.85, WINDOW_HEIGHT * 0.6);
-const RADIO = SIZE / 2;
-const IMAGE_SIZE = SIZE - 20;
-const IMAGE_RADIO = IMAGE_SIZE / 2;
-
 const styles = {
-  cover: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: SIZE,
-    height: SIZE,
-    borderRadius: RADIO,
-    shadowColor: 'rgba(55, 72, 80, 0.4)',
-    shadowOffsetX: 0,
-    shadowOffsetY: 2,
-    shadowBlur: 30,
-    backgroundColor: '#fff',
-    ...CENTER_AREA,
-  },
-
-  coverImage: {
-    width: IMAGE_SIZE,
-    height: IMAGE_SIZE,
-    borderRadius: IMAGE_RADIO,
-  },
-
-  main: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 20,
-    height: WINDOW_HEIGHT * 0.9 - SIZE,
-    justifyContent: 'center',
-  },
   name: {
     ...DEFAULT_TEXT,
     color: '#fff',

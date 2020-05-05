@@ -6,11 +6,9 @@ import createCanvas from './develop/createCanvas';
 
 import './develop/index.css';
 
+const canvas = createCanvas();
 // eslint-disable-next-line
-const app = render(
-  React.createElement(App),
-  createCanvas()
-);
+const app = render(<App width={canvas.clientWidth} height={canvas.clientHeight} />, canvas);
 
 // try unmount
 // setTimeout(() => {

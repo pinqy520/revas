@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Touchable, LinearGradient } from '../../revas';
+import { Text, View, Image, Touchable } from '../../revas';
 import Interactable from './Interactable';
 import Back from '../common/back';
 
@@ -8,10 +8,7 @@ export default function About(props: any) {
     <View style={styles.container}>
       <Interactable style={styles.card} cache>
         <Text style={styles.title}>Drag and Move! </Text>
-        <Image
-          style={styles.logo}
-          src={require('./logo.png')}
-        />
+        <Image style={styles.logo} src={require('./logo.png')} />
         <Text style={styles.text} numberOfLines={2}>
           Revas让你可以用React和CSS，在Canvas上绘制高性能交互界面，基于React v16和Yoga Layout～{'🎉'}
         </Text>
@@ -19,11 +16,6 @@ export default function About(props: any) {
           <Text style={styles.btnText}>Go</Text>
         </Touchable>
       </Interactable>
-      <LinearGradient
-        style={styles.background}
-        start={{ x: 0, y: 0.3 }} end={{ x: 1, y: 0.7 }}
-        colors={['#91D5FF', '#40A9FF']}
-      />
       <Back {...props} />
     </View>
   );
@@ -33,17 +25,25 @@ const styles = {
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#9254DE',
   },
   card: {
     padding: 20,
-    margin: 10,
+    margin: 20,
     borderRadius: 10,
     backgroundColor: '#fff',
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
+    shadowOffsetX: 0,
+    shadowOffsetY: 5,
+    shadowBlur: 15,
     zIndex: 1,
   },
   background: {
     position: 'absolute',
-    top: 0, bottom: 0, right: 0, left: 0
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
   },
   title: {
     fontSize: 20,
@@ -61,11 +61,12 @@ const styles = {
   logo: {
     height: 100,
     borderRadius: 10,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   btn: {
     justifyContent: 'center',
-    height: 40, backgroundColor: '#9254DE',
+    height: 40,
+    backgroundColor: '#9254DE',
   },
   btnText: {
     fontSize: 20,

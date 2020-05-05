@@ -4,8 +4,10 @@ import { ABS_FULL, DEFAULT_TEXT } from './styles';
 import { MUSICS, MusicItemData } from './data';
 import Player from './Player';
 import Back from '../common/back';
+import { appConsumer, AppConsumerProps } from '../context';
 
-export default class MusicApp extends React.Component {
+@appConsumer
+export default class MusicApp extends React.Component<AppConsumerProps> {
   state = {
     index: 0,
     picking: false,
@@ -17,6 +19,11 @@ export default class MusicApp extends React.Component {
     opacity: this.transaction,
     flex: 1,
     animated: true,
+  };
+
+  inner = {
+    marginTop: this.props.height! / 2 - 57,
+    marginBottom: this.props.height! / 2 - 57,
   };
 
   startScroll = () => {
@@ -43,7 +50,7 @@ export default class MusicApp extends React.Component {
       <View style={styles.container}>
         <View style={this.style}>
           <ScrollView style={styles.list} paging={113} onScrollStart={this.startScroll} onScrollEnd={this.checkIndex}>
-            <View style={styles.inner} cache>
+            <View style={this.inner} cache>
               {MUSICS.map(this.renderMusic)}
             </View>
           </ScrollView>
@@ -85,10 +92,6 @@ const styles = {
   list: {
     flex: 1,
     marginLeft: 20,
-  },
-  inner: {
-    marginTop: window.innerHeight / 2 - 57,
-    marginBottom: window.innerHeight / 2 - 57,
   },
   musicItem: {
     flexDirection: 'row',
