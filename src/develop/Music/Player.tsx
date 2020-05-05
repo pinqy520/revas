@@ -45,7 +45,7 @@ export default class Player extends React.Component<PlayerProps> {
 
   WINDOW_WIDTH = this.props.width!;
   WINDOW_HEIGHT = this.props.height!;
-  SIZE = Math.min(this.WINDOW_WIDTH * 0.85, this.WINDOW_HEIGHT * 0.6);
+  SIZE = this.WINDOW_WIDTH * 0.85;
   RADIO = this.SIZE / 2;
   IMAGE_SIZE = this.SIZE - 20;
   IMAGE_RADIO = this.IMAGE_SIZE / 2;
@@ -76,8 +76,8 @@ export default class Player extends React.Component<PlayerProps> {
       position: 'absolute',
       left: 0,
       right: 0,
-      bottom: 20,
-      height: this.WINDOW_HEIGHT * 0.9 - this.SIZE,
+      bottom: 0,
+      height: this.WINDOW_HEIGHT / 2,
       justifyContent: 'center',
     },
   };
@@ -97,7 +97,10 @@ export default class Player extends React.Component<PlayerProps> {
       [0, 1, 2],
       [(this.WINDOW_WIDTH - this.SIZE) / 2, this.WINDOW_WIDTH - this.SIZE / 2, this.WINDOW_WIDTH + 30]
     ),
-    translateY: this.transaction.interpolate([0, 1], [this.WINDOW_HEIGHT * 0.1, (this.WINDOW_HEIGHT - this.SIZE) / 2]),
+    translateY: this.transaction.interpolate(
+      [0, 1],
+      [this.WINDOW_HEIGHT / 1.8 - this.SIZE, (this.WINDOW_HEIGHT - this.SIZE) / 2]
+    ),
     rotate: new AnimatedValue(0),
     animated: true,
   };
