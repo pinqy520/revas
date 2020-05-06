@@ -5,19 +5,6 @@ export function noop(): any {}
 export const EMPTY_OBJECT = Object.freeze({});
 export const EMPTY_ARRAY = Object.freeze([]);
 
-function checkAndRemove(parent: Node, child: Node) {
-  const index = parent.children.indexOf(child);
-  if (index >= 0) {
-    parent.children.splice(index, 1);
-  }
-}
-
-export function appendChild(parent: Node, child: Node) {
-  checkAndRemove(parent, child);
-  parent.children.push(child);
-  child.parent = parent;
-}
-
 export function flatten(array: any[]) {
   const flattend: any[] = [];
   (function flat(array) {
@@ -32,17 +19,8 @@ export function flatten(array: any[]) {
   return flattend;
 }
 
-export function removeChild(parent: Node, child: Node) {
-  checkAndRemove(parent, child);
-  child.parent = void 0;
-}
-
-export function insertBefore(parent: Node, child: Node, before: Node) {
-  checkAndRemove(parent, child);
-  const beforeIndex = parent.children.indexOf(before);
-  parent.children.splice(beforeIndex, 0, child);
-  child.parent = parent;
-}
+export const now =
+  typeof performance === 'object' && typeof performance.now === 'function' ? () => performance.now() : () => Date.now();
 
 function observeAnimatedValue(value: any, observer?: Function, defaultValue?: number) {
   if (value === undefined) {

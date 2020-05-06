@@ -5,7 +5,7 @@ import { Container } from '../core/Container';
 import { RevasTouch, RevasTouchEvent } from '../core/Node';
 import { RevasCanvas } from '../core/Canvas';
 import { clearCache } from '../core/offscreen';
-import { AppContext, AppContextType } from '../components/Context';
+import { Root } from '../components/Context';
 
 function getNodePosition(node: any): [number, number] {
   let top = 0;
@@ -47,12 +47,17 @@ function createCanvas(parent: HTMLElement, scale: number) {
   return canvas;
 }
 
-function getContextValue(dom: HTMLElement): AppContextType {
-  return {
-    clientWidth: dom.clientWidth,
-    clientHeight: dom.clientHeight,
-    deviceRatio: window.devicePixelRatio,
-  };
+function createRoot(app: React.ReactNode, dom: HTMLElement, canvas: RevasCanvas) {
+  return createElement(
+    Root,
+    {
+      clientWidth: dom.clientWidth,
+      clientHeight: dom.clientHeight,
+      deviceRatio: window.devicePixelRatio,
+      canvas,
+    },
+    app
+  );
 }
 
 export function render(app: React.ReactNode, parent: HTMLElement, parentComponent?: Component<any>, callback = noop) {
@@ -60,19 +65,14 @@ export function render(app: React.ReactNode, parent: HTMLElement, parentComponen
   const dom = createCanvas(parent, scale);
   const canvas = new RevasCanvas(dom.getContext('2d')!);
   canvas.transform.scale(scale, scale);
-  const container = new Container(canvas, dom.clientWidth, dom.clientHeight);
+  const container = new Container();
   const touchHandler = (e: any) => container.handleTouch(createRevasTouchEvent(e));
   dom.addEventListener('touchstart', touchHandler, false);
   dom.addEventListener('touchmove', touchHandler, false);
   dom.addEventListener('touchend', touchHandler, false);
   dom.addEventListener('touchcancel', touchHandler, false);
   const fiber = renderer.createContainer(container, false, false);
-  renderer.updateContainer(
-    createElement(AppContext.Provider, { value: getContextValue(dom) }, app),
-    fiber,
-    parentComponent,
-    callback
-  );
+  renderer.updateContainer(createRoot(app, dom, canvas), fiber, parentComponent, callback);
 
   return {
     get $() {
@@ -83,13 +83,7 @@ export function render(app: React.ReactNode, parent: HTMLElement, parentComponen
       dom.height = dom.clientHeight * scale;
       clearCache();
       canvas.transform.scale(scale, scale);
-      container.handleResize(dom.clientWidth, dom.clientHeight);
-      renderer.updateContainer(
-        createElement(AppContext.Provider, { value: getContextValue(dom) }, next),
-        fiber,
-        parentComponent,
-        callback
-      );
+      renderer.updateContainer(createRoot(next, dom, canvas), fiber, parentComponent, callback);
     },
     unmount(callback = noop) {
       renderer.updateContainer(null, fiber, null, callback);
@@ -97,7 +91,6 @@ export function render(app: React.ReactNode, parent: HTMLElement, parentComponen
       dom.removeEventListener('touchmove', touchHandler, false);
       dom.removeEventListener('touchend', touchHandler, false);
       dom.removeEventListener('touchcancel', touchHandler, false);
-      container.destory();
       clearCache();
       dom.remove();
     },

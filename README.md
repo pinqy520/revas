@@ -38,8 +38,14 @@ render(
   <View style={{ flex: 1 }}>
     <Text style={{ fontSize: 20 }}>Revas</Text>
   </View>,
-  document.getElementById('my-canvas'),
+  document.getElementById('container'),
 )
+
+/**
+ * <body>
+ *  <div id="container"></div>
+ * </body>
+ */
 ```
 
 ### Render to a canvas rendered by React

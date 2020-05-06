@@ -20,8 +20,8 @@ function getRadius(style: any) {
   };
 }
 
-export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
-  const style = getMergedStyleFromNode(node, root.draw);
+export function drawNode(canvas: RevasCanvas, node: Node, container: Container) {
+  const style = getMergedStyleFromNode(node, container.draw);
   const frame = getFrameFromNode(node);
 
   if (style.opacity <= 0) {
@@ -63,9 +63,9 @@ export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
   }
 
   if (node.props.cache && adapter.createOffscreenCanvas && frame.height > 0 && frame.width > 0) {
-    drawCache(canvas, node, root, style, frame, hasClip);
+    drawCache(canvas, node, container, style, frame, hasClip);
   } else {
-    drawContent(canvas, node, root, style, frame, hasClip);
+    drawContent(canvas, node, container, style, frame, hasClip);
   }
 
   popOpacity();
@@ -77,7 +77,7 @@ export function drawNode(canvas: RevasCanvas, node: Node, root: Container) {
   }
 }
 
-function drawCache(canvas: RevasCanvas, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
+function drawCache(canvas: RevasCanvas, node: Node, container: Container, style: any, frame: Frame, hasClip: boolean) {
   const cachedId = node.props.cache === true ? autoCacheId(node) : node.props.cache;
   let cached = getCache(cachedId);
   const { shadowBlur = 0, shadowOffsetX = 0, shadowOffsetY = 0 } = cached ? cached.style : style;
@@ -88,17 +88,24 @@ function drawCache(canvas: RevasCanvas, node: Node, root: Container, style: any,
   const h = frame.height + spread;
   if (!cached) {
     if (!node.$ready && !node.props.forceCache) {
-      return drawContent(canvas, node, root, style, frame, hasClip);
+      return drawContent(canvas, node, container, style, frame, hasClip);
     }
     cached = createCache(style, w, h, cachedId);
     cached.canvas.transform.translate(-x, -y);
-    drawContent(cached.canvas, node, root, style, frame, hasClip);
+    drawContent(cached.canvas, node, container, style, frame, hasClip);
     cached.canvas.transform.translate(x, y);
   }
   canvas.context.drawImage(cached.canvas.element, x, y, w, h);
 }
 
-function drawContent(canvas: RevasCanvas, node: Node, root: Container, style: any, frame: Frame, hasClip: boolean) {
+function drawContent(
+  canvas: RevasCanvas,
+  node: Node,
+  container: Container,
+  style: any,
+  frame: Frame,
+  hasClip: boolean
+) {
   const hasBG = style.backgroundColor && style.backgroundColor !== 'transparent';
   const hasBorder = style.borderColor && style.borderWidth > 0;
   const hasRadius =
@@ -176,6 +183,6 @@ function drawContent(canvas: RevasCanvas, node: Node, root: Container, style: an
     .slice()
     .sort(sortByZIndexAscending)
     .forEach(child => {
-      drawNode(canvas, child, root);
+      drawNode(canvas, child, container);
     });
 }

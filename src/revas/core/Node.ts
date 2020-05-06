@@ -4,11 +4,11 @@ export class Frame {
   constructor(public x = 0, public y = 0, public width = 0, public height = 0) {}
 }
 
-export class Node {
+export class Node<T = any> {
   public readonly children: Node[] = [];
   public frame = new Frame();
   public parent?: Node;
-  constructor(public readonly type: string, public props: NodeProps & any) {}
+  constructor(public readonly type: string, public props: NodeProps & T) {}
   get $ready() {
     if (this.props.$ready === false) {
       return false;

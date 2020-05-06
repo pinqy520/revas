@@ -1,10 +1,20 @@
 import ReactReconciler from 'react-reconciler';
 import { Node } from './Node';
-import { appendChild, noop, removeChild, insertBefore } from './utils';
+import { noop, now } from './utils';
 import { Container } from './Container';
 
-export const now =
-  typeof performance === 'object' && typeof performance.now === 'function' ? () => performance.now() : () => Date.now();
+function checkAndRemove(parent: Node, child: Node) {
+  const index = parent.children.indexOf(child);
+  if (index >= 0) {
+    parent.children.splice(index, 1);
+  }
+}
+
+function appendChild(parent: Node, child: Node) {
+  checkAndRemove(parent, child);
+  parent.children.push(child);
+  child.parent = parent;
+}
 
 export default ReactReconciler({
   supportsHydration: false,
@@ -12,7 +22,7 @@ export default ReactReconciler({
   supportsMutation: true,
   isPrimaryRenderer: false,
 
-  createInstance(type: string, props: any, container: Container) {
+  createInstance(type: string, props: any) {
     return new Node(type, props);
   },
 
@@ -20,13 +30,32 @@ export default ReactReconciler({
     throw new Error('Revas: string cannot be child out of <Text/>');
   },
 
-  appendInitialChild: appendChild,
   appendChild,
-  appendChildToContainer: appendChild,
-  removeChild,
-  removeChildFromContainer: removeChild,
-  insertBefore,
-  insertInContainerBefore: insertBefore,
+  appendInitialChild: appendChild,
+  appendChildToContainer(container: Container, instance) {
+    if (instance.type !== 'Root') {
+      throw new Error(`wrong root instance type: ${instance.type}`);
+    }
+    container.setRoot(instance);
+  },
+
+  removeChild(parent: Node, child: Node) {
+    checkAndRemove(parent, child);
+    child.parent = void 0;
+  },
+  removeChildFromContainer(container) {
+    container.setRoot();
+  },
+
+  insertBefore(parent: Node, child: Node, before: Node) {
+    checkAndRemove(parent, child);
+    const beforeIndex = parent.children.indexOf(before);
+    parent.children.splice(beforeIndex, 0, child);
+    child.parent = parent;
+  },
+  insertInContainerBefore() {
+    throw new Error("shouldn't be here: insertInContainerBefore");
+  },
 
   finalizeInitialChildren() {
     return false;

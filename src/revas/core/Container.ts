@@ -4,34 +4,46 @@ import { updateLayout } from './yoga-layout';
 import { drawNode } from './draw';
 import { getNodeByTouch, emitTouch } from './touch';
 import { RevasCanvas } from './Canvas';
+import { AppContextType } from '../components/Context';
 
-export class Container extends Node {
+export class Container {
   private _ready = true;
   private _next = false;
   private _reflow = false;
-  private _canvas?: RevasCanvas;
+  private _root?: Node<AppContextType>;
 
-  constructor(canvas: RevasCanvas, width: number, height: number) {
-    super('root', { width, height });
-    this._canvas = canvas;
+  get canvas(): RevasCanvas | void {
+    return this._root?.props.canvas;
+  }
+
+  get width() {
+    return this._root?.props.clientWidth || 0;
+  }
+
+  get height() {
+    return this._root?.props.clientHeight || 0;
+  }
+
+  get scale() {
+    return this._root?.props.deviceRatio || 1;
+  }
+
+  public setRoot(root?: Node<AppContextType>) {
+    this._root = root;
   }
 
   public handleTouch = (evt: RevasTouchEvent) => {
-    const emitted = new WeakSet<Node>();
-    Object.values(evt.touches).forEach(touch => {
-      const node = getNodeByTouch(this, evt.type, touch);
-      // check if node is unmounted
-      if (node.parent && !emitted.has(node)) {
-        emitted.add(node);
-        emitTouch(node, evt);
-      }
-    });
-  };
-
-  public handleResize = (width: number, height: number) => {
-    if (width !== this.props.width && height !== this.props.height) {
-      this.props.width = width;
-      this.props.height = height;
+    const { _root } = this;
+    if (_root) {
+      const emitted = new WeakSet<Node>();
+      Object.values(evt.touches).forEach(touch => {
+        const node = getNodeByTouch(_root, evt.type, touch);
+        // check if node is unmounted
+        if (node.parent && !emitted.has(node)) {
+          emitted.add(node);
+          emitTouch(node, evt);
+        }
+      });
     }
   };
 
@@ -42,14 +54,15 @@ export class Container extends Node {
       return;
     }
     this._ready = false;
-    if (this._canvas) {
+    const { _root, canvas } = this;
+    if (canvas) {
       // if not unmounted
       if (this._reflow) {
-        updateLayout(this)();
+        updateLayout(_root!)();
         this._reflow = false;
       }
-      this._canvas.context.clearRect(0, 0, this.props.width, this.props.height);
-      drawNode(this._canvas, this, this);
+      canvas.context.clearRect(0, 0, this.width, this.height);
+      drawNode(canvas, _root!, this);
       requestAnimationFrame(this.ready);
     }
   };
@@ -61,11 +74,4 @@ export class Container extends Node {
       this.draw();
     }
   };
-
-  public destory() {
-    if (this._canvas) {
-      this._canvas.context.clearRect(0, 0, this.props.width, this.props.height);
-      this._canvas = void 0;
-    }
-  }
 }
