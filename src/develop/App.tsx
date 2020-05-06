@@ -1,17 +1,12 @@
 import * as React from 'react';
-import { View, Text, AnimatedValue, timing, AnimatedTiming, Touchable } from '../revas';
+import { View, Text, AnimatedValue, timing, AnimatedTiming, Touchable, withContext } from '../revas';
 import Intro from './Intro';
 import Timeline from './Timeline';
 import MusicApp from './Music';
 import SimpleRouter from './common/simple-router';
-import { AppContext } from './context';
 
-export interface AppProps {
-  width: number;
-  height: number;
-}
-
-export default class App extends React.Component<AppProps> {
+@withContext
+export default class App extends React.Component {
   router = React.createRef<SimpleRouter>();
 
   push = (Comp: any) => () => {
@@ -19,38 +14,36 @@ export default class App extends React.Component<AppProps> {
   };
 
   render() {
-    const cardHeight = this.props.height / 6;
+    const cardHeight = this.context.clientHeight / 6;
     return (
-      <AppContext.Provider value={this.props}>
-        <SimpleRouter ref={this.router} width={this.props.width}>
-          <View style={styles.container}>
-            <Text style={styles.title}>Revas Examples</Text>
-            <View style={styles.cards}>
-              <Card
-                color="#9254DE"
-                shadowColor="rgba(146, 84, 222, 0.5)"
-                height={cardHeight}
-                text="Overview"
-                tap={this.push(Intro)}
-              />
-              <Card
-                color="#F759AB"
-                shadowColor="rgba(247, 89, 171, 0.5)"
-                height={cardHeight}
-                text="Timeline App"
-                tap={this.push(Timeline)}
-              />
-              <Card
-                color="#597EF7"
-                shadowColor="rgba(89, 126, 247, 0.5)"
-                height={cardHeight}
-                text="Music App"
-                tap={this.push(MusicApp)}
-              />
-            </View>
+      <SimpleRouter ref={this.router} width={this.context.clientWidth}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Revas Examples</Text>
+          <View style={styles.cards}>
+            <Card
+              color="#9254DE"
+              shadowColor="rgba(146, 84, 222, 0.5)"
+              height={cardHeight}
+              text="Overview"
+              tap={this.push(Intro)}
+            />
+            <Card
+              color="#F759AB"
+              shadowColor="rgba(247, 89, 171, 0.5)"
+              height={cardHeight}
+              text="Timeline App"
+              tap={this.push(Timeline)}
+            />
+            <Card
+              color="#597EF7"
+              shadowColor="rgba(89, 126, 247, 0.5)"
+              height={cardHeight}
+              text="Music App"
+              tap={this.push(MusicApp)}
+            />
           </View>
-        </SimpleRouter>
-      </AppContext.Provider>
+        </View>
+      </SimpleRouter>
     );
   }
 }

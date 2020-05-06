@@ -18,6 +18,7 @@ export default class Scroller {
   private _x = new Handler();
   private _y = new Handler();
   private _tid = '';
+  private _timer: any;
 
   horizontal?: boolean = false;
 
@@ -110,7 +111,7 @@ export default class Scroller {
       this._timestamp = Date.now();
       this._x.onEnd();
       this._y.onEnd();
-      requestAnimationFrame(this.afterEnd);
+      this._timer = requestAnimationFrame(this.afterEnd);
     }
   };
 
@@ -120,7 +121,7 @@ export default class Scroller {
     this._timestamp = timestamp;
     if (this.horizontal ? this._x.afterEnd(duration) : this._y.afterEnd(duration)) {
       this.emit('scroll');
-      requestAnimationFrame(this.afterEnd);
+      this._timer = requestAnimationFrame(this.afterEnd);
     } else {
       this.emit('end');
     }
@@ -136,6 +137,14 @@ export default class Scroller {
       timestamp: this._timestamp,
       tid: this._tid,
     });
+  }
+
+  cancel() {
+    cancelAnimationFrame(this._timer);
+    this._tid = '';
+    this._timestamp = Date.now();
+    this._x.onEnd();
+    this._y.onEnd();
   }
 }
 

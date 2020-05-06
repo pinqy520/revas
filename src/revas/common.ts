@@ -14,6 +14,7 @@ export * from './components/Touchable';
 export * from './components/ScrollView';
 export * from './components/ListView';
 export * from './components/LinearGradient';
+export * from './components/Context';
 
 export * from './core/utils';
 export * from './core/Node';

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Text, Image, View, RevasScrollEvent, AnimatedValue, ListView } from '../../revas';
+import { Text, Image, View, RevasScrollEvent, AnimatedValue, ListView, withContext } from '../../revas';
 import data from './data';
 import Back from '../common/back';
-import { appConsumer } from '../context';
 
 interface ItemProps {
   animated: AnimatedValue;
@@ -32,9 +31,9 @@ class Item extends React.Component<ItemProps> {
   }
 }
 
-@appConsumer
+@withContext
 export default class TimelineApp extends React.Component<any> {
-  WINDOW_HEIGHT = this.props.height;
+  WINDOW_HEIGHT = this.context.clientHeight;
   MAX_LINES = Math.floor((this.WINDOW_HEIGHT / 3 - 20) / 26);
 
   animated = new AnimatedValue(0);

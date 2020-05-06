@@ -9,12 +9,11 @@ import {
   Easing,
   noop,
   LinearGradient,
-  AnimatedTiming
+  AnimatedTiming,
+  withContext
 } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER, CENTER_AREA } from './styles';
-import { appConsumer, AppConsumerProps } from '../context';
-
-export interface PlayerProps extends AppConsumerProps {
+export interface PlayerProps {
   music: any;
   disabled: boolean;
   transaction: AnimatedValue;
@@ -35,7 +34,7 @@ function isAnim(mode: PlayerMode) {
   return mode === PlayerMode.Toggle || mode === PlayerMode.Switch;
 }
 
-@appConsumer
+@withContext
 export default class Player extends React.Component<PlayerProps> {
   state = {
     mode: PlayerMode.Mini,
@@ -43,8 +42,8 @@ export default class Player extends React.Component<PlayerProps> {
     playing: false,
   };
 
-  WINDOW_WIDTH = this.props.width!;
-  WINDOW_HEIGHT = this.props.height!;
+  WINDOW_WIDTH = this.context.clientWidth;
+  WINDOW_HEIGHT = this.context.clientHeight;
   SIZE = this.WINDOW_WIDTH * 0.85;
   RADIO = this.SIZE / 2;
   IMAGE_SIZE = this.SIZE - 20;
@@ -120,6 +119,8 @@ export default class Player extends React.Component<PlayerProps> {
     this.audio.pause();
     this.audio.remove();
     this.audio.src = '';
+    this.switchHandler?.stop();
+    this.rotateHandler?.stop();
   }
 
   onPlay = () => {
@@ -188,13 +189,12 @@ export default class Player extends React.Component<PlayerProps> {
     if (!this.props.disabled && !isAnim(this.state.mode)) {
       const isFull = this.state.mode === PlayerMode.Full;
       this.setState({ mode: PlayerMode.Toggle });
-      await timing(this.transaction, {
+      this.switchHandler = timing(this.transaction, {
         to: isFull ? 1 : 0,
         duration: 1000,
         ease: Easing.elastic(),
-      })
-        .start()
-        .promise();
+      }).start();
+      await this.switchHandler.promise();
       this.setState({ mode: isFull ? PlayerMode.Mini : PlayerMode.Full });
     }
   };

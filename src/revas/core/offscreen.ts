@@ -54,3 +54,8 @@ export function autoCacheId(node: Node) {
     return id;
   }
 }
+
+export function clearCache() {
+  cache.clear();
+  ids.length = 0;
+}

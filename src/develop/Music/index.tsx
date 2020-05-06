@@ -1,13 +1,21 @@
 import * as React from 'react';
-import { View, Text, LinearGradient, Image, ScrollView, RevasScrollEvent, AnimatedValue } from '../../revas';
+import {
+  View,
+  Text,
+  LinearGradient,
+  Image,
+  ScrollView,
+  RevasScrollEvent,
+  AnimatedValue,
+  withContext
+} from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT } from './styles';
 import { MUSICS, MusicItemData } from './data';
 import Player from './Player';
 import Back from '../common/back';
-import { appConsumer, AppConsumerProps } from '../context';
 
-@appConsumer
-export default class MusicApp extends React.Component<AppConsumerProps> {
+@withContext
+export default class MusicApp extends React.Component {
   state = {
     index: 0,
     picking: false,
@@ -22,8 +30,8 @@ export default class MusicApp extends React.Component<AppConsumerProps> {
   };
 
   inner = {
-    marginTop: this.props.height! / 2 - 57,
-    marginBottom: this.props.height! / 2 - 57,
+    marginTop: this.context.clientHeight! / 2 - 57,
+    marginBottom: this.context.clientHeight! / 2 - 57,
   };
 
   startScroll = () => {

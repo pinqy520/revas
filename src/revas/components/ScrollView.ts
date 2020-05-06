@@ -35,6 +35,10 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
     }
   });
 
+  componentWillUnmount() {
+    this._scroller.cancel();
+  }
+
   private _onLayout = (frame: Frame) => {
     if (this._width !== frame.width || this._height !== frame.height) {
       this._height = frame.height;

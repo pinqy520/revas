@@ -2,18 +2,17 @@ import React from 'react';
 import { render } from './revas';
 import App from './develop/App';
 import * as serviceWorker from './develop/serviceWorker';
-import createCanvas from './develop/createCanvas';
 
 import './develop/index.css';
 
-const canvas = createCanvas();
 // eslint-disable-next-line
-const app = render(<App width={canvas.clientWidth} height={canvas.clientHeight} />, canvas);
+const app = render(<App />, document.getElementById('canvas')!);
 
-// try unmount
-// setTimeout(() => {
-//   app.unmount()
-// }, 5000);
+window.addEventListener('resize', () => {
+  requestAnimationFrame(() => {
+    app.update();
+  });
+});
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
