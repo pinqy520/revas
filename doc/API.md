@@ -48,6 +48,7 @@ export class Widget extends React.Component {
   }
 }
 ```
+[![Edit reverent-river-vbypp](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/reverent-river-vbypp?fontsize=14&hidenavigation=1&theme=dark)
 
 ## Components
 
