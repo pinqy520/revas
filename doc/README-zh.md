@@ -1,24 +1,23 @@
 <h1 align="center">
-<img src="https://user-images.githubusercontent.com/5719833/74748305-3fb20680-52a3-11ea-81c3-98804dceb602.png" width=220 />
+  <img src="https://user-images.githubusercontent.com/5719833/74748305-3fb20680-52a3-11ea-81c3-98804dceb602.png" width=220 />
+  <br />
+  <a href="https://badge.fury.io/js/revas">
+    <img src="https://badge.fury.io/js/revas.svg" alt="npm version" height="18">
+  </a>
 </h1>
 
 <p align="center">
   用React和CSS在Canvas上编写高性能交互界面
 </p>
 
-<p align="center">
-  <a href="https://badge.fury.io/js/revas">
-    <img src="https://badge.fury.io/js/revas.svg" alt="npm version" height="18">
-  </a>
+<p align="center"> 
+  <a target="_blank" href="https://pinqy520.github.io/demo/revas-pwa/" rel="nofollow">Live DEMO</a> | <a target="_blank" href="https://github.com/pinqy520/revas/blob/master/src/develop/App.tsx">DEMO Code</a>
 </p>
 
-## DEMO
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/5719833/81006150-9b8f3300-8e81-11ea-8cb1-08de6550ea03.png" />
 </p>
-
-[Live DEMO](https://pinqy520.github.io/demo/revas-pwa/) | [DEMO Code](https://github.com/pinqy520/revas/blob/master/src/develop/App.tsx)
 
 ## 安装
 
