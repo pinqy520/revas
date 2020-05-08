@@ -68,3 +68,8 @@ export class Widget extends React.Component {
 }
 ```
 [![Edit reverent-river-vbypp](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/reverent-river-vbypp?fontsize=14&hidenavigation=1&theme=dark)
+
+### Render to a custom canvas api
+
+- https://github.com/pinqy520/revas-wxgame-example
+- https://github.com/pinqy520/revas-bytegame-example
