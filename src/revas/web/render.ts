@@ -60,18 +60,28 @@ function createRoot(app: React.ReactNode, dom: HTMLElement, canvas: RevasCanvas)
   );
 }
 
+function initTouch(dom: HTMLElement, handler: (e: any) => any) {
+  dom.addEventListener('touchstart', handler, false);
+  dom.addEventListener('touchmove', handler, false);
+  dom.addEventListener('touchend', handler, false);
+  dom.addEventListener('touchcancel', handler, false);
+  return () => {
+    dom.removeEventListener('touchstart', handler, false);
+    dom.removeEventListener('touchmove', handler, false);
+    dom.removeEventListener('touchend', handler, false);
+    dom.removeEventListener('touchcancel', handler, false);
+  };
+}
+
 export function render(app: React.ReactNode, parent: HTMLElement, parentComponent?: Component<any>, callback = noop) {
   const scale = window.devicePixelRatio;
   const dom = createCanvas(parent, scale);
   const canvas = new RevasCanvas(dom.getContext('2d')!);
-  canvas.transform.scale(scale, scale);
   const container = new Container();
-  const touchHandler = (e: any) => container.handleTouch(createRevasTouchEvent(e));
-  dom.addEventListener('touchstart', touchHandler, false);
-  dom.addEventListener('touchmove', touchHandler, false);
-  dom.addEventListener('touchend', touchHandler, false);
-  dom.addEventListener('touchcancel', touchHandler, false);
+  const destroyTouch = initTouch(dom, e => container.handleTouch(createRevasTouchEvent(e)));
   const fiber = renderer.createContainer(container, false, false);
+
+  canvas.transform.scale(scale, scale);
   renderer.updateContainer(createRoot(app, dom, canvas), fiber, parentComponent, callback);
 
   return {
@@ -82,15 +92,13 @@ export function render(app: React.ReactNode, parent: HTMLElement, parentComponen
       dom.width = dom.clientWidth * scale;
       dom.height = dom.clientHeight * scale;
       clearCache();
+
       canvas.transform.scale(scale, scale);
       renderer.updateContainer(createRoot(next, dom, canvas), fiber, parentComponent, callback);
     },
     unmount(callback = noop) {
       renderer.updateContainer(null, fiber, null, callback);
-      dom.removeEventListener('touchstart', touchHandler, false);
-      dom.removeEventListener('touchmove', touchHandler, false);
-      dom.removeEventListener('touchend', touchHandler, false);
-      dom.removeEventListener('touchcancel', touchHandler, false);
+      destroyTouch();
       clearCache();
       dom.remove();
     },

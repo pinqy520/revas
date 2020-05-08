@@ -1,34 +1,14 @@
-<h1 align="center">
-<img src="https://user-images.githubusercontent.com/5719833/74748305-3fb20680-52a3-11ea-81c3-98804dceb602.png" width=220 />
-</h1>
+# Document
 
-<p align="center">
-  用React和CSS在Canvas上编写高性能交互界面
-</p>
-
-<p align="center">
-  <a href="https://badge.fury.io/js/revas">
-    <img src="https://badge.fury.io/js/revas.svg" alt="npm version" height="18">
-  </a>
-</p>
-
-## DEMO
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/5719833/81006150-9b8f3300-8e81-11ea-8cb1-08de6550ea03.png" />
-</p>
-
-[Live DEMO](https://pinqy520.github.io/demo/revas-pwa/) | [DEMO Code](https://github.com/pinqy520/revas/blob/master/src/develop/App.tsx)
-
-## 安装
+## Install
 
 ``` bash
 $ yarn add revas react
 ```
 
-## 基本用法
+## Usage
 
-### 直接渲染到DOM元素
+### Render to a DOM
 ```jsx
 import React from 'react'
 import {render, View, Text} from 'revas'
@@ -42,7 +22,7 @@ render(
 ```
 [![Edit purple-browser-h56ht](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/purple-browser-h56ht?fontsize=14&hidenavigation=1&theme=dark)
 
-### 在ReactDOM中嵌入
+### Render to a DOM rendered by React
 ```jsx
 import React from 'react'
 import {render, View, Text} from 'revas'
@@ -69,7 +49,7 @@ export class Widget extends React.Component {
 }
 ```
 
-## 组件
+## Components
 
 ### View
 
@@ -79,13 +59,13 @@ export class Widget extends React.Component {
 | Property | Type | Description |
 | -: | - | - |
 | style | ViewStyle | Inline css|
-| pointerEvents | 'auto' \| 'box-none' \| 'none' | 点击事件接受类型 |
-| onLayout | (Frame): void | 获取当前布局 |
-| onTouchStart | (RevasTouch): void | 开始触碰回调 |
-| onTouchMove | (RevasTouch): void | 触碰移动回调 |
-| onTouchEnd | (RevasTouch): void | 结束触碰回调 |
-| cache | boolean \| string | 开启离屏缓存 |
-| forceCache | boolean | 不等待子组件加载完毕就缓存 |
+| pointerEvents | 'auto' \| 'box-none' \| 'none' |  |
+| onLayout | (Frame): void | x, y, width, height |
+| onTouchStart | (RevasTouch): void | callback |
+| onTouchMove | (RevasTouch): void | callback |
+| onTouchEnd | (RevasTouch): void | callback |
+| cache | boolean \| string | enable offscreen cache |
+| forceCache | boolean | force enable cache |
 
 ```jsx
 <View {...props} />
@@ -100,7 +80,7 @@ export class Widget extends React.Component {
 | Property | Type | Description |
 | -: | - | - |
 | style | TextStyle | Inline css|
-| numberOfLines | number | 最多多少行 |
+| numberOfLines | number | max lines |
 
 ```jsx
 <Text numberOfLines={1}>Hello World</Text>
@@ -129,10 +109,10 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| onPress | Function | 点击回调 |
-| onPressIn | Function | 点按回调 |
-| onPressOut | Function | 点按弹起回调 |
-| activeOpacity | number | 点击的时候透明度 |
+| onPress | Function | callback |
+| onPressIn | Function | callback |
+| onPressOut | Function | callback |
+| activeOpacity | number | opacity when pressing in |
 
 ```jsx
 <Touchable onPress={() => alert('Enjoy!~🎉')}>
@@ -148,11 +128,11 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| horizontal | boolean | 滑动方向 |
-| onScroll | (RevasScrollEvent): void | 滑动回调 |
-| onScrollStart | (RevasScrollEvent): void | 滑动开始回调 |
-| onScrollEnd | (RevasScrollEvent): void | 滑动停止回调 |
-| paging | boolean \| number | 是否开启paging，paging长度 |
+| horizontal | boolean | direction |
+| onScroll | (RevasScrollEvent): void | scrolling callback |
+| onScrollStart | (RevasScrollEvent): void | scroll start |
+| onScrollEnd | (RevasScrollEvent): void | scroll end |
+| paging | boolean \| number | enable paging, and the length |
 
 ```jsx
 <ScrollView>
@@ -168,9 +148,9 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| start | {x: number, y: number} | 渐变色开始的点 |
-| end | {x: number, y: number} | 渐变色结束的点 |
-| colors | Color[] | 滑动回调 |
+| start | {x: number, y: number} | start position |
+| end | {x: number, y: number} | end position |
+| colors | Color[] | colors |
 
 ```jsx
 <LinearGradient style={styles.decorator}
@@ -186,9 +166,9 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| data | T[] | 数据 |
-| renderItem | (item, index, data): JSX |渲染每一行 |
-| getItemHeight | (item, index, data): number | 获取每一行高度 |
+| data | T[] | list data |
+| renderItem | (item, index, data): JSX | render item |
+| getItemHeight | (item, index, data): number | get height of each item |
 
 ```jsx
 <ListView
@@ -202,11 +182,11 @@ export class Widget extends React.Component {
 
 ### render(app: JSX, target: DOM): Renderer
 
-> [WEB ONLY] 渲染到指定DOM节点里
+> [WEB ONLY] render to a DOM container
 
 ### new AnimatedValue(number)
 
-> 控制动画
+> animated value
 
 ```jsx
 import { AnimatedValue } from 'revas'
@@ -227,16 +207,18 @@ function Comp() {
 
 ### timing(AnimatedValue, Config).start().stop()
 
-> 配置动画
+> start a animation
 
 ### AnimatedValue.interpolate(inputRange: number[], outputRange: number[])
 
-> 配置动画
+> interpolate animated value
 
 
 ### withContext(Component)
 
-> 获取全局参数 clientWidth, clientHeight, pixelRatio, canvas
+> inject context to a component
+
+clientWidth, clientHeight, pixelRatio, canvas
 
 ## CSS
 
@@ -250,16 +232,8 @@ function Comp() {
 | Other | animated, path |
 
 
-## 高级用法
+## Advantage
 
-> 参考DOM渲染函数的编写
+### Render to a custom canvas
 
-### 渲染到自定义Canvas容器
-
-#### 准备：配置离屏渲染函数
-
-#### 第一步：生成RevasCanvas对象
-
-#### 第二步：监听Canvas上手势
-
-#### 第三部：渲染
+> TODO
