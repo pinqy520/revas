@@ -1,15 +1,13 @@
 <h1 align="center">
-<img src="https://user-images.githubusercontent.com/5719833/74748305-3fb20680-52a3-11ea-81c3-98804dceb602.png" width=220 />
+  <img src="https://user-images.githubusercontent.com/5719833/74748305-3fb20680-52a3-11ea-81c3-98804dceb602.png" width=220 />
+  <br />
+  <a href="https://badge.fury.io/js/revas">
+    <img src="https://badge.fury.io/js/revas.svg" alt="npm version" height="18">
+  </a>
 </h1>
 
 <p align="center">
   Use React and CSS to build UI interfaces on canvas
-</p>
-
-<p align="center">
-  <a href="https://badge.fury.io/js/revas">
-    <img src="https://badge.fury.io/js/revas.svg" alt="npm version" height="18">
-  </a>
 </p>
 
 <p align="center">
