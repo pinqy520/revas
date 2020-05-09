@@ -14,10 +14,6 @@
   <a target="_blank" href="https://github.com/pinqy520/revas/blob/master/doc/API.md">Document</a> | <a target="_blank" href="https://github.com/pinqy520/revas/blob/master/doc/README-zh.md">中文文档</a> | <a target="_blank" href="https://pinqy520.github.io/demo/revas-pwa/" rel="nofollow">Live DEMO</a> | <a target="_blank" href="https://github.com/pinqy520/revas/blob/master/src/develop/App.tsx">DEMO Code</a>
 </p>
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/5719833/81006150-9b8f3300-8e81-11ea-8cb1-08de6550ea03.png" />
-</p>
-
 ## Install
 
 ``` bash
@@ -71,3 +67,10 @@ export class Widget extends React.Component {
 
 - https://github.com/pinqy520/revas-wxgame-example
 - https://github.com/pinqy520/revas-bytegame-example
+
+
+## DEMO
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/5719833/81006150-9b8f3300-8e81-11ea-8cb1-08de6550ea03.png" />
+</p>
