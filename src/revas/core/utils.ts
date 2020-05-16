@@ -83,7 +83,7 @@ export function setShadow(canvas: RevasCanvas, color: string, x: number, y: numb
     ctx.shadowColor = color;
     ctx.shadowOffsetX = x;
     ctx.shadowOffsetY = y;
-    return () => {
+    return function resetShadow() {
       ctx.shadowBlur = shadowBlur;
       ctx.shadowColor = shadowColor;
       ctx.shadowOffsetX = shadowOffsetX;
@@ -97,7 +97,7 @@ export function pushOpacity(canvas: RevasCanvas, opacity: number) {
   if (opacity !== null && opacity < 1 && opacity >= 0) {
     const cachedOpacity = canvas.context.globalAlpha || 1;
     canvas.context.globalAlpha = cachedOpacity * opacity;
-    return () => {
+    return function popOpacity() {
       canvas.context.globalAlpha = cachedOpacity;
     };
   }

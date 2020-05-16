@@ -33,14 +33,18 @@ export default class SimpleRouter extends React.Component<SimpleRouterProps> {
     this.pages.push(<Component {...params} router={this} />);
     this.animated.setValue(1);
     this.setState({ animating: -1 });
-    requestAnimationFrame(() => {
-      this.setState({ animating: 1 });
-      timing(this.animated, {
-        to: 0,
-        duration: 200,
-      }).start(() => this.setState({ animating: 0 }));
-    });
+    requestAnimationFrame(this._pushAnim);
   };
+
+  _pushAnim = () => {
+    this.setState({ animating: 1 });
+    timing(this.animated, {
+      to: 0,
+      duration: 200,
+    }).start(this._pushAnimDone);
+  };
+
+  _pushAnimDone = () => this.setState({ animating: 0 });
 
   pop = () => {
     this.setState({ animating: 1 });
@@ -48,10 +52,12 @@ export default class SimpleRouter extends React.Component<SimpleRouterProps> {
     timing(this.animated, {
       to: 1,
       duration: 200,
-    }).start(() => {
-      this.pages.pop();
-      this.setState({ animating: 0 });
-    });
+    }).start(this._popAnimDone);
+  };
+
+  _popAnimDone = () => {
+    this.pages.pop();
+    this.setState({ animating: 0 });
   };
 
   getStyle(index: number, pages: any[]) {

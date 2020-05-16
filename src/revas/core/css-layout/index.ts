@@ -19,7 +19,7 @@ function createYoga(node: Node): any {
   };
 }
 
-function layout(yoga: YogaNode, x = 0, y = 0) {
+function layout(yoga: YogaNode, x: number, y: number) {
   const { left, top, width, height } = yoga.layout;
   const { node, children } = yoga;
   node.frame = new Frame(x + left, y + top, width, height);
@@ -34,6 +34,6 @@ export function updateLayout(root: Node<AppContextType>) {
   yogas.style = { width: root.props.clientWidth, height: root.props.clientHeight };
   return () => {
     computeLayout(yogas);
-    layout(yogas);
+    layout(yogas, 0, 0);
   };
 }

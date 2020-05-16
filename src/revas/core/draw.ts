@@ -82,8 +82,8 @@ function drawCache(canvas: RevasCanvas, node: Node, container: Container, style:
   let cached = getCache(cachedId);
   const { shadowBlur = 0, shadowOffsetX = 0, shadowOffsetY = 0 } = cached ? cached.style : style;
   const spread = shadowBlur * 2;
-  const x = frame.x - shadowOffsetX - shadowBlur;
-  const y = frame.y - shadowOffsetY - shadowBlur;
+  const x = frame.x + shadowOffsetX - shadowBlur;
+  const y = frame.y + shadowOffsetY - shadowBlur;
   const w = frame.width + spread;
   const h = frame.height + spread;
   if (!cached) {
@@ -182,7 +182,7 @@ function drawContent(
   node.children
     .slice()
     .sort(sortByZIndexAscending)
-    .forEach(child => {
+    .forEach(function drawChild(child) {
       drawNode(canvas, child, container);
     });
 }
