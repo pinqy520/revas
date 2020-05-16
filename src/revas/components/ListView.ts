@@ -28,10 +28,7 @@ export default class ListView extends React.Component<ListViewProps<any>> {
       const start = Math.floor(y / itemHeight);
       const end = Math.floor((y + this._height + 10) / itemHeight);
       if (start !== _start || end !== _end) {
-        this.setState({
-          start,
-          end,
-        });
+        this.setState({ start, end });
       }
     }
   };
@@ -51,13 +48,7 @@ export default class ListView extends React.Component<ListViewProps<any>> {
   renderItem = (item: any, i: number) => {
     const { data, renderItem } = this.props;
     const index = i + this.state.start;
-    return React.createElement(
-      React.Fragment,
-      {
-        key: index,
-      },
-      renderItem(item, index, data)
-    );
+    return React.createElement(React.Fragment, { key: index }, renderItem(item, index, data));
   };
 
   render() {
