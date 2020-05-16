@@ -182,7 +182,7 @@ class Handler {
       if (this.paging > 0 && absv < 0.5) {
         const distance = Math.round(this.offset / this.paging + this.velocity) * this.paging - this.offset;
         this.velocity = distance / 2000 + friction(this.velocity, duration, 0.01);
-        if (Math.abs(distance) > 0.1 || absv > 0) {
+        if (Math.abs(distance) > 0.1 || absv > 0.05) {
           const move = this.velocity * duration;
           this.change(move);
           return true;

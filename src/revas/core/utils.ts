@@ -2,8 +2,8 @@ import { Node } from './Node';
 import { RevasCanvas } from './Canvas';
 
 export function noop(): any {}
-export const EMPTY_OBJECT = Object.freeze({});
-export const EMPTY_ARRAY = Object.freeze([]);
+export const EMPTY_OBJECT: any = Object.freeze({});
+export const EMPTY_ARRAY: any[] = Object.freeze([]) as any;
 
 export function flatten(array: any[]) {
   const flattend: any[] = [];

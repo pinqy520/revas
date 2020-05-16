@@ -59,14 +59,14 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| style | ViewStyle | Inline css|
-| pointerEvents | 'auto' \| 'box-none' \| 'none' |  |
-| onLayout | (Frame): void | x, y, width, height |
-| onTouchStart | (RevasTouch): void | callback |
-| onTouchMove | (RevasTouch): void | callback |
-| onTouchEnd | (RevasTouch): void | callback |
-| cache | boolean \| string | enable offscreen cache |
-| forceCache | boolean | force enable cache |
+| style | `ViewStyle` | Inline css|
+| pointerEvents | `'auto' | 'box-none' | 'none'` |  |
+| onLayout | `(Frame): void` | x, y, width, height |
+| onTouchStart | `(RevasTouch): void` | callback |
+| onTouchMove | `(RevasTouch): void` | callback |
+| onTouchEnd | `(RevasTouch): void` | callback |
+| cache | `boolean | string` | enable offscreen cache |
+| forceCache | `boolean` | force enable cache |
 
 ```jsx
 <View {...props} />
@@ -80,8 +80,8 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| style | TextStyle | Inline css|
-| numberOfLines | number | max lines |
+| style | `TextStyle` | Inline css|
+| numberOfLines | `number` | max lines |
 
 ```jsx
 <Text numberOfLines={1}>Hello World</Text>
@@ -95,8 +95,8 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| style | ImageStyle | Inline css|
-| src | string | Image source url |
+| style | `ImageStyle` | Inline css|
+| src | string | `Image` source url |
 
 ```jsx
 <Image src="https://some.img/url.jpg" />
@@ -110,10 +110,10 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| onPress | Function | callback |
-| onPressIn | Function | callback |
-| onPressOut | Function | callback |
-| activeOpacity | number | opacity when pressing in |
+| onPress | `Function` | callback |
+| onPressIn | `Function` | callback |
+| onPressOut | `Function` | callback |
+| activeOpacity | `number` | opacity when pressing in |
 
 ```jsx
 <Touchable onPress={() => alert('Enjoy!~🎉')}>
@@ -129,11 +129,12 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| horizontal | boolean | direction |
-| onScroll | (RevasScrollEvent): void | scrolling callback |
-| onScrollStart | (RevasScrollEvent): void | scroll start |
-| onScrollEnd | (RevasScrollEvent): void | scroll end |
-| paging | boolean \| number | enable paging, and the length |
+| horizontal | `boolean` | direction |
+| onScroll | `(RevasScrollEvent): void` | scrolling callback |
+| onScrollStart | `(RevasScrollEvent): void` | scroll start |
+| onScrollEnd | `(RevasScrollEvent): void` | scroll end |
+| paging | `boolean | number` | enable paging, and the length |
+| offset | `{x: number, y: number}` | offset |
 
 ```jsx
 <ScrollView>
@@ -149,9 +150,9 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| start | {x: number, y: number} | start position |
-| end | {x: number, y: number} | end position |
-| colors | Color[] | colors |
+| start | `{x: number, y: number}` | start position |
+| end | `{x: number, y: number}` | end position |
+| colors | `Color[]` | colors |
 
 ```jsx
 <LinearGradient style={styles.decorator}
@@ -167,9 +168,9 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| data | T[] | list data |
-| renderItem | (item, index, data): JSX | render item |
-| getItemHeight | (item, index, data): number | get height of each item |
+| data | `T[]` | list data |
+| renderItem | `(item, index, data): JSX` | render item |
+| itemHeight | `number` | height of each item |
 
 ```jsx
 <ListView

@@ -79,13 +79,13 @@ export class Widget extends React.Component {
 | Property | Type | Description |
 | -: | - | - |
 | style | ViewStyle | Inline css|
-| pointerEvents | 'auto' \| 'box-none' \| 'none' | 点击事件接受类型 |
-| onLayout | (Frame): void | 获取当前布局 |
-| onTouchStart | (RevasTouch): void | 开始触碰回调 |
-| onTouchMove | (RevasTouch): void | 触碰移动回调 |
-| onTouchEnd | (RevasTouch): void | 结束触碰回调 |
-| cache | boolean \| string | 开启离屏缓存 |
-| forceCache | boolean | 不等待子组件加载完毕就缓存 |
+| pointerEvents | `'auto' | 'box-none' | 'none'` | 点击事件接受类型 |
+| onLayout | `(Frame): void` | 获取当前布局 |
+| onTouchStart | `(RevasTouch): void` | 开始触碰回调 |
+| onTouchMove | `(RevasTouch): void` | 触碰移动回调 |
+| onTouchEnd | `(RevasTouch): void` | 结束触碰回调 |
+| cache | `boolean | string` | 开启离屏缓存 |
+| forceCache | `boolean` | 不等待子组件加载完毕就缓存 |
 
 ```jsx
 <View {...props} />
@@ -99,8 +99,8 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| style | TextStyle | Inline css|
-| numberOfLines | number | 最多多少行 |
+| style | `TextStyle` | Inline css|
+| numberOfLines | `number` | 最多多少行 |
 
 ```jsx
 <Text numberOfLines={1}>Hello World</Text>
@@ -129,10 +129,10 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| onPress | Function | 点击回调 |
-| onPressIn | Function | 点按回调 |
-| onPressOut | Function | 点按弹起回调 |
-| activeOpacity | number | 点击的时候透明度 |
+| onPress | `Function` | 点击回调 |
+| onPressIn | `Function` | 点按回调 |
+| onPressOut | `Function` | 点按弹起回调 |
+| activeOpacity | `number` | 点击的时候透明度 |
 
 ```jsx
 <Touchable onPress={() => alert('Enjoy!~🎉')}>
@@ -148,11 +148,12 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| horizontal | boolean | 滑动方向 |
-| onScroll | (RevasScrollEvent): void | 滑动回调 |
-| onScrollStart | (RevasScrollEvent): void | 滑动开始回调 |
-| onScrollEnd | (RevasScrollEvent): void | 滑动停止回调 |
-| paging | boolean \| number | 是否开启paging，paging长度 |
+| horizontal | `boolean` | 滑动方向 |
+| onScroll | `(RevasScrollEvent): void` | 滑动回调 |
+| onScrollStart | `(RevasScrollEvent): void` | 滑动开始回调 |
+| onScrollEnd | `(RevasScrollEvent): void` | 滑动停止回调 |
+| paging | `boolean | number` | 是否开启paging，paging长度 |
+| offset | `{x: number, y: number}` | 相对位移 |
 
 ```jsx
 <ScrollView>
@@ -168,9 +169,9 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| start | {x: number, y: number} | 渐变色开始的点 |
-| end | {x: number, y: number} | 渐变色结束的点 |
-| colors | Color[] | 滑动回调 |
+| start | `{x: number, y: number}` | 渐变色开始的点 |
+| end | `{x: number, y: number}` | 渐变色结束的点 |
+| colors | `Color[]` | 滑动回调 |
 
 ```jsx
 <LinearGradient style={styles.decorator}
@@ -186,14 +187,14 @@ export class Widget extends React.Component {
 
 | Property | Type | Description |
 | -: | - | - |
-| data | T[] | 数据 |
-| renderItem | (item, index, data): JSX |渲染每一行 |
-| getItemHeight | (item, index, data): number | 获取每一行高度 |
+| data | `T[]` | 数据 |
+| renderItem | `(item, index, data): JSX` |渲染每一行 |
+| itemHeight | `number` | 一行的高度 |
 
 ```jsx
 <ListView
   data={[1, 2, 3, 4, 5, 12, 123, 1, 23, 2]}
-  getItemHeight={() => 80} renderItem={(item, index) => (
+  itemHeight={80} renderItem={(item, index) => (
     <View style={{ height: 80, backgroundColor: (index % 2) > 0 ? 'white' : 'black' }} />
   )} />
 ```

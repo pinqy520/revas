@@ -55,7 +55,7 @@ export default class TimelineApp extends React.Component<any> {
           data={data}
           paging
           renderItem={this.renderItem}
-          getItemHeight={this.getItemHeight}
+          itemHeight={this.WINDOW_HEIGHT}
           onScroll={this.onScroll}
           style={styles.container}
         />

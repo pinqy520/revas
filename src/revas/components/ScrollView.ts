@@ -3,12 +3,15 @@ import { NodeProps, Frame } from '../core/Node';
 import Scroller, { RevasScrollEvent } from './common/Scroller';
 import { AnimatedValue } from '../core/Animated';
 
+export type ScrollViewOffset = { x?: number; y?: number };
+
 export type ScrollViewProps = {
   horizontal?: boolean;
   onScroll?: (e: RevasScrollEvent) => any;
   onScrollStart?: (e: RevasScrollEvent) => any;
   onScrollEnd?: (e: RevasScrollEvent) => any;
   paging?: boolean | number;
+  offset?: ScrollViewOffset;
 } & NodeProps;
 
 export default class ScrollView extends React.Component<ScrollViewProps> {
@@ -22,9 +25,13 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
     position: 'absolute',
     animated: true,
   };
+  private _offset: ScrollViewOffset = { x: 0, y: 0 };
 
   private _scroller = new Scroller(e => {
-    this.props.horizontal ? this._innerStyle.translateX.setValue(-e.x) : this._innerStyle.translateY.setValue(-e.y);
+    const { x = 0, y = 0 } = this._offset;
+    this.props.horizontal ?
+      this._innerStyle.translateX.setValue(x - e.x) :
+      this._innerStyle.translateY.setValue(y - e.y);
     switch (e.type) {
       case 'scroll':
         return this.props.onScroll && this.props.onScroll(e);
@@ -56,9 +63,12 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
   };
 
   private _onContentLayout = (frame: Frame) => {
-    if (this._contentWidth !== frame.width || this._contentHeight !== frame.height) {
-      this._contentHeight = frame.height;
-      this._contentWidth = frame.width;
+    const { x = 0, y = 0 } = this._offset;
+    const width = frame.width + x;
+    const height = frame.height + y;
+    if (this._contentWidth !== width || this._contentHeight !== height) {
+      this._contentHeight = height;
+      this._contentWidth = width;
       this._checkLayout();
     }
   };
@@ -74,9 +84,14 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
   };
 
   render() {
-    const { children, horizontal, ...others } = this.props;
+    const { children, horizontal, offset, ...others } = this.props;
 
     this._scroller.horizontal = horizontal;
+
+    if (offset) {
+      this._offset = offset;
+      this._scroller.emit('none');
+    }
 
     return React.createElement(
       'Scrollable',
