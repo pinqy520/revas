@@ -60,12 +60,12 @@ export class Widget extends React.Component {
 | Property | Type | Description |
 | -: | - | - |
 | style | `ViewStyle` | Inline css|
-| pointerEvents | `'auto' | 'box-none' | 'none'` |  |
+| pointerEvents | `'auto' \| 'box-none' \| 'none'` |  |
 | onLayout | `(Frame): void` | x, y, width, height |
 | onTouchStart | `(RevasTouch): void` | callback |
 | onTouchMove | `(RevasTouch): void` | callback |
 | onTouchEnd | `(RevasTouch): void` | callback |
-| cache | `boolean | string` | enable offscreen cache |
+| cache | `boolean \| string` | enable offscreen cache |
 | forceCache | `boolean` | force enable cache |
 
 ```jsx
@@ -133,7 +133,7 @@ export class Widget extends React.Component {
 | onScroll | `(RevasScrollEvent): void` | scrolling callback |
 | onScrollStart | `(RevasScrollEvent): void` | scroll start |
 | onScrollEnd | `(RevasScrollEvent): void` | scroll end |
-| paging | `boolean | number` | enable paging, and the length |
+| paging | `boolean \| number` | enable paging, and the length |
 | offset | `{x: number, y: number}` | offset |
 
 ```jsx

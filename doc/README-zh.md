@@ -79,12 +79,12 @@ export class Widget extends React.Component {
 | Property | Type | Description |
 | -: | - | - |
 | style | ViewStyle | Inline css|
-| pointerEvents | `'auto' | 'box-none' | 'none'` | 点击事件接受类型 |
+| pointerEvents | `'auto' \| 'box-none' \| 'none'` | 点击事件接受类型 |
 | onLayout | `(Frame): void` | 获取当前布局 |
 | onTouchStart | `(RevasTouch): void` | 开始触碰回调 |
 | onTouchMove | `(RevasTouch): void` | 触碰移动回调 |
 | onTouchEnd | `(RevasTouch): void` | 结束触碰回调 |
-| cache | `boolean | string` | 开启离屏缓存 |
+| cache | `boolean \| string` | 开启离屏缓存 |
 | forceCache | `boolean` | 不等待子组件加载完毕就缓存 |
 
 ```jsx
@@ -152,7 +152,7 @@ export class Widget extends React.Component {
 | onScroll | `(RevasScrollEvent): void` | 滑动回调 |
 | onScrollStart | `(RevasScrollEvent): void` | 滑动开始回调 |
 | onScrollEnd | `(RevasScrollEvent): void` | 滑动停止回调 |
-| paging | `boolean | number` | 是否开启paging，paging长度 |
+| paging | `boolean \| number` | 是否开启paging，paging长度 |
 | offset | `{x: number, y: number}` | 相对位移 |
 
 ```jsx
