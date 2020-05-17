@@ -163,7 +163,7 @@ class Handler {
   }
 
   onMove(value: number, duration: number) {
-    if (this._last >= 0) {
+    if (this._last >= 0 && duration > 0) {
       const move = this._last - value;
       this.velocity = move / duration;
       this._last = value;
@@ -179,19 +179,21 @@ class Handler {
   afterEnd(duration: number) {
     if (this._last < 0) {
       const absv = Math.abs(this.velocity);
-      if (this.paging > 0 && absv < 0.5 && this.offset < this.max) {
+      if (this.paging > 0 && absv <= 0.5 && this.offset < this.max) {
+        // start reset to paging
         const distance = Math.round(this.offset / this.paging + this.velocity) * this.paging - this.offset;
-        this.velocity = distance / 2000 + friction(this.velocity, duration, 0.01);
+        this.velocity = clamp(distance / 2000 + friction(this.velocity, duration, 0.01), -0.5, 0.5);
         if (Math.abs(distance) > 0.5 || absv > 0.05) {
           const move = this.velocity * duration;
           this.change(move);
           return true;
         } else {
+          // end to paging
           this.change(distance);
         }
       } else if (absv > 0.05) {
-        this.velocity = clamp(-10, this.velocity, 10);
-        this.velocity = friction(this.velocity, duration, 0.003);
+        // scroll for free
+        this.velocity = friction(this.velocity, duration, 0.002);
         const move = this.velocity * duration;
         this.change(move);
         return true;
