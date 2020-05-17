@@ -179,10 +179,10 @@ class Handler {
   afterEnd(duration: number) {
     if (this._last < 0) {
       const absv = Math.abs(this.velocity);
-      if (this.paging > 0 && absv < 0.5) {
+      if (this.paging > 0 && absv < 0.5 && this.offset < this.max) {
         const distance = Math.round(this.offset / this.paging + this.velocity) * this.paging - this.offset;
         this.velocity = distance / 2000 + friction(this.velocity, duration, 0.01);
-        if (Math.abs(distance) > 0.1 || absv > 0.05) {
+        if (Math.abs(distance) > 0.5 || absv > 0.05) {
           const move = this.velocity * duration;
           this.change(move);
           return true;
