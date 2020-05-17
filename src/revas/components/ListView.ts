@@ -25,7 +25,7 @@ export default class ListView extends React.Component<ListViewProps<any>> {
     if (this._height > 0) {
       const { itemHeight } = this.props;
       const { start: _start, end: _end } = this.state;
-      const start = Math.floor(y / itemHeight);
+      const start = Math.max(0, Math.floor((y - 10) / itemHeight));
       const end = Math.floor((y + this._height + 10) / itemHeight);
       if (start !== _start || end !== _end) {
         this.setState({ start, end });
