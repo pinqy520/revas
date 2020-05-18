@@ -16,7 +16,8 @@
     "css-layout": "^1.1.1",
     "react-reconciler": "^0.25.1",
     "tslib": "^1.11.1",
-    "yoga-layout-prebuilt": "^1.9.5"
+    "yoga-layout-prebuilt": "^1.9.5",
+    "yoga-wasm": "github:pinqy520/yoga-wasm"
   },
   "keywords": [
     "react",
@@ -30,7 +31,9 @@
   "devDependencies": {
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.34",
+    "customize-cra": "^0.9.1",
     "react": "^16.13.1",
+    "react-app-rewired": "^2.1.6",
     "react-scripts": "3.2.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
@@ -42,11 +45,11 @@
     "typescript": "~3.8.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "build:pwa": "rimraf build && react-scripts build",
-    "test": "react-scripts test",
+    "build:pwa": "rimraf build && react-app-rewired build",
+    "test": "react-app-rewired test",
     "prepare": "npm run build",
     "postpublish": "git push"
   },

@@ -5,9 +5,10 @@ import { drawNode } from './draw';
 import { getNodeByTouch, emitTouch } from './touch';
 import { RevasCanvas } from './Canvas';
 import { AppContextType } from '../components/Context';
+import { task } from './yoga-layout/wasm';
 
 export class Container {
-  private _ready = true;
+  private _ready = false;
   private _next = false;
   private _reflow = false;
   private _root?: Node<AppContextType>;
@@ -26,6 +27,10 @@ export class Container {
 
   get scale() {
     return this._root?.props.deviceRatio || 1;
+  }
+
+  constructor() {
+    task.then(this.ready);
   }
 
   public setRoot(root?: Node<AppContextType>) {
