@@ -1,9 +1,10 @@
-import Yoga from 'yoga-layout-prebuilt';
+import type { YogaNode } from 'yoga-layout-wasm/asm';
+import { yoga as Yoga } from './init';
 import { Node, Frame } from '../Node';
 import apply from './style';
 import { AppContextType } from '../../components/Context';
 
-function _updateLayout(node: Node): [Function, Yoga.YogaNode] {
+function _updateLayout(node: Node): [Function, YogaNode] {
   const yoga = Yoga.Node.create();
   const children: Function[] = [];
   apply(yoga, node.props.style);

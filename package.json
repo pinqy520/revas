@@ -11,12 +11,11 @@
   "typings": "dist/types/revas/index.d.ts",
   "dependencies": {
     "@types/react-reconciler": "^0.18.0",
-    "@types/yoga-layout": "^1.9.1",
     "bezier-easing": "^2.1.0",
     "css-layout": "^1.1.1",
     "react-reconciler": "^0.25.1",
-    "tslib": "^1.11.1",
-    "yoga-layout-prebuilt": "^1.9.5"
+    "tslib": "^2.0.0",
+    "yoga-layout-wasm": "^1.9.3-alpha.3"
   },
   "keywords": [
     "react",

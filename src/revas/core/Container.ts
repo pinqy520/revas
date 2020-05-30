@@ -1,13 +1,14 @@
 import { Node, RevasTouchEvent } from './Node';
 // import { updateLayout } from './css-layout'
 import { updateLayout } from './yoga-layout';
+import { promise } from './yoga-layout/init';
 import { drawNode } from './draw';
 import { getNodeByTouch, emitTouch } from './touch';
 import { RevasCanvas } from './Canvas';
 import { AppContextType } from '../components/Context';
 
 export class Container {
-  private _ready = true;
+  private _ready = false;
   private _next = false;
   private _reflow = false;
   private _root?: Node<AppContextType>;
@@ -26,6 +27,10 @@ export class Container {
 
   get scale() {
     return this._root?.props.deviceRatio || 1;
+  }
+
+  constructor() {
+    promise.then(this.ready);
   }
 
   public setRoot(root?: Node<AppContextType>) {
