@@ -1,4 +1,5 @@
 import Yoga, { task } from './wasm';
+import { YogaNode } from 'yoga-layout-wasm';
 import { flatten } from '../utils';
 
 function funcName(key: string) {
@@ -170,7 +171,7 @@ task.then(() => {
 
 const cache = new WeakMap<any, StyleParams[]>();
 
-function _apply(yoga: import('yoga-layout').YogaNode, style: any) {
+function _apply(yoga: YogaNode, style: any) {
   if (style) {
     if (!cache.has(style)) {
       const _styles: StyleParams[] = [];
@@ -187,7 +188,7 @@ function _apply(yoga: import('yoga-layout').YogaNode, style: any) {
   }
 }
 
-export default function apply(yoga: import('yoga-layout').YogaNode, style: any) {
+export default function apply(yoga: YogaNode, style: any) {
   if (style) {
     flatten([style]).forEach(s => _apply(yoga, s));
   }

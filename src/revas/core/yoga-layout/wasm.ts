@@ -1,9 +1,12 @@
-const yoga: any = {};
+import { YogaStatic } from 'yoga-layout-wasm';
 
-export const task = require('yoga-wasm')
-  .default(require('yoga-wasm/build/yoga.wasm'))
-  .then((mod: any) => {
-    Object.assign(yoga, mod);
-  });
+const yoga: YogaStatic = {} as any;
+
+export const task = require('yoga-layout-wasm/dist/index.js')({
+  wasm: require('yoga-layout-wasm/dist/yoga.wasm'),
+  asm: require('yoga-layout-wasm/dist/yoga.wasm.js'),
+}).then((mod: any) => {
+  Object.assign(yoga, mod);
+});
 
 export default yoga;

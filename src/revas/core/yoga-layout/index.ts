@@ -2,8 +2,9 @@ import Yoga from './wasm';
 import { Node, Frame } from '../Node';
 import apply from './style';
 import { AppContextType } from '../../components/Context';
+import { YogaNode } from 'yoga-layout-wasm';
 
-function _updateLayout(node: Node): [Function, import('yoga-layout').YogaNode] {
+function _updateLayout(node: Node): [Function, YogaNode] {
   const yoga = Yoga.Node.create();
   const children: Function[] = [];
   apply(yoga, node.props.style);
