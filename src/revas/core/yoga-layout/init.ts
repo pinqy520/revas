@@ -1,7 +1,7 @@
-import Yoga, { YogaStatic } from 'yoga-layout-wasm/asm';
+import Yoga, { YogaWasm } from 'yoga-layout-wasm/asm';
 
-export const yoga: YogaStatic = {} as any;
+export const yoga: YogaWasm = {} as any;
 
-export const promise = Yoga.then(y => {
+export const promise = Yoga.init().then(y => {
   Object.assign(yoga, y);
 });
