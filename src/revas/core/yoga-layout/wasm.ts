@@ -1,12 +1,17 @@
-import { YogaStatic } from 'yoga-layout-wasm';
+import type { YogaWasm } from 'yoga-layout-wasm';
 
-const yoga: YogaStatic = {} as any;
+const yoga: YogaWasm = {} as any;
 
-export const task = require('yoga-layout-wasm/dist/index.js')({
-  wasm: require('yoga-layout-wasm/dist/yoga.wasm'),
-  asm: require('yoga-layout-wasm/dist/yoga.wasm.js'),
-}).then((mod: any) => {
+function init(mod: any) {
+  return mod.default.init(require('yoga-layout-wasm/dist/yoga.wasm'));
+}
+function merge(mod: YogaWasm) {
   Object.assign(yoga, mod);
-});
+}
+
+export const task =
+  typeof WebAssembly === 'undefined' ?
+    import('yoga-layout-wasm/asm').then(init).then(merge) :
+    import('yoga-layout-wasm').then(init).then(merge);
 
 export default yoga;

@@ -15,7 +15,7 @@
     "css-layout": "^1.1.1",
     "react-reconciler": "^0.25.1",
     "tslib": "^2.0.0",
-    "yoga-layout-wasm": "^1.9.3-alpha.1"
+    "yoga-layout-wasm": "^1.9.3-alpha.6"
   },
   "keywords": [
     "react",
