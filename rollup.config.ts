@@ -1,10 +1,10 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import typescript from 'rollup-plugin-typescript2'
-import json from 'rollup-plugin-json'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import typescript from 'rollup-plugin-typescript2';
+import json from 'rollup-plugin-json';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
 const BASE_CONFIG = {
   input: 'src/revas/index.ts',
@@ -13,7 +13,7 @@ const BASE_CONFIG = {
     { file: pkg.module, format: 'es', sourcemap: true },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }),
+  external: Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }).concat(['yoga-layout-wasm/asm']),
   watch: {
     include: 'src/revas/**',
   },
@@ -32,15 +32,13 @@ const BASE_CONFIG = {
     // Resolve source maps to the original source
     sourceMaps(),
   ],
-}
+};
 
 export default [
   BASE_CONFIG,
   {
     ...BASE_CONFIG,
     input: 'src/revas/common.ts',
-    output: [
-      { file: 'dist/revas.common.js', format: 'cjs', sourcemap: true }
-    ],
-  }
-]
+    output: [{ file: 'dist/revas.common.js', format: 'cjs', sourcemap: true }],
+  },
+];
