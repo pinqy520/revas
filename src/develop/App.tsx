@@ -13,8 +13,12 @@ export default class App extends React.Component {
     this.router.current?.push(Comp);
   };
 
+  open = () => {
+    window.open('https://pinqy520.github.io/demo/revas-three/');
+  };
+
   render() {
-    const cardHeight = this.context.clientHeight / 6;
+    const cardHeight = this.context.clientHeight / 7;
     return (
       <SimpleRouter ref={this.router} width={this.context.clientWidth}>
         <View style={styles.container}>
@@ -41,6 +45,9 @@ export default class App extends React.Component {
               text="Music App"
               tap={this.push(MusicApp)}
             />
+            <Touchable style={styles.extra} onPress={this.open}>
+              <Text style={styles.extraText}>Revas + THREE.js ></Text>
+            </Touchable>
           </View>
         </View>
       </SimpleRouter>
@@ -136,5 +143,14 @@ const styles = {
     color: '#fff',
     fontFamily:
       "'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
+  },
+  extra: {
+    width: 280,
+    height: 50,
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  extraText: {
+    textAlign: 'center',
   },
 };
