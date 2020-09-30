@@ -74,3 +74,6 @@ export class Widget extends React.Component {
 <p align="center">
   <img src="https://user-images.githubusercontent.com/5719833/81006150-9b8f3300-8e81-11ea-8cb1-08de6550ea03.png" />
 </p>
+
+## Other Framework
+- Vue - [huruji/vuvas](https://github.com/huruji/vuvas) by [@huruji](https://github.com/huruji)
