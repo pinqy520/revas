@@ -46,7 +46,7 @@ export default class App extends React.Component {
               tap={this.push(MusicApp)}
             />
             <Touchable style={styles.extra} onPress={this.open}>
-              <Text style={styles.extraText}>Revas + THREE.js ></Text>
+              <Text style={styles.extraText}>Revas + THREE.js</Text>
             </Touchable>
           </View>
         </View>

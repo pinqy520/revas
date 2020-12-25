@@ -16,11 +16,71 @@ function appendChild(parent: Node, child: Node) {
   child.parent = parent;
 }
 
+const fix: any = {
+  unhideTextInstance() {
+    // noop
+  },
+
+  mountEventComponent() {
+    // noop
+  },
+
+  clearContainer() {
+    // TODO implement this
+  },
+
+  getFundamentalComponentInstance() {
+    throw new Error('Not yet implemented.');
+  },
+
+  mountFundamentalComponent() {
+    throw new Error('Not yet implemented.');
+  },
+
+  shouldUpdateFundamentalComponent() {
+    throw new Error('Not yet implemented.');
+  },
+
+  unmountFundamentalComponent() {
+    throw new Error('Not yet implemented.');
+  },
+
+  getInstanceFromNode() {
+    throw new Error('Not yet implemented.');
+  },
+
+  isOpaqueHydratingObject() {
+    throw new Error('Not yet implemented');
+  },
+
+  makeOpaqueHydratingObject() {
+    throw new Error('Not yet implemented.');
+  },
+
+  makeClientIdInDEV() {
+    throw new Error('Not yet implemented');
+  },
+
+  beforeActiveInstanceBlur() {
+    // noop
+  },
+
+  afterActiveInstanceBlur() {
+    // noop
+  },
+
+  preparePortalMount() {
+    // noop
+  },
+};
+
 export default ReactReconciler({
   supportsHydration: false,
   supportsPersistence: false,
   supportsMutation: true,
   isPrimaryRenderer: false,
+
+  ...fix,
 
   createInstance(type: string, props: any) {
     return new Node(type, props);
@@ -32,7 +92,7 @@ export default ReactReconciler({
 
   appendChild,
   appendInitialChild: appendChild,
-  appendChildToContainer(container: Container, instance) {
+  appendChildToContainer(container: Container, instance: any) {
     if (instance.type !== 'Root') {
       throw new Error(`wrong root instance type: ${instance.type}`);
     }
@@ -73,7 +133,11 @@ export default ReactReconciler({
     instance.props = newProps;
   },
 
-  prepareForCommit: noop,
+  clearContainer() {},
+
+  prepareForCommit() {
+    return null;
+  },
 
   resetAfterCommit(container: Container) {
     container.draw(true);
