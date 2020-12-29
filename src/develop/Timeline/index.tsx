@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, Image, View, RevasScrollEvent, AnimatedValue, ListView, withContext } from '../../revas';
-import data from './data';
+import { DATA } from './data';
 import Back from '../common/back';
 
 interface ItemProps {
@@ -52,7 +52,7 @@ export default class TimelineApp extends React.Component<any> {
     return (
       <React.Fragment>
         <ListView
-          data={data}
+          data={DATA}
           paging
           renderItem={this.renderItem}
           itemHeight={this.WINDOW_HEIGHT}

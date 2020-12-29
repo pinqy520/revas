@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, Image, ScrollView, Touchable, LinearGradient } from '../../revas';
 import NavBar from './Navbar';
 import Panel, { PanelItem } from './Panel';
+import logo from './logo.png';
 
 export default function Components(props: any) {
   return (
@@ -33,10 +34,10 @@ export default function Components(props: any) {
         <Panel label="Image" cache>
           <View style={styles.rowLeft}>
             <PanelItem label="contain">
-              <Image style={[styles.view.base, styles.image.contain]} src={require('./logo.png')} />
+              <Image style={[styles.view.base, styles.image.contain]} src={logo} />
             </PanelItem>
             <PanelItem label="cover">
-              <Image style={styles.view.base} src={require('./logo.png')} />
+              <Image style={styles.view.base} src={logo} />
             </PanelItem>
           </View>
         </Panel>

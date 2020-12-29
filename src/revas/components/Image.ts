@@ -9,40 +9,21 @@ export type ImageViewProps = {
 
 const DEFAULT_STYLE = { path: true };
 
-export default class ImageView extends React.Component<ImageViewProps> {
-  state = {
-    ready: false,
-  };
-  componentDidMount() {
-    if (this.props.src) {
-      imageLoader.get(this.props.src, this.onReady);
+export default function ImageView(props: ImageViewProps) {
+  const { src, style } = props;
+  const [ready, setReady] = React.useState(false);
+  React.useEffect(() => {
+    if (src) {
+      const onReady = () => setReady(true);
+      imageLoader.get(src, onReady);
+      return () => imageLoader.remove(src, onReady);
     }
-  }
-  componentDidUpdate(prev: any) {
-    if (prev.src !== this.props.src) {
-      this.setState({ ready: false });
-      if (prev.src) {
-        imageLoader.remove(prev.src, this.onReady);
-      }
-      if (this.props.src) {
-        imageLoader.get(this.props.src, this.onReady);
-      }
-    }
-  }
-  componentWillUnmount() {
-    if (this.props.src) {
-      imageLoader.remove(this.props.src, this.onReady);
-    }
-  }
-  onReady = () => {
-    this.setState({ ready: true });
-  };
-  render() {
-    return React.createElement('Image', {
-      customDrawer: this.state.ready ? drawImage : void 0,
-      ...this.props,
-      style: [DEFAULT_STYLE, this.props.style],
-      $ready: this.state.ready,
-    });
-  }
+  }, [src]);
+
+  return React.createElement('Image', {
+    customDrawer: ready ? drawImage : void 0,
+    ...props,
+    style: [DEFAULT_STYLE, style],
+    $ready: ready,
+  });
 }

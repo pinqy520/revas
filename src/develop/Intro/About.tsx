@@ -2,13 +2,14 @@ import React from 'react';
 import { Text, View, Image, Touchable } from '../../revas';
 import Interactable from './Interactable';
 import Back from '../common/back';
+import logo from './logo.png';
 
 export default function About(props: any) {
   return (
     <View style={styles.container}>
       <Interactable style={styles.card} cache>
         <Text style={styles.title}>Drag and Move! </Text>
-        <Image style={styles.logo} src={require('./logo.png')} />
+        <Image style={styles.logo} src={logo} />
         <Text style={styles.text} numberOfLines={2}>
           Revas让你可以用React和CSS，在Canvas上绘制高性能交互界面，基于React v16和Yoga Layout～{'🎉'}
         </Text>

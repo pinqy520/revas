@@ -13,6 +13,73 @@ export interface RevasScrollEvent {
   tid: string;
 }
 
+class Handler {
+  offset = 0;
+  velocity = 0;
+  max = -1;
+  paging = 0;
+
+  private _last = -1;
+
+  capture(value: number) {
+    if (this._last < 0) {
+      this._last = value;
+    }
+  }
+
+  onMove(value: number, duration: number) {
+    if (this._last >= 0 && duration > 0) {
+      const move = this._last - value;
+      this.velocity = move / duration;
+      this._last = value;
+      this.change(move);
+    }
+  }
+  onEnd() {
+    if (this._last >= 0) {
+      this._last = -1;
+    }
+  }
+
+  afterEnd(duration: number) {
+    if (this._last < 0) {
+      const absv = Math.abs(this.velocity);
+      if (this.paging > 0 && absv <= 0.5 && this.offset < this.max) {
+        // start reset to paging
+        const distance = Math.round(this.offset / this.paging + this.velocity) * this.paging - this.offset;
+        this.velocity = clamp(distance / 2000 + friction(this.velocity, duration, 0.01), -0.5, 0.5);
+        if (Math.abs(distance) > 0.5 || absv > 0.05) {
+          const move = this.velocity * duration;
+          this.change(move);
+          return true;
+        } else {
+          // end to paging
+          this.change(distance);
+        }
+      } else if (absv > 0.05) {
+        // scroll for free
+        this.velocity = friction(this.velocity, duration, 0.002);
+        const move = this.velocity * duration;
+        this.change(move);
+        return true;
+      } else {
+        this.velocity = 0;
+      }
+    }
+    return false;
+  }
+
+  change(move: number) {
+    const _offset = clamp(this.offset + move, 0, this.max > 0 ? this.max : 0);
+    // check validate
+    if (_offset !== this.offset) {
+      this.offset = _offset;
+    } else if (this._last < 0) {
+      this.velocity = 0;
+    }
+  }
+}
+
 export default class Scroller {
   private _timestamp = 0;
   private _x = new Handler();
@@ -145,73 +212,6 @@ export default class Scroller {
     this._timestamp = Date.now();
     this._x.onEnd();
     this._y.onEnd();
-  }
-}
-
-class Handler {
-  offset = 0;
-  velocity = 0;
-  max = -1;
-  paging = 0;
-
-  private _last = -1;
-
-  capture(value: number) {
-    if (this._last < 0) {
-      this._last = value;
-    }
-  }
-
-  onMove(value: number, duration: number) {
-    if (this._last >= 0 && duration > 0) {
-      const move = this._last - value;
-      this.velocity = move / duration;
-      this._last = value;
-      this.change(move);
-    }
-  }
-  onEnd() {
-    if (this._last >= 0) {
-      this._last = -1;
-    }
-  }
-
-  afterEnd(duration: number) {
-    if (this._last < 0) {
-      const absv = Math.abs(this.velocity);
-      if (this.paging > 0 && absv <= 0.5 && this.offset < this.max) {
-        // start reset to paging
-        const distance = Math.round(this.offset / this.paging + this.velocity) * this.paging - this.offset;
-        this.velocity = clamp(distance / 2000 + friction(this.velocity, duration, 0.01), -0.5, 0.5);
-        if (Math.abs(distance) > 0.5 || absv > 0.05) {
-          const move = this.velocity * duration;
-          this.change(move);
-          return true;
-        } else {
-          // end to paging
-          this.change(distance);
-        }
-      } else if (absv > 0.05) {
-        // scroll for free
-        this.velocity = friction(this.velocity, duration, 0.002);
-        const move = this.velocity * duration;
-        this.change(move);
-        return true;
-      } else {
-        this.velocity = 0;
-      }
-    }
-    return false;
-  }
-
-  change(move: number) {
-    const _offset = clamp(this.offset + move, 0, this.max > 0 ? this.max : 0);
-    // check validate
-    if (_offset !== this.offset) {
-      this.offset = _offset;
-    } else if (this._last < 0) {
-      this.velocity = 0;
-    }
   }
 }
 

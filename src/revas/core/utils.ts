@@ -75,8 +75,8 @@ export function getWords(str: string): readonly string[] {
   return str.match(WORD_RANGE) || EMPTY_ARRAY;
 }
 
-export function setShadow(canvas: RevasCanvas, color: string, x: number, y: number, blur: number) {
-  if (color) {
+export function setShadow(canvas: RevasCanvas, color: string, x = 0, y = 0, blur = 0) {
+  if (color && (x || y || blur)) {
     const { context: ctx } = canvas;
     const { shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY } = ctx;
     ctx.shadowBlur = blur;

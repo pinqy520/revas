@@ -11,14 +11,12 @@ export type LinearGradientProps = {
 
 const DEFAULT_STYLE = { path: true };
 
-export default class LinearGradient extends React.Component<LinearGradientProps> {
-  render() {
-    return React.createElement('LinearGradient', {
-      ...this.props,
-      style: [DEFAULT_STYLE, this.props.style],
-      customDrawer: drawGradient,
-    });
-  }
+export default function LinearGradient(props: LinearGradientProps) {
+  return React.createElement('LinearGradient', {
+    ...props,
+    style: [DEFAULT_STYLE, props.style],
+    customDrawer: drawGradient,
+  });
 }
 
 function drawGradient(canvas: RevasCanvas, node: Node) {

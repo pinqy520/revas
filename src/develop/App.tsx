@@ -68,6 +68,7 @@ class Card extends React.Component<CardProps> {
   animating?: AnimatedTiming;
 
   style = [
+    // eslint-disable-next-line
     styles.card,
     {
       height: this.props.height,

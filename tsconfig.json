@@ -20,8 +20,9 @@
     "declarationDir": "dist/types",
     "outDir": "dist/raw",
     "noEmit": true,
-    "jsx": "react",
-    "allowJs": true
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

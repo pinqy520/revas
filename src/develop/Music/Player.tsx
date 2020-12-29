@@ -215,16 +215,20 @@ export default class Player extends React.Component<PlayerProps> {
             <Text style={styles.singer}>{music.singer}</Text>
             <View style={styles.controls}>
               <Touchable onPress={this.toggle} style={styles.btn}>
-                <Image style={styles.btnS} src={require('./assets/btn-mini.png')} />
+                <Image style={styles.btnS} src={require('./assets/btn-mini.png').default} />
               </Touchable>
               <Touchable onPress={this.onPlay} style={styles.btn}>
                 <Image
                   style={styles.play}
-                  src={this.state.playing ? require('./assets/btn-pause.png') : require('./assets/btn-play.png')}
+                  src={
+                    this.state.playing ?
+                      require('./assets/btn-pause.png').default :
+                      require('./assets/btn-play.png').default
+                  }
                 />
               </Touchable>
               <Touchable onPress={noop} style={styles.btn}>
-                <Image style={styles.btnS} src={require('./assets/btn-loop.png')} />
+                <Image style={styles.btnS} src={require('./assets/btn-loop.png').default} />
               </Touchable>
             </View>
           </View>

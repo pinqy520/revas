@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Text, Image, Touchable } from '../../revas';
+import navback from './navback.png';
 
 export interface NavBarProps {
   title: string;
@@ -11,7 +12,7 @@ export default function NavBar(props: NavBarProps) {
     <View style={styles.container}>
       <Text style={styles.title}>{props.title}</Text>
       <Touchable style={styles.back} onPress={props.router.pop}>
-        <Image style={styles.icon} src={require('./navback.png')} />
+        <Image style={styles.icon} src={navback} />
       </Touchable>
     </View>
   );

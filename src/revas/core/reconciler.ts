@@ -16,17 +16,13 @@ function appendChild(parent: Node, child: Node) {
   child.parent = parent;
 }
 
-const fix: any = {
+const unused: any = {
   unhideTextInstance() {
     // noop
   },
 
   mountEventComponent() {
     // noop
-  },
-
-  clearContainer() {
-    // TODO implement this
   },
 
   getFundamentalComponentInstance() {
@@ -80,7 +76,7 @@ export default ReactReconciler({
   supportsMutation: true,
   isPrimaryRenderer: false,
 
-  ...fix,
+  ...unused,
 
   createInstance(type: string, props: any) {
     return new Node(type, props);
@@ -113,8 +109,13 @@ export default ReactReconciler({
     parent.children.splice(beforeIndex, 0, child);
     child.parent = parent;
   },
+
   insertInContainerBefore() {
     throw new Error("shouldn't be here: insertInContainerBefore");
+  },
+
+  clearContainer() {
+    // TODO implement this
   },
 
   finalizeInitialChildren() {
@@ -132,8 +133,6 @@ export default ReactReconciler({
   commitUpdate(instance, updatePayload, type, oldProps, newProps) {
     instance.props = newProps;
   },
-
-  clearContainer() {},
 
   prepareForCommit() {
     return null;
