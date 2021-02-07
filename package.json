@@ -63,5 +63,8 @@
       "not dead",
       "not op_mini all"
     ]
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }

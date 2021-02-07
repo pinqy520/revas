@@ -1,7 +1,12 @@
-import ReactReconciler from 'react-reconciler';
+import ReactReconciler, { DevToolsConfig } from 'react-reconciler';
 import { Node } from './Node';
 import { noop, now } from './utils';
 import { Container } from './Container';
+
+import pkg from '../../../package.json';
+
+const { version, name } = pkg;
+const isDev = process.env.NODE_ENV !== 'production';
 
 function checkAndRemove(parent: Node, child: Node) {
   const index = parent.children.indexOf(child);
@@ -70,7 +75,7 @@ const unused: any = {
   },
 };
 
-export default ReactReconciler({
+const RevasReconciler = ReactReconciler({
   supportsHydration: false,
   supportsPersistence: false,
   supportsMutation: true,
@@ -165,3 +170,20 @@ export default ReactReconciler({
   noTimeout: -1,
   now,
 });
+
+const devToolsConfig: DevToolsConfig<any, any> = {
+  bundleType: isDev ? 1 : 0,
+  version,
+  rendererPackageName: name,
+
+  // could not get this typed.
+  // The above `DevToolsConfig` is a generic expecting an `Instance`
+  // and `TextInstance` type, but I didn't see these declared anywhere
+
+  // @ts-ignore
+  findHostInstanceByFiber: RevasReconciler.findHostInstance,
+};
+
+RevasReconciler.injectIntoDevTools(devToolsConfig);
+
+export default RevasReconciler;
