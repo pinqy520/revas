@@ -1,11 +1,9 @@
 import ReactReconciler, { DevToolsConfig } from 'react-reconciler';
+import { version } from 'react';
 import { Node } from './Node';
 import { noop, now } from './utils';
 import { Container } from './Container';
 
-import pkg from '../../../package.json';
-
-const { version, name } = pkg;
 const isDev = process.env.NODE_ENV !== 'production';
 
 function checkAndRemove(parent: Node, child: Node) {
@@ -171,10 +169,10 @@ const RevasReconciler = ReactReconciler({
   now,
 });
 
-const devToolsConfig: DevToolsConfig<any, any> = {
+RevasReconciler.injectIntoDevTools({
   bundleType: isDev ? 1 : 0,
-  version,
-  rendererPackageName: name,
+  version: version,
+  rendererPackageName: 'revas-react',
 
   // could not get this typed.
   // The above `DevToolsConfig` is a generic expecting an `Instance`
@@ -182,8 +180,6 @@ const devToolsConfig: DevToolsConfig<any, any> = {
 
   // @ts-ignore
   findHostInstanceByFiber: RevasReconciler.findHostInstance,
-};
-
-RevasReconciler.injectIntoDevTools(devToolsConfig);
+});
 
 export default RevasReconciler;
