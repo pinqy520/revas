@@ -10,7 +10,7 @@ import {
   noop,
   LinearGradient,
   AnimatedTiming,
-  withContext
+  withContext,
 } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER, CENTER_AREA } from './styles';
 export interface PlayerProps {
@@ -87,18 +87,25 @@ export default class Player extends React.Component<PlayerProps> {
 
   audio = new Audio(this.props.music.audio);
 
-  rotateHandler?: AnimatedTiming;
+  rotateHandler: AnimatedTiming | undefined;
 
   switchHandler?: AnimatedTiming;
 
   _coverStyle = {
     translateX: this.transaction.interpolate(
       [0, 1, 2],
-      [(this.WINDOW_WIDTH - this.SIZE) / 2, this.WINDOW_WIDTH - this.SIZE / 2, this.WINDOW_WIDTH + 30]
+      [
+        (this.WINDOW_WIDTH - this.SIZE) / 2,
+        this.WINDOW_WIDTH - this.SIZE / 2,
+        this.WINDOW_WIDTH + 30,
+      ]
     ),
     translateY: this.transaction.interpolate(
       [0, 1],
-      [this.WINDOW_HEIGHT / 1.8 - this.SIZE, (this.WINDOW_HEIGHT - this.SIZE) / 2]
+      [
+        this.WINDOW_HEIGHT / 1.8 - this.SIZE,
+        (this.WINDOW_HEIGHT - this.SIZE) / 2,
+      ]
     ),
     rotate: new AnimatedValue(0),
     animated: true,
@@ -215,34 +222,47 @@ export default class Player extends React.Component<PlayerProps> {
             <Text style={styles.singer}>{music.singer}</Text>
             <View style={styles.controls}>
               <Touchable onPress={this.toggle} style={styles.btn}>
-                <Image style={styles.btnS} src={require('./assets/btn-mini.png').default} />
+                <Image
+                  style={styles.btnS}
+                  src={require('./assets/btn-mini.png').default}
+                />
               </Touchable>
               <Touchable onPress={this.onPlay} style={styles.btn}>
                 <Image
                   style={styles.play}
                   src={
-                    this.state.playing ?
-                      require('./assets/btn-pause.png').default :
-                      require('./assets/btn-play.png').default
+                    this.state.playing
+                      ? require('./assets/btn-pause.png').default
+                      : require('./assets/btn-play.png').default
                   }
                 />
               </Touchable>
               <Touchable onPress={noop} style={styles.btn}>
-                <Image style={styles.btnS} src={require('./assets/btn-loop.png').default} />
+                <Image
+                  style={styles.btnS}
+                  src={require('./assets/btn-loop.png').default}
+                />
               </Touchable>
             </View>
           </View>
         </LinearGradient>
       );
     }
+    return null;
   }
 
   render() {
     return (
       <React.Fragment>
         {this.renderMain()}
-        <View style={[this.STYLES.cover, this._coverStyle]} cache={this.state.current.name}>
-          <Image style={this.STYLES.coverImage} src={this.state.current.cover} />
+        <View
+          style={[this.STYLES.cover, this._coverStyle]}
+          cache={this.state.current.name}
+        >
+          <Image
+            style={this.STYLES.coverImage}
+            src={this.state.current.cover}
+          />
           <Touchable style={ABS_FULL} onPress={this.toggle} />
         </View>
       </React.Fragment>

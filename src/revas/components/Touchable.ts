@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { BaseProps, RevasTouchEvent, RevasTouch } from '../core/Node';
+import { Component, createElement } from 'react';
+import type { BaseProps, RevasTouchEvent, RevasTouch } from '../core/Node';
 import { AnimatedValue } from '../core/Animated';
 
 export type TouchableProps = {
@@ -9,14 +9,14 @@ export type TouchableProps = {
   activeOpacity?: number;
 } & BaseProps;
 
-export default class Touchable extends React.Component<TouchableProps> {
+export default class Touchable extends Component<TouchableProps> {
   static defaultProps = {
-    activeOpacity: 0.7
+    activeOpacity: 0.7,
   };
 
   _style = {
     opacity: new AnimatedValue(1),
-    animated: true
+    animated: true,
   };
 
   private _start?: RevasTouch;
@@ -31,8 +31,10 @@ export default class Touchable extends React.Component<TouchableProps> {
 
   private _onTouchEnd = (e: RevasTouchEvent) => {
     if (this._start && e.touches[this._tid]) {
-      if (Math.abs(this._start.x - e.touches[this._tid].x) < 3 &&
-        Math.abs(this._start.y - e.touches[this._tid].y) < 3) {
+      if (
+        Math.abs(this._start.x - e.touches[this._tid].x) < 3 &&
+        Math.abs(this._start.y - e.touches[this._tid].y) < 3
+      ) {
         this.props.onPress && this.props.onPress();
       }
     }
@@ -41,14 +43,11 @@ export default class Touchable extends React.Component<TouchableProps> {
   };
 
   render() {
-    return React.createElement('Touchable', {
+    return createElement('Touchable', {
       onTouchStart: this._onTouchStart,
       onTouchEnd: this._onTouchEnd,
       ...this.props,
-      style: [
-        this.props.style,
-        this._style
-      ]
+      style: [this.props.style, this._style],
     });
   }
 }

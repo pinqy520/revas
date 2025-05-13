@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { View, Text, ScrollView } from '../../revas';
 import NavBar from './Navbar';
 import Panel, { PanelItem } from './Panel';
@@ -13,7 +12,10 @@ export default function Style(props: any) {
             <Box text="width: 200; height: 55" style={styles.box.wh} />
             <Box text="backgroundColor: yellow" style={styles.box.yellow} />
             <Box text="borderRadius: 10" style={styles.box.radius} />
-            <Box text="shadowOffsetX|Y\shadowColor\shadowBlur" style={styles.box.shadow} />
+            <Box
+              text="shadowOffsetX|Y\shadowColor\shadowBlur"
+              style={styles.box.shadow}
+            />
             <Box text="borderWidth\borderColor" style={styles.box.border} />
           </Panel>
           <Panel label="Layout">
@@ -105,7 +107,13 @@ export default function Style(props: any) {
           <Panel label="AlignItems & AlignSelf">
             <View style={styles.row}>
               <PanelItem label="center" style={styles.container}>
-                <View style={[styles.flex.out, styles.flex.justifyAround, styles.flex.alignCenter]}>
+                <View
+                  style={[
+                    styles.flex.out,
+                    styles.flex.justifyAround,
+                    styles.flex.alignCenter,
+                  ]}
+                >
                   <View style={styles.flex.in}>
                     <Text style={styles.flex.text}>1</Text>
                   </View>
@@ -118,7 +126,13 @@ export default function Style(props: any) {
                 </View>
               </PanelItem>
               <PanelItem label="flex-start" style={styles.container}>
-                <View style={[styles.flex.out, styles.flex.justifyAround, styles.flex.alignStart]}>
+                <View
+                  style={[
+                    styles.flex.out,
+                    styles.flex.justifyAround,
+                    styles.flex.alignStart,
+                  ]}
+                >
                   <View style={styles.flex.in}>
                     <Text style={styles.flex.text}>1</Text>
                   </View>
@@ -133,7 +147,13 @@ export default function Style(props: any) {
             </View>
             <View style={styles.row}>
               <PanelItem label="flex-end" style={styles.container}>
-                <View style={[styles.flex.out, styles.flex.justifyAround, styles.flex.alignEnd]}>
+                <View
+                  style={[
+                    styles.flex.out,
+                    styles.flex.justifyAround,
+                    styles.flex.alignEnd,
+                  ]}
+                >
                   <View style={styles.flex.in}>
                     <Text style={styles.flex.text}>1</Text>
                   </View>

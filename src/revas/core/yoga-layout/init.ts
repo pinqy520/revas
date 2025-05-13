@@ -1,7 +1,7 @@
-import Yoga, { YogaWasm } from 'yoga-layout-wasm/asm';
+import Yoga, { type YogaWasm } from 'yoga-layout-wasm/asm';
 
 export const yoga: YogaWasm = {} as any;
 
-export const promise = Yoga.init().then(y => {
+export const promise = Yoga.init().then((y) => {
   Object.assign(yoga, y);
 });

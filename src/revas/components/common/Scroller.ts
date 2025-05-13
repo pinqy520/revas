@@ -1,4 +1,4 @@
-import { RevasTouchEvent } from '../../core/Node';
+import type { RevasTouchEvent } from '../../core/Node';
 import { clamp, noop } from '../../core/utils';
 
 export type RevasScrollEventType = 'start' | 'scroll' | 'end' | 'none';
@@ -46,8 +46,14 @@ class Handler {
       const absv = Math.abs(this.velocity);
       if (this.paging > 0 && absv <= 0.5 && this.offset < this.max) {
         // start reset to paging
-        const distance = Math.round(this.offset / this.paging + this.velocity) * this.paging - this.offset;
-        this.velocity = clamp(distance / 2000 + friction(this.velocity, duration, 0.01), -0.5, 0.5);
+        const distance =
+          Math.round(this.offset / this.paging + this.velocity) * this.paging -
+          this.offset;
+        this.velocity = clamp(
+          distance / 2000 + friction(this.velocity, duration, 0.01),
+          -0.5,
+          0.5
+        );
         if (Math.abs(distance) > 0.5 || absv > 0.05) {
           const move = this.velocity * duration;
           this.change(move);
@@ -87,7 +93,7 @@ export default class Scroller {
   private _tid = '';
   private _timer: any;
 
-  horizontal?: boolean = false;
+  public horizontal: boolean | undefined = false;
 
   constructor(private listener: (e: RevasScrollEvent) => any) {}
 
@@ -166,7 +172,9 @@ export default class Scroller {
       const { x, y } = e.touches[this._tid];
       const duration = e.timestamp - this._timestamp;
       this._timestamp = e.timestamp;
-      this.horizontal ? this._x.onMove(x, duration) : this._y.onMove(y, duration);
+      this.horizontal
+        ? this._x.onMove(x, duration)
+        : this._y.onMove(y, duration);
       this.emit('scroll');
       this._sign(e);
     }
@@ -186,7 +194,9 @@ export default class Scroller {
     const timestamp = Date.now();
     const duration = timestamp - this._timestamp;
     this._timestamp = timestamp;
-    if (this.horizontal ? this._x.afterEnd(duration) : this._y.afterEnd(duration)) {
+    if (
+      this.horizontal ? this._x.afterEnd(duration) : this._y.afterEnd(duration)
+    ) {
       this.emit('scroll');
       this._timer = requestAnimationFrame(this.afterEnd);
     } else {

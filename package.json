@@ -10,12 +10,11 @@
   "module": "dist/revas.es.js",
   "typings": "dist/types/revas/index.d.ts",
   "dependencies": {
-    "@types/react-reconciler": "^0.18.0",
-    "bezier-easing": "^2.1.0",
+    "bezier-easing": "latest",
     "css-layout": "^1.1.1",
-    "react-reconciler": "^0.26.1",
+    "react-reconciler": "^0.26.2",
     "tslib": "^2.0.0",
-    "yoga-layout-wasm": "^1.9.3-alpha.7"
+    "yoga-layout-wasm": "latest"
   },
   "keywords": [
     "react",
@@ -27,30 +26,28 @@
     "react": "^17.0.0"
   },
   "devDependencies": {
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-reconciler": "^0.26.7",
     "react": "^17.0.0",
-    "react-scripts": "4.0.1",
     "rimraf": "^3.0.2",
-    "rollup": "^1.31.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-sourcemaps": "^0.5.0",
-    "rollup-plugin-typescript2": "^0.26.0",
-    "typescript": "^4.0.0"
+    "vite": "latest",
+    "@vitejs/plugin-react-swc": "latest",
+    "rollup": "latest",
+    "@rollup/plugin-commonjs": "latest",
+    "@rollup/plugin-json": "latest",
+    "@rollup/plugin-node-resolve": "latest",
+    "@rollup/plugin-typescript": "latest",
+    "typescript": "latest"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "vite",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "build:pwa": "rimraf build && react-scripts build",
+    "build": "rollup -c rollup.config.mjs",
+    "build:pwa": "rimraf build && vite build",
     "test": "react-scripts test",
     "prepare": "npm run build",
     "postpublish": "git push"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [

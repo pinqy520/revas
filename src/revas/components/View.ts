@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { NodeProps } from '../core/Node'
+import { createElement } from 'react';
+import type { NodeProps } from '../core/Node';
 
 export default function View(props: NodeProps) {
-  return React.createElement('View', props)
+  return createElement('View', props);
 }

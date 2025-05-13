@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { Text, Image, View, RevasScrollEvent, AnimatedValue, ListView, withContext } from '../../revas';
+import {
+  Text,
+  Image,
+  View,
+  type RevasScrollEvent,
+  AnimatedValue,
+  ListView,
+  withContext,
+} from '../../revas';
 import { DATA } from './data';
 import Back from '../common/back';
 
@@ -12,7 +20,11 @@ interface ItemProps {
 }
 
 class Item extends React.Component<ItemProps> {
-  style = createItemTextStyle(this.props.index, this.props.animated, this.props.height);
+  style = createItemTextStyle(
+    this.props.index,
+    this.props.animated,
+    this.props.height
+  );
   render() {
     const { item, index, lines } = this.props;
     return (
@@ -43,7 +55,13 @@ export default class TimelineApp extends React.Component<any> {
   };
 
   renderItem = (item: any, index: number) => (
-    <Item index={index} item={item} animated={this.animated} lines={this.MAX_LINES} height={this.WINDOW_HEIGHT} />
+    <Item
+      index={index}
+      item={item}
+      animated={this.animated}
+      lines={this.MAX_LINES}
+      height={this.WINDOW_HEIGHT}
+    />
   );
 
   getItemHeight = () => this.WINDOW_HEIGHT;
@@ -65,10 +83,20 @@ export default class TimelineApp extends React.Component<any> {
   }
 }
 
-function createItemTextStyle(index: number, animated: AnimatedValue, height: number) {
+function createItemTextStyle(
+  index: number,
+  animated: AnimatedValue,
+  height: number
+) {
   const offset = (index - 1) * height;
-  const translateY = animated.interpolate([offset, offset + height], [-height / 2, 0]);
-  const opacity = animated.interpolate([offset + height / 2, offset + height, offset + 2 * height], [0, 1, 0]);
+  const translateY = animated.interpolate(
+    [offset, offset + height],
+    [-height / 2, 0]
+  );
+  const opacity = animated.interpolate(
+    [offset + height / 2, offset + height, offset + 2 * height],
+    [0, 1, 0]
+  );
   return {
     item: {
       height,
@@ -78,7 +106,13 @@ function createItemTextStyle(index: number, animated: AnimatedValue, height: num
       height: height / 2,
       zIndex: 1,
     },
-    text: { margin: 20, translateY, opacity, animated: true, height: height / 2 },
+    text: {
+      margin: 20,
+      translateY,
+      opacity,
+      animated: true,
+      height: height / 2,
+    },
   };
 }
 

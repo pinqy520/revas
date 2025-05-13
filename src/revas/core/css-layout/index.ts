@@ -1,6 +1,6 @@
 import { Node, Frame } from '../Node';
 import { getMergedStyleFromNode } from '../utils';
-import { AppContextType } from '../../components/Context';
+import type { AppContextType } from '../../components/Context';
 
 const computeLayout = require('css-layout');
 
@@ -31,7 +31,10 @@ function layout(yoga: YogaNode, x: number, y: number) {
 
 export function updateLayout(root: Node<AppContextType>) {
   const yogas = createYoga(root);
-  yogas.style = { width: root.props.clientWidth, height: root.props.clientHeight };
+  yogas.style = {
+    width: root.props.clientWidth,
+    height: root.props.clientHeight,
+  };
   return () => {
     computeLayout(yogas);
     layout(yogas, 0, 0);

@@ -1,4 +1,4 @@
-import ReactReconciler, { DevToolsConfig } from 'react-reconciler';
+import ReactReconciler from 'react-reconciler';
 import { version } from 'react';
 import { Node } from './Node';
 import { noop, now } from './utils';
@@ -133,7 +133,7 @@ const RevasReconciler = ReactReconciler({
     return true;
   },
 
-  commitUpdate(instance, updatePayload, type, oldProps, newProps) {
+  commitUpdate(instance, _updatePayload, _type, _oldProps, newProps) {
     instance.props = newProps;
   },
 

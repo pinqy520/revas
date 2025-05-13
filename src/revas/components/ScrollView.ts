@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { NodeProps, Frame } from '../core/Node';
-import Scroller, { RevasScrollEvent } from './common/Scroller';
+import { Component, createElement } from 'react';
+import { type NodeProps, Frame } from '../core/Node';
+import Scroller, { type RevasScrollEvent } from './common/Scroller';
 import { AnimatedValue } from '../core/Animated';
 
 export type ScrollViewOffset = { x?: number; y?: number };
@@ -14,7 +14,7 @@ export type ScrollViewProps = {
   offset?: ScrollViewOffset;
 } & NodeProps;
 
-export default class ScrollView extends React.Component<ScrollViewProps> {
+export default class ScrollView extends Component<ScrollViewProps> {
   private _height = -1;
   private _contentHeight = -1;
   private _width = -1;
@@ -27,11 +27,11 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
   };
   private _offset: ScrollViewOffset = { x: 0, y: 0 };
 
-  private _scroller = new Scroller(e => {
+  private _scroller = new Scroller((e) => {
     const { x = 0, y = 0 } = this._offset;
-    this.props.horizontal ?
-      this._innerStyle.translateX.setValue(x - e.x) :
-      this._innerStyle.translateY.setValue(y - e.y);
+    this.props.horizontal
+      ? this._innerStyle.translateX.setValue(x - e.x)
+      : this._innerStyle.translateY.setValue(y - e.y);
     switch (e.type) {
       case 'scroll':
         return this.props.onScroll && this.props.onScroll(e);
@@ -53,9 +53,11 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
       this._checkLayout();
       if (this.props.paging) {
         if (this.props.horizontal) {
-          this._scroller.pagingX = this.props.paging === true ? frame.width : this.props.paging;
+          this._scroller.pagingX =
+            this.props.paging === true ? frame.width : this.props.paging;
         } else {
-          this._scroller.pagingY = this.props.paging === true ? frame.height : this.props.paging;
+          this._scroller.pagingY =
+            this.props.paging === true ? frame.height : this.props.paging;
         }
       }
     }
@@ -76,7 +78,10 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
   private _checkLayout = () => {
     const maxX = this._contentWidth - this._width;
     const maxY = this._contentHeight - this._height;
-    if ((maxX > 0 && maxX !== this._scroller.maxX) || (maxY > 0 && maxY !== this._scroller.maxY)) {
+    if (
+      (maxX > 0 && maxX !== this._scroller.maxX) ||
+      (maxY > 0 && maxY !== this._scroller.maxY)
+    ) {
       this._scroller.maxX = maxX;
       this._scroller.maxY = maxY;
       this._scroller.emit('none');
@@ -93,10 +98,10 @@ export default class ScrollView extends React.Component<ScrollViewProps> {
       this._scroller.emit('none');
     }
 
-    return React.createElement(
+    return createElement(
       'Scrollable',
       { ...others, onLayout: this._onLayout },
-      React.createElement('ScrollContent', {
+      createElement('ScrollContent', {
         onTouchStart: this._scroller.touchStart,
         onTouchMove: this._scroller.touchMove,
         onTouchEnd: this._scroller.touchEnd,

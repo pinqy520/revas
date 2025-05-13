@@ -2,7 +2,7 @@ import { Component, createElement } from 'react';
 import renderer from '../core/reconciler';
 import { noop } from '../core/utils';
 import { Container } from '../core/Container';
-import { RevasTouch, RevasTouchEvent } from '../core/Node';
+import type { RevasTouch, RevasTouchEvent } from '../core/Node';
 import { RevasCanvas } from '../core/Canvas';
 import { clearCache } from '../core/offscreen';
 import { Root } from '../components/Context';
@@ -47,7 +47,11 @@ function createCanvas(parent: HTMLElement, scale: number) {
   return canvas;
 }
 
-function createRoot(app: React.ReactNode, dom: HTMLElement, canvas: RevasCanvas) {
+function createRoot(
+  app: React.ReactNode,
+  dom: HTMLElement,
+  canvas: RevasCanvas
+) {
   return createElement(
     Root,
     {
@@ -73,16 +77,39 @@ function initTouch(dom: HTMLElement, handler: (e: any) => any) {
   };
 }
 
-export function render(app: React.ReactNode, parent: HTMLElement, parentComponent?: Component<any>, callback = noop) {
+export function render(
+  app: React.ReactNode,
+  parent: HTMLElement,
+  parentComponent?: Component<any>,
+  callback = noop
+) {
   const scale = window.devicePixelRatio;
   const dom = createCanvas(parent, scale);
   const canvas = new RevasCanvas(dom.getContext('2d')!);
   const container = new Container();
-  const destroyTouch = initTouch(dom, e => container.handleTouch(createRevasTouchEvent(e)));
-  const fiber = renderer.createContainer(container, false, false);
+  const destroyTouch = initTouch(dom, (e) =>
+    container.handleTouch(createRevasTouchEvent(e))
+  );
+  const fiber = renderer.createContainer(
+    container, // 1. containerInfo
+    0, // 2. tag (LegacyRoot)
+    null, // 3. hydrationCallbacks
+    false, // 4. isStrictMode
+    null, // 5. concurrentUpdatesByDefaultOverride
+    '', // 6. identifierPrefix
+    (error: unknown) => {
+      console.error('Revas Recoverable Error:', error);
+    }, // 7. onRecoverableError
+    null // 8. transitionCallbacks
+  );
 
   canvas.transform.scale(scale, scale);
-  renderer.updateContainer(createRoot(app, dom, canvas), fiber, parentComponent, callback);
+  renderer.updateContainer(
+    createRoot(app, dom, canvas),
+    fiber,
+    parentComponent,
+    callback
+  );
 
   return {
     get $() {
@@ -94,7 +121,12 @@ export function render(app: React.ReactNode, parent: HTMLElement, parentComponen
       clearCache();
 
       canvas.transform.scale(scale, scale);
-      renderer.updateContainer(createRoot(next, dom, canvas), fiber, parentComponent, callback);
+      renderer.updateContainer(
+        createRoot(next, dom, canvas),
+        fiber,
+        parentComponent,
+        callback
+      );
     },
     unmount(callback = noop) {
       renderer.updateContainer(null, fiber, null, callback);

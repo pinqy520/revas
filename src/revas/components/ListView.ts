@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { RevasScrollEvent } from './common/Scroller';
-import ScrollView, { ScrollViewProps } from './ScrollView';
+import { Component, createElement, Fragment } from 'react';
+import type { RevasScrollEvent } from './common/Scroller';
+import ScrollView, { type ScrollViewProps } from './ScrollView';
 import { Frame } from '../core/Node';
 
 export type ListViewProps<T = any> = {
@@ -9,7 +9,7 @@ export type ListViewProps<T = any> = {
   itemHeight: number;
 } & ScrollViewProps;
 
-export default class ListView extends React.Component<ListViewProps<any>> {
+export default class ListView extends Component<ListViewProps<any>> {
   state = {
     start: 0,
     end: 1,
@@ -48,14 +48,18 @@ export default class ListView extends React.Component<ListViewProps<any>> {
   renderItem = (item: any, i: number) => {
     const { data, renderItem } = this.props;
     const index = i + this.state.start;
-    return React.createElement(React.Fragment, { key: index }, renderItem(item, index, data));
+    return createElement(
+      Fragment,
+      { key: index },
+      renderItem(item, index, data)
+    );
   };
 
   render() {
     const { data, itemHeight } = this.props;
     const { start, end } = this.state;
     // console.log(start, end, this._height);
-    return React.createElement(
+    return createElement(
       ScrollView,
       {
         ...this.props,

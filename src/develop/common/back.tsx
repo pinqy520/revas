@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Touchable, Image } from '../../revas';
 import backIcon from '../back.png';
 

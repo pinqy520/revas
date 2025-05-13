@@ -5,12 +5,12 @@ import {
   LinearGradient,
   Image,
   ScrollView,
-  RevasScrollEvent,
+  type RevasScrollEvent,
   AnimatedValue,
-  withContext
+  withContext,
 } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT } from './styles';
-import { MUSICS, MusicItemData } from './data';
+import { MUSICS, type MusicItemData } from './data';
 import Player from './Player';
 import Back from '../common/back';
 
@@ -57,7 +57,12 @@ export default class MusicApp extends React.Component {
     return (
       <View style={styles.container}>
         <View style={this.style}>
-          <ScrollView style={styles.list} paging={113} onScrollStart={this.startScroll} onScrollEnd={this.checkIndex}>
+          <ScrollView
+            style={styles.list}
+            paging={113}
+            onScrollStart={this.startScroll}
+            onScrollEnd={this.checkIndex}
+          >
             <View style={this.inner} cache>
               {MUSICS.map(this.renderMusic)}
             </View>
@@ -78,7 +83,11 @@ export default class MusicApp extends React.Component {
           </View>
           <Back {...this.props} />
         </View>
-        <Player transaction={this.transaction} disabled={this.state.picking} music={MUSICS[this.state.index]} />
+        <Player
+          transaction={this.transaction}
+          disabled={this.state.picking}
+          music={MUSICS[this.state.index]}
+        />
       </View>
     );
   }

@@ -1,17 +1,17 @@
-import { Node, RevasTouchEvent } from './Node';
+import { Node, type RevasTouchEvent } from './Node';
 // import { updateLayout } from './css-layout'
 import { updateLayout } from './yoga-layout';
 import { promise } from './yoga-layout/init';
 import { drawNode } from './draw';
 import { getNodeByTouch, emitTouch } from './touch';
 import { RevasCanvas } from './Canvas';
-import { AppContextType } from '../components/Context';
+import type { AppContextType } from '../components/Context';
 
 export class Container {
   private _ready = false;
   private _next = false;
   private _reflow = false;
-  private _root?: Node<AppContextType>;
+  private _root: Node<AppContextType> | undefined;
 
   get canvas(): RevasCanvas | void {
     return this._root?.props.canvas;
@@ -41,7 +41,7 @@ export class Container {
     const { _root } = this;
     if (_root) {
       const emitted = new WeakSet<Node>();
-      Object.values(evt.touches).forEach(touch => {
+      Object.values(evt.touches).forEach((touch) => {
         const node = getNodeByTouch(_root, evt.type, touch);
         // check if node is unmounted
         if (node.parent && !emitted.has(node)) {

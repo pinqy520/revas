@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { View } from '../../revas';
 import NavBar from './Navbar';
 import Entry from './Entry';
@@ -13,7 +12,10 @@ export default function Intro(props: any) {
     <View style={styles.container}>
       <NavBar {...props} title="Overview" />
       <View style={styles.entries}>
-        <Entry label="Component" onPress={() => props.router.push(Components)} />
+        <Entry
+          label="Component"
+          onPress={() => props.router.push(Components)}
+        />
         <Entry label="Style" onPress={() => props.router.push(Style)} />
         <Entry label="Animation" onPress={() => props.router.push(Animation)} />
         <Entry label="Gesture" onPress={() => props.router.push(Gesture)} />

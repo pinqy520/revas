@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from './revas';
 import App from './develop/App';
 import * as serviceWorker from './develop/serviceWorker';
@@ -6,7 +5,7 @@ import * as serviceWorker from './develop/serviceWorker';
 import './develop/index.css';
 
 // eslint-disable-next-line
-const app = render(<App />, document.getElementById('canvas')!);
+const app = render(<App />, document.getElementById('root')!);
 
 window.addEventListener('resize', () => {
   requestAnimationFrame(() => {

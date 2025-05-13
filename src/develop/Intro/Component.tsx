@@ -1,5 +1,11 @@
-import * as React from 'react';
-import { View, Text, Image, ScrollView, Touchable, LinearGradient } from '../../revas';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  Touchable,
+  LinearGradient,
+} from '../../revas';
 import NavBar from './Navbar';
 import Panel, { PanelItem } from './Panel';
 import logo from './logo.png';
@@ -20,21 +26,32 @@ export default function Components(props: any) {
         <Panel label="Text" cache>
           <View style={styles.row}>
             <Text style={styles.text.base}>default style</Text>
-            <Text style={[styles.text.base, styles.text.weight]}>fontWeight</Text>
-            <Text style={[styles.text.base, styles.text.color]}>color: red</Text>
+            <Text style={[styles.text.base, styles.text.weight]}>
+              fontWeight
+            </Text>
+            <Text style={[styles.text.base, styles.text.color]}>
+              color: red
+            </Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.text.base}>textAlign: center</Text>
           </View>
           <View style={styles.row}>
-            <Text style={[styles.text.base, styles.text.serif]}>fontFamily: serif</Text>
-            <Text style={[styles.text.base, styles.text.shadow]}>textShadow</Text>
+            <Text style={[styles.text.base, styles.text.serif]}>
+              fontFamily: serif
+            </Text>
+            <Text style={[styles.text.base, styles.text.shadow]}>
+              textShadow
+            </Text>
           </View>
         </Panel>
         <Panel label="Image" cache>
           <View style={styles.rowLeft}>
             <PanelItem label="contain">
-              <Image style={[styles.view.base, styles.image.contain]} src={logo} />
+              <Image
+                style={[styles.view.base, styles.image.contain]}
+                src={logo}
+              />
             </PanelItem>
             <PanelItem label="cover">
               <Image style={styles.view.base} src={logo} />
@@ -42,7 +59,10 @@ export default function Components(props: any) {
           </View>
         </Panel>
         <Panel label="Touchable">
-          <Touchable style={styles.button.container} onPress={() => alert('press')}>
+          <Touchable
+            style={styles.button.container}
+            onPress={() => alert('press')}
+          >
             <Text style={styles.button.text}>Button</Text>
           </Touchable>
         </Panel>
@@ -84,7 +104,10 @@ export default function Components(props: any) {
           </ScrollView>
         </Panel>
         <Panel label="LinearGradient" cache>
-          <LinearGradient style={styles.gradient} colors={['#C48DF1', '#91D5FF', '#40A9FF']} />
+          <LinearGradient
+            style={styles.gradient}
+            colors={['#C48DF1', '#91D5FF', '#40A9FF']}
+          />
         </Panel>
       </ScrollView>
     </View>

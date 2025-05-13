@@ -3,14 +3,18 @@ import bezier from 'bezier-easing';
 export abstract class AnimatedNode {
   abstract getValue(observer?: Function): number;
 
-  interpolate(inRange: number[], outRange: number[], ease = Easing.linear): AnimatedInterpolate {
+  interpolate(
+    inRange: number[],
+    outRange: number[],
+    ease = Easing.linear
+  ): AnimatedInterpolate {
     return new AnimatedInterpolate(this, inRange, outRange, ease);
   }
 }
 
 export class AnimatedValue extends AnimatedNode {
   // TODO: tempor
-  private _observer?: Function;
+  private _observer: Function | undefined;
 
   constructor(private _value: number) {
     super();
@@ -72,7 +76,7 @@ export type TimingConfig = {
 export class AnimatedTiming {
   private _startTime = 0;
   private _startValue = 0;
-  private _onEnd?: Function;
+  private _onEnd: Function | undefined;
   private _next = 0;
 
   constructor(private value: AnimatedValue, private config: TimingConfig) {}
@@ -95,7 +99,7 @@ export class AnimatedTiming {
   }
 
   promise() {
-    return new Promise(resolve => (this._onEnd = resolve));
+    return new Promise((resolve) => (this._onEnd = resolve));
   }
 
   private _loop = () => {
@@ -144,7 +148,7 @@ export const Easing = {
    * Runs an easing function backwards.
    */
   out(easing = getEase()): (t: number) => number {
-    return t => 1 - easing(1 - t);
+    return (t) => 1 - easing(1 - t);
   },
 
   /**
@@ -153,7 +157,7 @@ export const Easing = {
    * duration.
    */
   inOut(easing = getEase()): (t: number) => number {
-    return t => {
+    return (t) => {
       if (t < 0.5) {
         return easing(t * 2) / 2;
       }
@@ -180,6 +184,7 @@ export const Easing = {
   },
   elastic(bounciness = 1): (t: number) => number {
     const p = bounciness * Math.PI;
-    return t => 1 - Math.pow(Math.cos((t * Math.PI) / 2), 3) * Math.cos(t * p);
+    return (t) =>
+      1 - Math.pow(Math.cos((t * Math.PI) / 2), 3) * Math.cos(t * p);
   },
 };

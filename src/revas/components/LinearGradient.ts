@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { NodeProps, Node } from '../core/Node';
+import { createElement } from 'react';
+import { type NodeProps, Node } from '../core/Node';
 import { getFrameFromNode } from '../core/utils';
 import { RevasCanvas } from '../core/Canvas';
 
@@ -12,7 +12,7 @@ export type LinearGradientProps = {
 const DEFAULT_STYLE = { path: true };
 
 export default function LinearGradient(props: LinearGradientProps) {
-  return React.createElement('LinearGradient', {
+  return createElement('LinearGradient', {
     ...props,
     style: [DEFAULT_STYLE, props.style],
     customDrawer: drawGradient,
@@ -22,7 +22,8 @@ export default function LinearGradient(props: LinearGradientProps) {
 function drawGradient(canvas: RevasCanvas, node: Node) {
   const { colors } = node.props as LinearGradientProps;
   if (colors && colors.length > 0) {
-    const { start = { x: 0, y: 0 }, end = { x: 1, y: 0 } } = node.props as LinearGradientProps;
+    const { start = { x: 0, y: 0 }, end = { x: 1, y: 0 } } =
+      node.props as LinearGradientProps;
     const frame = getFrameFromNode(node);
     const grad = canvas.context.createLinearGradient(
       start.x * frame.width + frame.x,

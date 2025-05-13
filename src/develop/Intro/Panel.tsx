@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { View, Text } from '../../revas';
 
 export interface PanelItemProps {
@@ -25,7 +24,11 @@ export interface PanelProps {
 
 export default function Panel(props: PanelProps) {
   return (
-    <View style={[styles.container, props.style]} cache={props.cache} pointerEvents={props.cache ? 'none' : 'auto'}>
+    <View
+      style={[styles.container, props.style]}
+      {...(props.cache !== undefined && { cache: props.cache })}
+      pointerEvents={props.cache ? 'none' : 'auto'}
+    >
       <Text style={styles.label}>{props.label}</Text>
       <View style={styles.line} />
       {props.children}

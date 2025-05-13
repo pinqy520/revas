@@ -1,6 +1,12 @@
-import * as React from 'react';
-import { drawText, measureText, applyTextStyle, DrawTextOptions, DEFAULT_MEASURE } from './common/drawText';
-import { NodeProps, Node } from '../core/Node';
+import { Component, createElement } from 'react';
+import {
+  drawText,
+  measureText,
+  applyTextStyle,
+  type DrawTextOptions,
+  DEFAULT_MEASURE,
+} from './common/drawText';
+import { type NodeProps, Node } from '../core/Node';
 import { getFrameFromNode, flatten, applyAnimated } from '../core/utils';
 import { RevasCanvas } from '../core/Canvas';
 
@@ -8,7 +14,7 @@ export type TextProps = {
   numberOfLines?: number;
 } & NodeProps;
 
-export default class Text extends React.Component<TextProps> {
+export default class Text extends Component<TextProps> {
   state = { height: 0 };
 
   _measured = DEFAULT_MEASURE;
@@ -39,10 +45,10 @@ export default class Text extends React.Component<TextProps> {
   };
   render() {
     const { children, numberOfLines, ...others } = this.props as any;
-    return React.createElement(
+    return createElement(
       'View',
       others,
-      React.createElement('Text', {
+      createElement('Text', {
         content: children,
         customDrawer: this.drawText,
         textStyle: others.style,
@@ -114,7 +120,11 @@ function getTextFromNode(node: Node) {
 }
 
 function getTextStyleFromNode(node: Node) {
-  const style = Object.assign({}, DEFAULT_TEXTSTYLE, ...flatten([node.props.textStyle]));
+  const style = Object.assign(
+    {},
+    DEFAULT_TEXTSTYLE,
+    ...flatten([node.props.textStyle])
+  );
   style.lineHeight = style.lineHeight || style.fontSize * 1.1;
   return applyAnimated(style);
 }

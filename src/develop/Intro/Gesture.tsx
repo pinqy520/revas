@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { View, Text } from '../../revas';
 import NavBar from './Navbar';
 import Panel from './Panel';

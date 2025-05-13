@@ -21,5 +21,9 @@ export function withContext<T>(comp: T): T {
 }
 
 export function Root(props: AppContextType) {
-  return createElement(AppContext.Provider, { value: props }, createElement('Root', props));
+  return createElement(
+    AppContext.Provider,
+    { value: props },
+    createElement('Root', props)
+  );
 }
