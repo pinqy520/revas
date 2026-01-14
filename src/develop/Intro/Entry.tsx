@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Touchable, Text, View, Image } from '../../revas';
+import entryIcon from './entry.jpg';
 
 export interface EntryProps {
   label: string;
@@ -10,7 +11,7 @@ export default function Entry(props: EntryProps) {
   return (
     <Touchable onPress={props.onPress} style={styles.container}>
       <Text style={styles.label}>{props.label}</Text>
-      <Image src={require('./entry.jpg')} style={styles.icon} />
+      <Image src={entryIcon} style={styles.icon} />
       <View style={styles.line} />
     </Touchable>
   );

@@ -1,9 +1,13 @@
 # Revas Document
 
+## Requirements
+
+- **React 19.x** (peer dependency)
+
 ## Install
 
 ``` bash
-$ yarn add revas react
+$ pnpm add revas react@19
 ```
 
 ## Usage
@@ -234,8 +238,15 @@ clientWidth, clientHeight, pixelRatio, canvas
 | Other | animated, path |
 
 
-## Advantage
+## Upgrading from v1.x
 
-### Render to a custom canvas
+See the [upgrade guide](../README.md#upgrading-from-v1x-to-v2x) for breaking changes and migration steps.
+
+Key changes:
+- **React 19.x required** (was React 17.x)
+- **Layout engine**: `yoga-layout` 3.x replaces `yoga-layout-wasm` (now synchronous)
+- **No API changes**: Style properties and components remain the same
+
+## Render to a custom canvas
 
 > TODO

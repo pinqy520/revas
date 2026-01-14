@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, Image, View, RevasScrollEvent, AnimatedValue, ListView, withContext } from '../../revas';
+import { Text, Image, View, RevasScrollEvent, AnimatedValue, ListView, withContext, AppContext, AppContextType } from '../../revas';
 import { DATA } from './data';
 import Back from '../common/back';
 
@@ -33,7 +33,9 @@ class Item extends React.Component<ItemProps> {
 
 @withContext
 export default class TimelineApp extends React.Component<any> {
-  WINDOW_HEIGHT = this.context.clientHeight;
+  static contextType = AppContext;
+  declare context: AppContextType;
+  get WINDOW_HEIGHT() { return this.context?.clientHeight || 667; }
   MAX_LINES = Math.floor((this.WINDOW_HEIGHT / 3 - 20) / 26);
 
   animated = new AnimatedValue(0);

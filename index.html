@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,minimum-scale=1,user-scalable=no">
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Revas - Build Apps on Canvas with React" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Revas</title>
+    <script src="/touch-emulator.js"></script>
+    <script src="/stats.min.js"></script>
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <script type="module" src="/src/index.tsx"></script>
+    <script>
+      TouchEmulator();
+      if (location.host.indexOf(':') > 0) {
+        const stats = new Stats();
+        stats.showPanel(0);
+        stats.dom.setAttribute('style', `
+          position: fixed;
+          top: 1px;
+          right: 1px;
+          cursor: pointer;
+          opacity: 0.9;
+          z-index: 10000;
+        `);
+        document.body.appendChild(stats.dom);
+        const animate = () => {
+          stats.begin();
+          stats.end();
+          requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }
+    </script>
+  </body>
+</html>

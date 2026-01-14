@@ -8,7 +8,9 @@ import {
   timing,
   AnimatedTiming,
   Easing,
-  withContext
+  withContext,
+  AppContext,
+  AppContextType
 } from '../../revas';
 import NavBar from './Navbar';
 import Panel from './Panel';
@@ -27,6 +29,8 @@ export default function Animation(props: any) {
 
 @withContext
 class AnimateEaseExample extends React.Component {
+  static contextType = AppContext;
+  declare context: AppContextType;
   state = {
     style: {},
   };
@@ -41,7 +45,7 @@ class AnimateEaseExample extends React.Component {
             type="translateX"
             ease={Easing.linear}
             from={0}
-            to={this.context.clientWidth! / 1.5}
+            to={(this.context?.clientWidth || 375) / 1.5}
             onAnimate={this.onAnim}
           />
           <AnimateButton
@@ -49,7 +53,7 @@ class AnimateEaseExample extends React.Component {
             type="translateX"
             ease={Easing.ease}
             from={0}
-            to={this.context.clientWidth! / 1.5}
+            to={(this.context?.clientWidth || 375) / 1.5}
             onAnimate={this.onAnim}
           />
           <AnimateButton
@@ -57,7 +61,7 @@ class AnimateEaseExample extends React.Component {
             type="translateX"
             ease={Easing.bounce}
             from={0}
-            to={this.context.clientWidth! / 1.5}
+            to={(this.context?.clientWidth || 375) / 1.5}
             onAnimate={this.onAnim}
           />
           <AnimateButton
@@ -65,7 +69,7 @@ class AnimateEaseExample extends React.Component {
             type="translateX"
             ease={Easing.out()}
             from={0}
-            to={this.context.clientWidth! / 1.5}
+            to={(this.context?.clientWidth || 375) / 1.5}
             onAnimate={this.onAnim}
           />
         </View>
@@ -76,6 +80,8 @@ class AnimateEaseExample extends React.Component {
 
 @withContext
 class AnimateTypeExample extends React.Component {
+  static contextType = AppContext;
+  declare context: AppContextType;
   state = {
     style: {},
   };
@@ -90,7 +96,7 @@ class AnimateTypeExample extends React.Component {
             label="translateX"
             type="translateX"
             from={0}
-            to={this.context.clientWidth! / 1.5}
+            to={(this.context?.clientWidth || 375) / 1.5}
             onAnimate={this.onAnim}
           />
           <AnimateButton label="rotation" type="rotate" from={0} to={Math.PI} onAnimate={this.onAnim} />

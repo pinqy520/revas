@@ -7,7 +7,9 @@ import {
   ScrollView,
   RevasScrollEvent,
   AnimatedValue,
-  withContext
+  withContext,
+  AppContext,
+  AppContextType
 } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT } from './styles';
 import { MUSICS, MusicItemData } from './data';
@@ -16,6 +18,8 @@ import Back from '../common/back';
 
 @withContext
 export default class MusicApp extends React.Component {
+  static contextType = AppContext;
+  declare context: AppContextType;
   state = {
     index: 0,
     picking: false,
@@ -29,10 +33,13 @@ export default class MusicApp extends React.Component {
     animated: true,
   };
 
-  inner = {
-    marginTop: this.context.clientHeight! / 2 - 57,
-    marginBottom: this.context.clientHeight! / 2 - 57,
-  };
+  get inner() {
+    const height = this.context?.clientHeight || 500;
+    return {
+      marginTop: height / 2 - 57,
+      marginBottom: height / 2 - 57,
+    };
+  }
 
   startScroll = () => {
     this.setState({ picking: true });

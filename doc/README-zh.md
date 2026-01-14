@@ -19,10 +19,14 @@
   <img src="https://user-images.githubusercontent.com/5719833/81006150-9b8f3300-8e81-11ea-8cb1-08de6550ea03.png" />
 </p>
 
+## 环境要求
+
+- **React 19.x** (peer dependency)
+
 ## 安装
 
 ``` bash
-$ yarn add revas react
+$ pnpm add revas react@19
 ```
 
 ## 基本用法
@@ -250,6 +254,62 @@ function Comp() {
 | Transform | translateX, translateY, rotate, scale, scaleX, scaleY | 
 | Other | animated, path |
 
+
+## 从 v1.x 升级到 v2.x
+
+Revas 2.0 是一个包含破坏性变更的大版本升级：
+
+### 破坏性变更
+
+| 变更项 | v1.x | v2.x |
+|--------|------|------|
+| React 版本 | React 17.x | **React 19.x** (必需) |
+| 布局引擎 | `yoga-layout-wasm` (异步) | `yoga-layout` 3.x (同步) |
+| 模块格式 | CJS + ESM | ESM 优先，CJS 作为备选 |
+
+### 升级步骤
+
+1. **升级 React** 到 19.x 版本：
+   ```bash
+   pnpm add react@19 react-dom@19
+   ```
+
+2. **更新导入** (如果使用 `/common` 导出)：
+   ```js
+   // 无需修改 - API 保持不变
+   import { View, Text } from 'revas'
+   import { View, Text } from 'revas/common'
+   ```
+
+### 布局引擎变更
+
+布局引擎已从 `yoga-layout-wasm` 升级到 `yoga-layout` 3.x：
+
+- **对大多数用户**: 无需修改。样式 API 保持不变。
+- **性能**: 布局计算现在是同步的（无需异步初始化）。
+- **包大小**: 由于 WASM 打包方式不同，体积略有增加。
+
+**支持的 Flexbox 属性**（不变）：
+- 布局: `flex`, `flexDirection`, `justifyContent`, `alignItems`, `alignSelf`, `flexWrap`
+- 尺寸: `width`, `height`, `minWidth`, `maxWidth`, `minHeight`, `maxHeight`
+- 间距: `padding`, `margin`, `borderWidth`
+- 定位: `position` (`relative`, `absolute`, `static`), `top`, `left`, `right`, `bottom`
+
+完整样式参考请查看 [style.ts](https://github.com/pinqy520/revas/blob/master/src/revas/core/yoga-layout/style.ts)。
+
+### 自定义 Canvas 平台
+
+如果你在自定义平台（微信小游戏、字节小游戏）上使用 Revas，`revas/common` 导出现在使用同步的 yoga-layout。请移除异步初始化代码：
+
+```js
+// v1.x (旧版)
+import { initYoga } from 'revas/common'
+await initYoga()  // ❌ 不再需要
+
+// v2.x (新版)
+import { render } from 'revas/common'
+render(...)  // ✅ 立即可用
+```
 
 ## 高级用法
 

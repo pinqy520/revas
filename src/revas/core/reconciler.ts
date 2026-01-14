@@ -1,10 +1,14 @@
-import ReactReconciler, { DevToolsConfig } from 'react-reconciler';
+import ReactReconciler from 'react-reconciler';
+import { DefaultEventPriority } from 'react-reconciler/constants';
 import { version } from 'react';
 import { Node } from './Node';
 import { noop, now } from './utils';
 import { Container } from './Container';
 
 const isDev = process.env.NODE_ENV !== 'production';
+
+// Track current update priority
+let currentUpdatePriority = DefaultEventPriority;
 
 function checkAndRemove(parent: Node, child: Node) {
   const index = parent.children.indexOf(child);
@@ -19,68 +23,52 @@ function appendChild(parent: Node, child: Node) {
   child.parent = parent;
 }
 
-const unused: any = {
-  unhideTextInstance() {
-    // noop
-  },
-
-  mountEventComponent() {
-    // noop
-  },
-
-  getFundamentalComponentInstance() {
-    throw new Error('Not yet implemented.');
-  },
-
-  mountFundamentalComponent() {
-    throw new Error('Not yet implemented.');
-  },
-
-  shouldUpdateFundamentalComponent() {
-    throw new Error('Not yet implemented.');
-  },
-
-  unmountFundamentalComponent() {
-    throw new Error('Not yet implemented.');
-  },
-
-  getInstanceFromNode() {
-    throw new Error('Not yet implemented.');
-  },
-
-  isOpaqueHydratingObject() {
-    throw new Error('Not yet implemented');
-  },
-
-  makeOpaqueHydratingObject() {
-    throw new Error('Not yet implemented.');
-  },
-
-  makeClientIdInDEV() {
-    throw new Error('Not yet implemented');
-  },
-
-  beforeActiveInstanceBlur() {
-    // noop
-  },
-
-  afterActiveInstanceBlur() {
-    // noop
-  },
-
-  preparePortalMount() {
-    // noop
-  },
-};
-
 const RevasReconciler = ReactReconciler({
-  supportsHydration: false,
-  supportsPersistence: false,
   supportsMutation: true,
+  supportsPersistence: false,
+  supportsHydration: false,
   isPrimaryRenderer: false,
 
-  ...unused,
+  // Timing
+  now,
+  scheduleTimeout: setTimeout,
+  cancelTimeout: clearTimeout,
+  noTimeout: -1,
+  supportsMicrotasks: true,
+  scheduleMicrotask:
+    typeof queueMicrotask === 'function' ? queueMicrotask : setTimeout,
 
+  // Update priority (required for React 19)
+  getCurrentEventPriority: () => DefaultEventPriority,
+  setCurrentUpdatePriority: (priority: number) => {
+    currentUpdatePriority = priority;
+  },
+  getCurrentUpdatePriority: () => currentUpdatePriority,
+  resolveUpdatePriority: () => currentUpdatePriority || DefaultEventPriority,
+
+  // Suspense commit control (required for React 19)
+  maySuspendCommit: () => false,
+  preloadInstance: () => true,
+  startSuspendingCommit: noop,
+  suspendInstance: noop,
+  waitForCommitToBeReady: () => null,
+
+  // Transitions (required for React 19)
+  NotPendingTransition: null as null,
+  HostTransitionContext: {
+    $$typeof: Symbol.for('react.context'),
+    _currentValue: null,
+    _currentValue2: null,
+  },
+  resetFormInstance: noop,
+
+  // Event tracking (required for React 19)
+  trackSchedulerEvent: noop,
+  resolveEventType: () => null,
+  resolveEventTimeStamp: () => -1.1,
+  shouldAttemptEagerTransition: () => false,
+
+  // Instance creation
   createInstance(type: string, props: any) {
     return new Node(type, props);
   },
@@ -89,9 +77,10 @@ const RevasReconciler = ReactReconciler({
     throw new Error('Revas: string cannot be child out of <Text/>');
   },
 
+  // Tree operations
   appendChild,
   appendInitialChild: appendChild,
-  appendChildToContainer(container: Container, instance: any) {
+  appendChildToContainer(container: Container, instance: Node) {
     if (instance.type !== 'Root') {
       throw new Error(`wrong root instance type: ${instance.type}`);
     }
@@ -102,7 +91,7 @@ const RevasReconciler = ReactReconciler({
     checkAndRemove(parent, child);
     child.parent = void 0;
   },
-  removeChildFromContainer(container) {
+  removeChildFromContainer(container: Container) {
     container.setRoot();
   },
 
@@ -118,25 +107,45 @@ const RevasReconciler = ReactReconciler({
   },
 
   clearContainer() {
-    // TODO implement this
+    // noop
   },
 
+  // Finalization
   finalizeInitialChildren() {
     return false;
   },
 
-  getPublicInstance(instance) {
+  // Public instance
+  getPublicInstance(instance: Node) {
     return instance;
   },
 
+  // Updates
   prepareUpdate() {
     return true;
   },
 
-  commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-    instance.props = newProps;
+  commitUpdate(
+    instance: Node,
+    _updatePayload: any,
+    _type: string,
+    oldProps: any,
+    newProps: any
+  ) {
+    // Merge old props with new props, keeping old values for undefined new values
+    // This handles React 19's behavior where unchanged props may be undefined
+    const mergedProps = { ...oldProps };
+    for (const key in newProps) {
+      if (newProps[key] !== undefined) {
+        mergedProps[key] = newProps[key];
+      }
+    }
+    instance.props = mergedProps;
   },
 
+  commitMount: noop,
+
+  // Commit phase
   prepareForCommit() {
     return null;
   },
@@ -147,6 +156,7 @@ const RevasReconciler = ReactReconciler({
 
   resetTextContent: noop,
 
+  // Context
   getRootHostContext() {
     return {};
   },
@@ -159,26 +169,33 @@ const RevasReconciler = ReactReconciler({
     return false;
   },
 
-  shouldDeprioritizeSubtree: () => false,
+  // Visibility (required for React 19 Offscreen)
+  hideInstance: noop,
+  hideTextInstance: noop,
+  unhideInstance: noop,
+  unhideTextInstance: noop,
 
-  scheduleDeferredCallback: noop,
-  cancelDeferredCallback: noop,
-  setTimeout,
-  clearTimeout,
-  noTimeout: -1,
-  now,
+  // Required stubs for React 19
+  getInstanceFromNode() {
+    return null;
+  },
+
+  beforeActiveInstanceBlur: noop,
+  afterActiveInstanceBlur: noop,
+  preparePortalMount: noop,
+  prepareScopeUpdate: noop,
+
+  getInstanceFromScope() {
+    return null;
+  },
+
+  detachDeletedInstance: noop,
 });
 
 RevasReconciler.injectIntoDevTools({
   bundleType: isDev ? 1 : 0,
   version: version,
-  rendererPackageName: 'revas-react',
-
-  // could not get this typed.
-  // The above `DevToolsConfig` is a generic expecting an `Instance`
-  // and `TextInstance` type, but I didn't see these declared anywhere
-
-  // @ts-ignore
+  rendererPackageName: 'revas',
   findHostInstanceByFiber: RevasReconciler.findHostInstance,
 });
 

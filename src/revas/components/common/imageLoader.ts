@@ -1,5 +1,4 @@
 import { adapter } from '../../core/utils'
-import renderer from '../../core/reconciler'
 
 class CachedImage {
   readonly image = adapter.createImage()
@@ -20,9 +19,8 @@ class CachedImage {
   }
   onload = () => {
     this._ready = true
-    renderer.batchedUpdates(() => {
-      this.targets.forEach(target => target(this.image))
-    })
+    // In React 19, batching is automatic, so just call directly
+    this.targets.forEach(target => target(this.image))
   }
   onerror = () => { }
   add(target: Function) {

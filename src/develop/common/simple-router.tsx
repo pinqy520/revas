@@ -3,6 +3,7 @@ import { View, AnimatedValue, timing } from '../../revas';
 
 export interface SimpleRouterProps {
   width: number;
+  children?: React.ReactNode;
 }
 
 export default class SimpleRouter extends React.Component<SimpleRouterProps> {

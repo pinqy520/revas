@@ -79,7 +79,19 @@ export function render(app: React.ReactNode, parent: HTMLElement, parentComponen
   const canvas = new RevasCanvas(dom.getContext('2d')!);
   const container = new Container();
   const destroyTouch = initTouch(dom, e => container.handleTouch(createRevasTouchEvent(e)));
-  const fiber = renderer.createContainer(container, false, false);
+  // react-reconciler 0.33.0 createContainer has 10 parameters
+  const fiber = renderer.createContainer(
+    container,
+    0, // tag: LegacyRoot = 0, ConcurrentRoot = 1
+    null, // hydrationCallbacks
+    false, // isStrictMode
+    null, // concurrentUpdatesByDefaultOverride
+    '', // identifierPrefix
+    console.error, // onUncaughtError
+    console.error, // onCaughtError
+    console.error, // onRecoverableError
+    null // transitionCallbacks
+  );
 
   canvas.transform.scale(scale, scale);
   renderer.updateContainer(createRoot(app, dom, canvas), fiber, parentComponent, callback);

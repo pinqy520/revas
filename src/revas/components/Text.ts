@@ -30,10 +30,15 @@ export default class Text extends React.Component<TextProps> {
         this._drawed = options;
       }
       const [lines, height] = this._measured;
+      // Draw text first
+      drawText(canvas, options, lines);
+      // Update height asynchronously to avoid clearing canvas in same frame
       if (height !== this.state.height) {
-        this.setState({ height });
-      } else {
-        drawText(canvas, options, lines);
+        Promise.resolve().then(() => {
+          if (this._drawed) {
+            this.setState({ height });
+          }
+        });
       }
     }
   };

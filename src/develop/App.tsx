@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, AnimatedValue, timing, AnimatedTiming, Touchable, withContext } from '../revas';
+import { View, Text, AnimatedValue, timing, AnimatedTiming, Touchable, withContext, AppContext, AppContextType } from '../revas';
 import Intro from './Intro';
 import Timeline from './Timeline';
 import MusicApp from './Music';
@@ -7,6 +7,8 @@ import SimpleRouter from './common/simple-router';
 
 @withContext
 export default class App extends React.Component {
+  static contextType = AppContext;
+  declare context: AppContextType;
   router = React.createRef<SimpleRouter>();
 
   push = (Comp: any) => () => {
@@ -18,9 +20,9 @@ export default class App extends React.Component {
   };
 
   render() {
-    const cardHeight = this.context.clientHeight / 7;
+    const cardHeight = (this.context?.clientHeight || 500) / 7;
     return (
-      <SimpleRouter ref={this.router} width={this.context.clientWidth}>
+      <SimpleRouter ref={this.router} width={this.context?.clientWidth || 375}>
         <View style={styles.container}>
           <Text style={styles.title}>Revas Examples</Text>
           <View style={styles.cards}>

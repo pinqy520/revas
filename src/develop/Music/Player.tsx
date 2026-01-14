@@ -10,9 +10,17 @@ import {
   noop,
   LinearGradient,
   AnimatedTiming,
-  withContext
+  withContext,
+  AppContext,
+  AppContextType
 } from '../../revas';
 import { ABS_FULL, DEFAULT_TEXT, ROW_CENTER, CENTER_AREA } from './styles';
+
+import btnMiniImg from './assets/btn-mini.png';
+import btnPauseImg from './assets/btn-pause.png';
+import btnPlayImg from './assets/btn-play.png';
+import btnLoopImg from './assets/btn-loop.png';
+
 export interface PlayerProps {
   music: any;
   disabled: boolean;
@@ -36,14 +44,16 @@ function isAnim(mode: PlayerMode) {
 
 @withContext
 export default class Player extends React.Component<PlayerProps> {
+  static contextType = AppContext;
+  declare context: AppContextType;
   state = {
     mode: PlayerMode.Mini,
     current: this.props.music,
     playing: false,
   };
 
-  WINDOW_WIDTH = this.context.clientWidth;
-  WINDOW_HEIGHT = this.context.clientHeight;
+  get WINDOW_WIDTH() { return this.context?.clientWidth || 375; }
+  get WINDOW_HEIGHT() { return this.context?.clientHeight || 667; }
   SIZE = this.WINDOW_WIDTH * 0.85;
   RADIO = this.SIZE / 2;
   IMAGE_SIZE = this.SIZE - 20;
@@ -215,20 +225,16 @@ export default class Player extends React.Component<PlayerProps> {
             <Text style={styles.singer}>{music.singer}</Text>
             <View style={styles.controls}>
               <Touchable onPress={this.toggle} style={styles.btn}>
-                <Image style={styles.btnS} src={require('./assets/btn-mini.png').default} />
+                <Image style={styles.btnS} src={btnMiniImg} />
               </Touchable>
               <Touchable onPress={this.onPlay} style={styles.btn}>
                 <Image
                   style={styles.play}
-                  src={
-                    this.state.playing ?
-                      require('./assets/btn-pause.png').default :
-                      require('./assets/btn-play.png').default
-                  }
+                  src={this.state.playing ? btnPauseImg : btnPlayImg}
                 />
               </Touchable>
               <Touchable onPress={noop} style={styles.btn}>
-                <Image style={styles.btnS} src={require('./assets/btn-loop.png').default} />
+                <Image style={styles.btnS} src={btnLoopImg} />
               </Touchable>
             </View>
           </View>
